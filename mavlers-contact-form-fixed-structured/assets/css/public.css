@@ -1,0 +1,206 @@
+/* Form Container */
+.mavlers-form-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Form Header */
+.mavlers-form-header {
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+.mavlers-form-title {
+    font-size: 24px;
+    color: #1d2327;
+    margin-bottom: 10px;
+}
+
+.mavlers-form-description {
+    color: #50575e;
+    font-size: 16px;
+}
+
+/* Form Fields */
+.mavlers-form-field {
+    margin-bottom: 20px;
+}
+
+.mavlers-field-label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #1d2327;
+}
+
+.mavlers-field-label.required::after {
+    content: '*';
+    color: #d63638;
+    margin-left: 4px;
+}
+
+.mavlers-field-input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #c3c4c7;
+    border-radius: 4px;
+    font-size: 16px;
+    transition: border-color 0.2s ease;
+}
+
+.mavlers-field-input:focus {
+    border-color: #2271b1;
+    outline: none;
+    box-shadow: 0 0 0 1px #2271b1;
+}
+
+.mavlers-field-textarea {
+    min-height: 120px;
+    resize: vertical;
+}
+
+.mavlers-field-select {
+    appearance: none;
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 16px;
+    padding-right: 30px;
+}
+
+/* Radio and Checkbox */
+.mavlers-field-radio,
+.mavlers-field-checkbox {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.mavlers-field-radio input,
+.mavlers-field-checkbox input {
+    margin-right: 10px;
+}
+
+/* File Upload */
+.mavlers-field-file {
+    padding: 10px;
+    border: 2px dashed #c3c4c7;
+    border-radius: 4px;
+    text-align: center;
+    cursor: pointer;
+}
+
+.mavlers-field-file:hover {
+    border-color: #2271b1;
+}
+
+.mavlers-field-file input[type="file"] {
+    display: none;
+}
+
+/* Field Help Text */
+.mavlers-field-help {
+    display: block;
+    margin-top: 5px;
+    font-size: 14px;
+    color: #50575e;
+}
+
+/* Validation Messages */
+.mavlers-field-error {
+    display: block;
+    margin-top: 5px;
+    color: #d63638;
+    font-size: 14px;
+}
+
+.mavlers-field-input.error {
+    border-color: #d63638;
+}
+
+/* Form Actions */
+.mavlers-form-actions {
+    margin-top: 30px;
+    text-align: center;
+}
+
+.mavlers-form-submit {
+    padding: 12px 24px;
+    background: #2271b1;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.mavlers-form-submit:hover {
+    background: #135e96;
+}
+
+.mavlers-form-submit:disabled {
+    background: #c3c4c7;
+    cursor: not-allowed;
+}
+
+/* Success Message */
+.mavlers-form-success {
+    padding: 20px;
+    background: #e6f4ea;
+    color: #1a7f37;
+    border-radius: 4px;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+/* Loading State */
+.mavlers-form-loading {
+    position: relative;
+    opacity: 0.7;
+}
+
+.mavlers-form-loading::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 20px;
+    height: 20px;
+    border: 2px solid #2271b1;
+    border-top-color: transparent;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+/* Responsive Adjustments */
+@media screen and (max-width: 782px) {
+    .mavlers-form-container {
+        padding: 15px;
+    }
+    
+    .mavlers-form-title {
+        font-size: 20px;
+    }
+    
+    .mavlers-form-description {
+        font-size: 14px;
+    }
+    
+    .mavlers-field-input {
+        font-size: 14px;
+    }
+    
+    .mavlers-form-submit {
+        width: 100%;
+    }
+} 
