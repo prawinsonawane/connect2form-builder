@@ -26,9 +26,11 @@ class Mavlers_Form_Builder {
         add_action('wp_ajax_mavlers_save_email_settings', array($this, 'handle_email_settings_save'));
         add_action('wp_ajax_mavlers_save_email_template', array($this, 'handle_email_template_save'));
         add_action('wp_ajax_mavlers_save_form', array($this, 'handle_form_save'));
+        add_action('wp_ajax_mavlers_get_form_fields', array($this, 'handle_get_form_fields'));
         add_action('mavlers_form_submitted', array($this, 'handle_form_submission'), 10, 2);
         
         $this->init_email_templates();
+        $this->check_database_tables();
     }
 
     private function init_email_templates() {
@@ -101,35 +103,50 @@ class Mavlers_Form_Builder {
                 'settings' => array(
                     'label' => array(
                         'type' => 'text',
-                        'label' => __('Label', 'mavlers-contact-form'),
+                        'label' => __('Field Label', 'mavlers-contact-form'),
                         'required' => true
+                    ),
+                    'description' => array(
+                        'type' => 'textarea',
+                        'label' => __('Description', 'mavlers-contact-form')
                     ),
                     'placeholder' => array(
                         'type' => 'text',
                         'label' => __('Placeholder', 'mavlers-contact-form')
                     ),
-                    'required' => array(
-                        'type' => 'checkbox',
-                        'label' => __('Required', 'mavlers-contact-form')
-                    )
-                )
-            ),
-            'email' => array(
-                'label' => __('Email Field', 'mavlers-contact-form'),
-                'icon' => 'dashicons-email',
-                'settings' => array(
-                    'label' => array(
-                        'type' => 'text',
-                        'label' => __('Label', 'mavlers-contact-form'),
-                        'required' => true
-                    ),
-                    'placeholder' => array(
-                        'type' => 'text',
-                        'label' => __('Placeholder', 'mavlers-contact-form')
+                    'max_chars' => array(
+                        'type' => 'number',
+                        'label' => __('Maximum Characters', 'mavlers-contact-form')
                     ),
                     'required' => array(
                         'type' => 'checkbox',
-                        'label' => __('Required', 'mavlers-contact-form')
+                        'label' => __('Required Field', 'mavlers-contact-form')
+                    ),
+                    'css_class' => array(
+                        'type' => 'text',
+                        'label' => __('Custom CSS Class', 'mavlers-contact-form')
+                    ),
+                    'validation_message' => array(
+                        'type' => 'text',
+                        'label' => __('Custom Validation Message', 'mavlers-contact-form')
+                    ),
+                    'field_size' => array(
+                        'type' => 'select',
+                        'label' => __('Field Size', 'mavlers-contact-form'),
+                        'options' => array(
+                            'small' => __('Small', 'mavlers-contact-form'),
+                            'medium' => __('Medium', 'mavlers-contact-form'),
+                            'large' => __('Large', 'mavlers-contact-form')
+                        )
+                    ),
+                    'column_layout' => array(
+                        'type' => 'select',
+                        'label' => __('Column Layout', 'mavlers-contact-form'),
+                        'options' => array(
+                            'full' => __('Full Width', 'mavlers-contact-form'),
+                            'half' => __('Half Width', 'mavlers-contact-form')
+                        ),
+                        'default' => 'full'
                     )
                 )
             ),
@@ -139,195 +156,352 @@ class Mavlers_Form_Builder {
                 'settings' => array(
                     'label' => array(
                         'type' => 'text',
-                        'label' => __('Label', 'mavlers-contact-form'),
+                        'label' => __('Field Label', 'mavlers-contact-form'),
                         'required' => true
+                    ),
+                    'description' => array(
+                        'type' => 'textarea',
+                        'label' => __('Description', 'mavlers-contact-form')
                     ),
                     'placeholder' => array(
                         'type' => 'text',
                         'label' => __('Placeholder', 'mavlers-contact-form')
                     ),
+                    'rows' => array(
+                        'type' => 'number',
+                        'label' => __('Number of Rows', 'mavlers-contact-form'),
+                        'default' => 4
+                    ),
+                    'max_chars' => array(
+                        'type' => 'number',
+                        'label' => __('Maximum Characters', 'mavlers-contact-form')
+                    ),
                     'required' => array(
                         'type' => 'checkbox',
-                        'label' => __('Required', 'mavlers-contact-form')
+                        'label' => __('Required Field', 'mavlers-contact-form')
+                    ),
+                    'css_class' => array(
+                        'type' => 'text',
+                        'label' => __('Custom CSS Class', 'mavlers-contact-form')
+                    ),
+                    'validation_message' => array(
+                        'type' => 'text',
+                        'label' => __('Custom Validation Message', 'mavlers-contact-form')
+                    ),
+                    'column_layout' => array(
+                        'type' => 'select',
+                        'label' => __('Column Layout', 'mavlers-contact-form'),
+                        'options' => array(
+                            'full' => __('Full Width', 'mavlers-contact-form'),
+                            'half' => __('Half Width', 'mavlers-contact-form')
+                        ),
+                        'default' => 'full'
                     )
-                )
-            ),
-            'select' => array(
-                'label' => __('Select', 'mavlers-contact-form'),
-                'icon' => 'dashicons-menu',
-                'settings' => array(
-                    'label' => array('type' => 'text', 'label' => __('Label', 'mavlers-contact-form')),
-                    'required' => array('type' => 'checkbox', 'label' => __('Required', 'mavlers-contact-form')),
-                    'options' => array('type' => 'textarea', 'label' => __('Options', 'mavlers-contact-form'), 'description' => __('One option per line', 'mavlers-contact-form')),
-                    'description' => array('type' => 'textarea', 'label' => __('Description', 'mavlers-contact-form')),
-                    'css_class' => array('type' => 'text', 'label' => __('CSS Class', 'mavlers-contact-form'))
-                )
-            ),
-            'radio' => array(
-                'label' => __('Radio Buttons', 'mavlers-contact-form'),
-                'icon' => 'dashicons-marker',
-                'settings' => array(
-                    'label' => array('type' => 'text', 'label' => __('Label', 'mavlers-contact-form')),
-                    'required' => array('type' => 'checkbox', 'label' => __('Required', 'mavlers-contact-form')),
-                    'options' => array('type' => 'textarea', 'label' => __('Options', 'mavlers-contact-form'), 'description' => __('One option per line', 'mavlers-contact-form')),
-                    'description' => array('type' => 'textarea', 'label' => __('Description', 'mavlers-contact-form')),
-                    'css_class' => array('type' => 'text', 'label' => __('CSS Class', 'mavlers-contact-form'))
                 )
             ),
             'checkbox' => array(
                 'label' => __('Checkboxes', 'mavlers-contact-form'),
                 'icon' => 'dashicons-yes',
                 'settings' => array(
-                    'label' => array('type' => 'text', 'label' => __('Label', 'mavlers-contact-form')),
-                    'required' => array('type' => 'checkbox', 'label' => __('Required', 'mavlers-contact-form')),
-                    'options' => array('type' => 'textarea', 'label' => __('Options', 'mavlers-contact-form'), 'description' => __('One option per line', 'mavlers-contact-form')),
-                    'description' => array('type' => 'textarea', 'label' => __('Description', 'mavlers-contact-form')),
-                    'css_class' => array('type' => 'text', 'label' => __('CSS Class', 'mavlers-contact-form'))
+                    'label' => array(
+                        'type' => 'text',
+                        'label' => __('Field Label', 'mavlers-contact-form'),
+                        'required' => true
+                    ),
+                    'description' => array(
+                        'type' => 'textarea',
+                        'label' => __('Description', 'mavlers-contact-form')
+                    ),
+                    'options' => array(
+                        'type' => 'textarea',
+                        'label' => __('Options', 'mavlers-contact-form'),
+                        'description' => __('One option per line', 'mavlers-contact-form')
+                    ),
+                    'required' => array(
+                        'type' => 'checkbox',
+                        'label' => __('Required Field', 'mavlers-contact-form')
+                    ),
+                    'css_class' => array(
+                        'type' => 'text',
+                        'label' => __('Custom CSS Class', 'mavlers-contact-form')
+                    ),
+                    'validation_message' => array(
+                        'type' => 'text',
+                        'label' => __('Custom Validation Message', 'mavlers-contact-form')
+                    )
                 )
             ),
-            'file' => array(
-                'label' => __('File Upload', 'mavlers-contact-form'),
-                'icon' => 'dashicons-upload',
+            'dropdown' => array(
+                'label' => __('Dropdown', 'mavlers-contact-form'),
+                'icon' => 'dashicons-arrow-down-alt2',
                 'settings' => array(
-                    'label' => array('type' => 'text', 'label' => __('Label', 'mavlers-contact-form')),
-                    'required' => array('type' => 'checkbox', 'label' => __('Required', 'mavlers-contact-form')),
-                    'allowed_types' => array('type' => 'text', 'label' => __('Allowed File Types', 'mavlers-contact-form'), 'description' => __('Comma-separated list of file extensions', 'mavlers-contact-form')),
-                    'max_size' => array('type' => 'number', 'label' => __('Maximum File Size (MB)', 'mavlers-contact-form')),
-                    'description' => array('type' => 'textarea', 'label' => __('Description', 'mavlers-contact-form')),
-                    'css_class' => array('type' => 'text', 'label' => __('CSS Class', 'mavlers-contact-form'))
+                    'label' => array(
+                        'type' => 'text',
+                        'label' => __('Field Label', 'mavlers-contact-form'),
+                        'required' => true
+                    ),
+                    'description' => array(
+                        'type' => 'textarea',
+                        'label' => __('Description', 'mavlers-contact-form')
+                    ),
+                    'options' => array(
+                        'type' => 'textarea',
+                        'label' => __('Options', 'mavlers-contact-form'),
+                        'description' => __('One option per line', 'mavlers-contact-form')
+                    ),
+                    'required' => array(
+                        'type' => 'checkbox',
+                        'label' => __('Required Field', 'mavlers-contact-form')
+                    ),
+                    'css_class' => array(
+                        'type' => 'text',
+                        'label' => __('Custom CSS Class', 'mavlers-contact-form')
+                    ),
+                    'validation_message' => array(
+                        'type' => 'text',
+                        'label' => __('Custom Validation Message', 'mavlers-contact-form')
+                    )
+                )
+            ),
+            'number' => array(
+                'label' => __('Number', 'mavlers-contact-form'),
+                'icon' => 'dashicons-calculator',
+                'settings' => array(
+                    'label' => array(
+                        'type' => 'text',
+                        'label' => __('Field Label', 'mavlers-contact-form'),
+                        'required' => true
+                    ),
+                    'description' => array(
+                        'type' => 'textarea',
+                        'label' => __('Description', 'mavlers-contact-form')
+                    ),
+                    'min' => array(
+                        'type' => 'number',
+                        'label' => __('Minimum Value', 'mavlers-contact-form')
+                    ),
+                    'max' => array(
+                        'type' => 'number',
+                        'label' => __('Maximum Value', 'mavlers-contact-form')
+                    ),
+                    'step' => array(
+                        'type' => 'number',
+                        'label' => __('Step', 'mavlers-contact-form'),
+                        'default' => 1
+                    ),
+                    'required' => array(
+                        'type' => 'checkbox',
+                        'label' => __('Required Field', 'mavlers-contact-form')
+                    ),
+                    'css_class' => array(
+                        'type' => 'text',
+                        'label' => __('Custom CSS Class', 'mavlers-contact-form')
+                    ),
+                    'validation_message' => array(
+                        'type' => 'text',
+                        'label' => __('Custom Validation Message', 'mavlers-contact-form')
+                    )
+                )
+            ),
+            'radio' => array(
+                'label' => __('Radio Buttons', 'mavlers-contact-form'),
+                'icon' => 'dashicons-marker',
+                'settings' => array(
+                    'label' => array(
+                        'type' => 'text',
+                        'label' => __('Field Label', 'mavlers-contact-form'),
+                        'required' => true
+                    ),
+                    'description' => array(
+                        'type' => 'textarea',
+                        'label' => __('Description', 'mavlers-contact-form')
+                    ),
+                    'options' => array(
+                        'type' => 'textarea',
+                        'label' => __('Options', 'mavlers-contact-form'),
+                        'description' => __('One option per line', 'mavlers-contact-form')
+                    ),
+                    'required' => array(
+                        'type' => 'checkbox',
+                        'label' => __('Required Field', 'mavlers-contact-form')
+                    ),
+                    'css_class' => array(
+                        'type' => 'text',
+                        'label' => __('Custom CSS Class', 'mavlers-contact-form')
+                    ),
+                    'validation_message' => array(
+                        'type' => 'text',
+                        'label' => __('Custom Validation Message', 'mavlers-contact-form')
+                    )
                 )
             ),
             'hidden' => array(
                 'label' => __('Hidden Field', 'mavlers-contact-form'),
                 'icon' => 'dashicons-hidden',
                 'settings' => array(
-                    'name' => array('type' => 'text', 'label' => __('Field Name', 'mavlers-contact-form')),
-                    'value' => array('type' => 'text', 'label' => __('Value', 'mavlers-contact-form'))
+                    'name' => array(
+                        'type' => 'text',
+                        'label' => __('Field Name', 'mavlers-contact-form'),
+                        'required' => true
+                    ),
+                    'value' => array(
+                        'type' => 'text',
+                        'label' => __('Default Value', 'mavlers-contact-form')
+                    )
+                )
+            ),
+            'file' => array(
+                'label' => __('File Upload', 'mavlers-contact-form'),
+                'icon' => 'dashicons-upload',
+                'settings' => array(
+                    'label' => array(
+                        'type' => 'text',
+                        'label' => __('Field Label', 'mavlers-contact-form'),
+                        'required' => true
+                    ),
+                    'description' => array(
+                        'type' => 'textarea',
+                        'label' => __('Description', 'mavlers-contact-form')
+                    ),
+                    'allowed_types' => array(
+                        'type' => 'text',
+                        'label' => __('Allowed File Types', 'mavlers-contact-form'),
+                        'description' => __('Comma-separated list of file extensions', 'mavlers-contact-form')
+                    ),
+                    'max_size' => array(
+                        'type' => 'number',
+                        'label' => __('Maximum File Size (MB)', 'mavlers-contact-form')
+                    ),
+                    'required' => array(
+                        'type' => 'checkbox',
+                        'label' => __('Required Field', 'mavlers-contact-form')
+                    ),
+                    'css_class' => array(
+                        'type' => 'text',
+                        'label' => __('Custom CSS Class', 'mavlers-contact-form')
+                    ),
+                    'validation_message' => array(
+                        'type' => 'text',
+                        'label' => __('Custom Validation Message', 'mavlers-contact-form')
+                    )
                 )
             ),
             'html' => array(
                 'label' => __('HTML', 'mavlers-contact-form'),
                 'icon' => 'dashicons-editor-code',
                 'settings' => array(
-                    'content' => array('type' => 'textarea', 'label' => __('HTML Content', 'mavlers-contact-form'))
+                    'content' => array(
+                        'type' => 'textarea',
+                        'label' => __('HTML Content', 'mavlers-contact-form')
+                    )
                 )
             ),
             'divider' => array(
                 'label' => __('Divider', 'mavlers-contact-form'),
                 'icon' => 'dashicons-minus',
                 'settings' => array(
-                    'type' => array('type' => 'select', 'label' => __('Type', 'mavlers-contact-form'), 'options' => array(
-                        'line' => __('Line', 'mavlers-contact-form'),
-                        'space' => __('Space', 'mavlers-contact-form'),
-                        'text' => __('Text', 'mavlers-contact-form')
-                    )),
-                    'text' => array('type' => 'text', 'label' => __('Text', 'mavlers-contact-form'), 'show_if' => array('type' => 'text'))
+                    'type' => array(
+                        'type' => 'select',
+                        'label' => __('Type', 'mavlers-contact-form'),
+                        'options' => array(
+                            'line' => __('Line', 'mavlers-contact-form'),
+                            'space' => __('Space', 'mavlers-contact-form'),
+                            'text' => __('Text', 'mavlers-contact-form')
+                        )
+                    ),
+                    'text' => array(
+                        'type' => 'text',
+                        'label' => __('Text', 'mavlers-contact-form'),
+                        'show_if' => array('type' => 'text')
+                    )
+                )
+            ),
+            'captcha' => array(
+                'label' => __('CAPTCHA', 'mavlers-contact-form'),
+                'icon' => 'dashicons-shield',
+                'settings' => array(
+                    'type' => array(
+                        'type' => 'select',
+                        'label' => __('CAPTCHA Type', 'mavlers-contact-form'),
+                        'options' => array(
+                            'recaptcha' => __('reCAPTCHA', 'mavlers-contact-form'),
+                            'simple' => __('Simple Math', 'mavlers-contact-form')
+                        )
+                    ),
+                    'site_key' => array(
+                        'type' => 'text',
+                        'label' => __('reCAPTCHA Site Key', 'mavlers-contact-form'),
+                        'show_if' => array('type' => 'recaptcha')
+                    ),
+                    'secret_key' => array(
+                        'type' => 'text',
+                        'label' => __('reCAPTCHA Secret Key', 'mavlers-contact-form'),
+                        'show_if' => array('type' => 'recaptcha')
+                    )
+                )
+            ),
+            'submit' => array(
+                'label' => __('Submit Button', 'mavlers-contact-form'),
+                'icon' => 'dashicons-saved',
+                'settings' => array(
+                    'text' => array(
+                        'type' => 'text',
+                        'label' => __('Button Text', 'mavlers-contact-form'),
+                        'default' => __('Submit', 'mavlers-contact-form')
+                    ),
+                    'css_class' => array(
+                        'type' => 'text',
+                        'label' => __('Custom CSS Class', 'mavlers-contact-form')
+                    )
                 )
             )
         );
     }
 
-    /*public function handle_field_save() {
-        try {
-            check_ajax_referer('mavlers_form_builder_nonce', 'nonce');
+    private function check_database_tables() {
+        global $wpdb;
+        $charset_collate = $wpdb->get_charset_collate();
 
-            if (!isset($_POST['field_data']) || !isset($_POST['form_id'])) {
-                error_log('Mavlers Form Builder: Missing required data. POST data: ' . print_r($_POST, true));
-                wp_send_json_error(__('Missing required data', 'mavlers-contact-form'));
-                return;
-            }
+        // Forms table
+        $forms_table = $wpdb->prefix . 'mavlers_forms';
+        $forms_sql = "CREATE TABLE IF NOT EXISTS $forms_table (
+            id bigint(20) NOT NULL AUTO_INCREMENT,
+            form_name varchar(255) NOT NULL,
+            created_at datetime NOT NULL,
+            updated_at datetime NOT NULL,
+            status varchar(20) NOT NULL DEFAULT 'active',
+            PRIMARY KEY  (id)
+        ) $charset_collate;";
 
-            $field_data = $_POST['field_data'];
-            $form_id = intval($_POST['form_id']);
+        // Fields table
+        $fields_table = $wpdb->prefix . 'mavlers_form_fields';
+        $fields_sql = "CREATE TABLE IF NOT EXISTS $fields_table (
+            id bigint(20) NOT NULL AUTO_INCREMENT,
+            form_id bigint(20) NOT NULL,
+            field_type varchar(50) NOT NULL,
+            field_label varchar(255) NOT NULL,
+            field_name varchar(255) NOT NULL,
+            field_required tinyint(1) NOT NULL DEFAULT 0,
+            field_placeholder text,
+            field_description text,
+            field_options text,
+            field_meta text,
+            field_order int(11) NOT NULL DEFAULT 0,
+            created_at datetime NOT NULL,
+            updated_at datetime NOT NULL,
+            PRIMARY KEY  (id),
+            KEY form_id (form_id)
+        ) $charset_collate;";
 
-            if (!current_user_can('manage_options')) {
-                error_log('Mavlers Form Builder: Permission denied for user ID ' . get_current_user_id());
-                wp_send_json_error(__('Permission denied', 'mavlers-contact-form'));
-            }
+        require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
+        dbDelta($forms_sql);
+        dbDelta($fields_sql);
 
-            // Validate required fields
-            if (empty($field_data['label'])) {
-                wp_send_json_error(__('Field label is required', 'mavlers-contact-form'));
-                return;
-            }
-
-            global $wpdb;
-            $table_name = $wpdb->prefix . 'mavlers_forms';
-            
-            // Get existing form data
-            $form = $wpdb->get_row($wpdb->prepare(
-                "SELECT * FROM $table_name WHERE id = %d",
-                $form_id
-            ));
-
-            // If form doesn't exist, create a new one
-            if (!$form) {
-                $result = $wpdb->insert(
-                    $table_name,
-                    array(
-                        'form_name' => __('New Form', 'mavlers-contact-form'),
-                        'form_fields' => json_encode([$field_data]),
-                        'created_at' => current_time('mysql'),
-                        'updated_at' => current_time('mysql'),
-                        'status' => 'active'
-                    )
-                );
-
-                if ($result === false) {
-                    error_log('Mavlers Form Builder: Failed to create new form. Error: ' . $wpdb->last_error);
-                    wp_send_json_error(__('Failed to create form', 'mavlers-contact-form'));
-                    return;
-                }
-
-                $form_id = $wpdb->insert_id;
-                $form = $wpdb->get_row($wpdb->prepare(
-                    "SELECT * FROM $table_name WHERE id = %d",
-                    $form_id
-                ));
-            }
-
-            if (!$form) {
-                error_log('Mavlers Form Builder: Form not found after creation. Form ID: ' . $form_id);
-                wp_send_json_error(__('Form not found', 'mavlers-contact-form'));
-                return;
-            }
-
-            $form_fields = json_decode($form->form_fields, true);
-            if (!is_array($form_fields)) {
-                $form_fields = array();
-            }
-
-            // Add or update field
-            if (isset($field_data['id'])) {
-                // Update existing field
-                foreach ($form_fields as &$field) {
-                    if ($field['id'] == $field_data['id']) {
-                        $field = $field_data;
-                        break;
-                    }
-                }
-            } else {
-                // Add new field
-                $field_data['id'] = uniqid();
-                $form_fields[] = $field_data;
-            }
-
-            // Save updated form
-            $wpdb->update(
-                $table_name,
-                array('form_fields' => json_encode($form_fields)),
-                array('id' => $form_id)
-            );
-
-            wp_send_json_success(array(
-                'field' => $field_data,
-                'message' => __('Field saved successfully', 'mavlers-contact-form')
-            ));
-        } catch (Exception $e) {
-            error_log('Mavlers Form Builder: Error in handle_field_save. Error: ' . $e->getMessage());
-            wp_send_json_error(__('An error occurred', 'mavlers-contact-form'));
-        }
-    }*/
+        // Debug log table creation
+        error_log('Mavlers Form Builder: Checking database tables');
+        error_log('Forms table exists: ' . ($wpdb->get_var("SHOW TABLES LIKE '$forms_table'") ? 'Yes' : 'No'));
+        error_log('Fields table exists: ' . ($wpdb->get_var("SHOW TABLES LIKE '$fields_table'") ? 'Yes' : 'No'));
+    }
 
     public function handle_field_delete() {
         check_ajax_referer('mavlers_form_builder_nonce', 'nonce');
@@ -472,6 +646,7 @@ class Mavlers_Form_Builder {
         update_option('mavlers_email_templates', $this->email_templates);
         wp_send_json_success(array('message' => __('Email template saved successfully', 'mavlers-contact-form')));
     }
+
     private function save_single_field($field, $form_id, $order) {
         global $wpdb;
         $fields_table = $wpdb->prefix . 'mavlers_form_fields';
@@ -500,92 +675,116 @@ class Mavlers_Form_Builder {
     }
     
     public function handle_get_form_fields() {
-        // Verify nonce
-        if (!isset($_POST['nonce']) || !wp_verify_nonce($_POST['nonce'], 'mavlers_form_builder_nonce')) {
-            wp_send_json_error('Invalid nonce');
-            return;
-        }
-    
-        // Check user permissions
-        if (!current_user_can('manage_options')) {
-            wp_send_json_error('Insufficient permissions');
-            return;
-        }
-      
-        // Get form ID
-        $form_id = isset($_POST['form_id']) ? intval($_POST['form_id']) : 0;
-        if (!$form_id) {
-            wp_send_json_error('Invalid form ID');
-            return;
-        }
-    
-        global $wpdb;
-        $fields_table = $wpdb->prefix . 'mavlers_form_fields';
-    
-        // Get fields for the form
-        $fields = $wpdb->get_results($wpdb->prepare(
-            "SELECT * FROM $fields_table WHERE form_id = %d ORDER BY field_order ASC",
-            $form_id
-        ));
-    
-        if ($fields === null) {
-            wp_send_json_error('Error retrieving fields');
-            return;
-        }
-    
-        // Format fields for response
-        $formatted_fields = array();
-        foreach ($fields as $field) {
-            // Deserialize meta if possible
-            $meta = maybe_unserialize($field->field_meta);
-            if (!is_array($meta)) {
-                $meta = [];
-            }
-    
-            $formatted_fields[] = array(
-                'id'          => $field->id,
-                'type'        => $field->field_type,
-                'label'       => $field->field_label,
-                'name'        => isset($field->field_name) ? $field->field_name : '', // optional
-                'required'    => isset($meta['required']) ? (bool)$meta['required'] : false,
-                'placeholder' => isset($meta['placeholder']) ? $meta['placeholder'] : '',
-                'options'     => isset($meta['options']) ? $meta['options'] : [],
-                'meta'        => $meta,
-            );
-        }
-        error_log('handle_get_form_fields Error: ' . $formatted_fields);
-        wp_send_json_success($formatted_fields);
-
-    }
-    
-    public function handle_form_save() {
         try {
-            check_ajax_referer('mavlers_form_builder_nonce', 'nonce');
-    
-            if (!isset($_POST['form_data']) || !is_array($_POST['form_data'])) {
-                error_log('Mavlers Form Builder: Missing form data. POST data: ' . print_r($_POST, true));
-                wp_send_json_error(__('Missing form data', 'mavlers-contact-form'));
+            // Verify nonce
+            if (!check_ajax_referer('mavlers_form_builder_nonce', 'nonce', false)) {
+                error_log('Mavlers Form Builder: Nonce verification failed in get_form_fields');
+                wp_send_json_error(__('Security check failed', 'mavlers-contact-form'));
                 return;
             }
-    
-            $form_data = $_POST['form_data'];
-            $form_id = isset($form_data['id']) ? intval($form_data['id']) : 0;
-    
+
+            if (!isset($_POST['form_id'])) {
+                error_log('Mavlers Form Builder: Missing form ID in get_form_fields');
+                wp_send_json_error(__('Missing form ID', 'mavlers-contact-form'));
+                return;
+            }
+
+            $form_id = intval($_POST['form_id']);
+
             if (!current_user_can('manage_options')) {
                 error_log('Mavlers Form Builder: Permission denied for user ID ' . get_current_user_id());
                 wp_send_json_error(__('Permission denied', 'mavlers-contact-form'));
                 return;
             }
-    
+
             global $wpdb;
             $forms_table = $wpdb->prefix . 'mavlers_forms';
-            $fields_table = $wpdb->prefix . 'mavlers_form_fields';
+
+            // Get form data
+            $form = $wpdb->get_row($wpdb->prepare(
+                "SELECT form_fields FROM {$forms_table} WHERE id = %d",
+                $form_id
+            ));
+
+            if (!$form) {
+                error_log('Mavlers Form Builder: Form not found. Form ID: ' . $form_id);
+                wp_send_json_error(__('Form not found', 'mavlers-contact-form'));
+                return;
+            }
+
+            // Get fields from form_fields column
+            $fields = json_decode($form->form_fields, true);
+            
+            // Debug log the fields
+            error_log('Mavlers Form Builder: Retrieved fields: ' . print_r($fields, true));
+
+            if (!is_array($fields)) {
+                error_log('Mavlers Form Builder: Invalid fields data');
+                wp_send_json_success(array());
+                return;
+            }
+
+            wp_send_json_success($fields);
+        } catch (Exception $e) {
+            error_log('Mavlers Form Builder: Exception in handle_get_form_fields: ' . $e->getMessage());
+            wp_send_json_error(__('An error occurred while loading fields', 'mavlers-contact-form'));
+        }
+    }
     
+    public function handle_form_save() {
+        try {
+            // Verify nonce
+            if (!check_ajax_referer('mavlers_form_builder_nonce', 'nonce', false)) {
+                error_log('Mavlers Form Builder: Nonce verification failed');
+                wp_send_json_error(__('Security check failed', 'mavlers-contact-form'));
+                return;
+            }
+
+            if (!isset($_POST['form_data']) || !is_array($_POST['form_data'])) {
+                error_log('Mavlers Form Builder: Missing form data. POST data: ' . print_r($_POST, true));
+                wp_send_json_error(__('Missing form data', 'mavlers-contact-form'));
+                return;
+            }
+
+            $form_data = $_POST['form_data'];
+            $form_id = isset($_POST['form_id']) ? intval($_POST['form_id']) : 0;
+
+            if (!current_user_can('manage_options')) {
+                error_log('Mavlers Form Builder: Permission denied for user ID ' . get_current_user_id());
+                wp_send_json_error(__('Permission denied', 'mavlers-contact-form'));
+                return;
+            }
+
+            // Validate fields
+            if (!empty($form_data['fields']) && is_array($form_data['fields'])) {
+                foreach ($form_data['fields'] as $field) {
+                    // Skip validation for submit and HTML field types
+                    if (in_array($field['field_type'], ['submit', 'html'])) {
+                        continue;
+                    }
+
+                    // Validate required fields
+                    if (empty($field['field_label'])) {
+                        error_log('Mavlers Form Builder: Field label is required for field type: ' . $field['field_type']);
+                        wp_send_json_error(__('Field label is required', 'mavlers-contact-form'));
+                        return;
+                    }
+                }
+            }
+
+            global $wpdb;
+            $forms_table = $wpdb->prefix . 'mavlers_forms';
+
+            // Debug log the incoming form data
+            error_log('Mavlers Form Builder: Saving form data: ' . print_r($form_data, true));
+
+            // Prepare form data
             $form_data_to_save = array(
                 'form_name' => sanitize_text_field($form_data['title']),
+                'form_fields' => json_encode($form_data['fields']),
                 'updated_at' => current_time('mysql')
             );
-    
+
             if ($form_id) {
                 // Update existing form
                 $result = $wpdb->update(
@@ -593,69 +792,42 @@ class Mavlers_Form_Builder {
                     $form_data_to_save,
                     array('id' => $form_id)
                 );
-    
+
                 if ($result === false) {
                     error_log('Mavlers Form Builder: Failed to update form. Error: ' . $wpdb->last_error);
                     wp_send_json_error(__('Failed to update form', 'mavlers-contact-form'));
                     return;
                 }
-    
-                // Clear old fields
-                $wpdb->delete($fields_table, ['form_id' => $form_id]);
             } else {
                 // Create new form
                 $form_data_to_save['created_at'] = current_time('mysql');
                 $form_data_to_save['status'] = 'active';
-                $form_data_to_save['form_fields'] = '[]';
-    
+
                 $result = $wpdb->insert($forms_table, $form_data_to_save);
-    
+
                 if ($result === false) {
                     error_log('Mavlers Form Builder: Failed to create form. Error: ' . $wpdb->last_error);
                     wp_send_json_error(__('Failed to create form', 'mavlers-contact-form'));
                     return;
                 }
-    
+
                 $form_id = $wpdb->insert_id;
             }
-    
-            // Save fields and gather their IDs
-            $field_ids = array();
-            if (!empty($form_data['fields']) && is_array($form_data['fields'])) {
-               
 
-                foreach ($form_data['fields'] as $index => $field) {
-                    $field_id = $this->save_single_field($field, $form_id, $index);
-                    if ($field_id) {
-                        $field_ids[] = $field_id;
-                    }
-                }
-                
-                // After saving fields, update the form with linked field IDs
-                $wpdb->update(
-                    $forms_table,
-                    array('form_fields' => maybe_serialize($field_ids)),
-                    array('id' => $form_id)
-                );
-                
-            }
-    
-            // Update the form with associated field IDs
-            if (!empty($field_ids)) {
-                $wpdb->update(
-                    $forms_table,
-                    array('form_fields' => maybe_serialize($field_ids)),
-                    array('id' => $form_id)
-                );
-            }
-    
+            // Verify saved form
+            $saved_form = $wpdb->get_row($wpdb->prepare(
+                "SELECT * FROM {$forms_table} WHERE id = %d",
+                $form_id
+            ));
+            error_log('Mavlers Form Builder: Saved form verification: ' . print_r($saved_form, true));
+
             wp_send_json_success(array(
                 'form_id' => $form_id,
                 'message' => __('Form saved successfully', 'mavlers-contact-form')
             ));
         } catch (Exception $e) {
-            error_log('Mavlers Form Builder: Error in handle_form_save. Error: ' . $e->getMessage());
-            wp_send_json_error(__('An error occurred', 'mavlers-contact-form'));
+            error_log('Mavlers Form Builder: Exception in handle_form_save: ' . $e->getMessage());
+            wp_send_json_error(__('An error occurred while saving the form', 'mavlers-contact-form'));
         }
     }
     
@@ -755,3 +927,4 @@ class Mavlers_Form_Builder {
 
 // Initialize the form builder
 Mavlers_Form_Builder::get_instance();
+

@@ -46,10 +46,23 @@ class Mavlers_Form_Database {
             form_id bigint(20) NOT NULL,
             field_type varchar(50) NOT NULL,
             field_label varchar(255) NOT NULL,
+            field_name varchar(255),
             field_required tinyint(1) NOT NULL DEFAULT 0,
+            field_placeholder varchar(255),
+            field_description text,
             field_options longtext,
-            field_order int(11) NOT NULL DEFAULT 0,
             field_meta longtext,
+            field_order int(11) NOT NULL DEFAULT 0,
+            field_validation longtext,
+            field_css_class varchar(255),
+            field_size varchar(20),
+            field_max_chars int(11),
+            field_min_value decimal(10,2),
+            field_max_value decimal(10,2),
+            field_step decimal(10,2),
+            field_allowed_types varchar(255),
+            field_max_size int(11),
+            field_content longtext,
             created_at datetime NOT NULL,
             updated_at datetime NOT NULL,
             PRIMARY KEY  (id),
@@ -57,11 +70,13 @@ class Mavlers_Form_Database {
         ) $charset_collate;";
         
 
-        // Form entries table
-        $sql[] = "CREATE TABLE IF NOT EXISTS {$wpdb->prefix}mavlers_form_entries (
+        // Form submissions table
+        $sql[] = "CREATE TABLE IF NOT EXISTS {$wpdb->prefix}mavlers_form_submissions (
             id bigint(20) NOT NULL AUTO_INCREMENT,
             form_id bigint(20) NOT NULL,
-            entry_data longtext NOT NULL,
+            submission_data longtext NOT NULL,
+            ip_address varchar(45),
+            user_agent text,
             created_at datetime NOT NULL,
             PRIMARY KEY  (id),
             KEY form_id (form_id)

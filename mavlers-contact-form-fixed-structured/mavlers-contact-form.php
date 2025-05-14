@@ -81,3 +81,68 @@ function mavlers_contact_form_settings_link($links) {
     array_unshift($links, $settings_link);
     return $links;
 }
+
+// AJAX handlers for form actions
+add_action('wp_ajax_mavlers_delete_form', 'mavlers_delete_form_handler');
+add_action('wp_ajax_mavlers_duplicate_form', 'mavlers_duplicate_form_handler');
+
+function mavlers_delete_form_handler() {
+    check_ajax_referer('mavlers_forms_nonce', 'nonce');
+    
+    if (!current_user_can('manage_options')) {
+        wp_send_json_error('Insufficient permissions');
+    }
+
+    $form_id = intval($_POST['form_id']);
+    
+    global $wpdb;
+    $forms_table = $wpdb->prefix . 'mavlers_forms';
+    
+    $result = $wpdb->delete($forms_table, array('id' => $form_id), array('%d'));
+    
+    if ($result !== false) {
+        wp_send_json_success();
+    } else {
+        wp_send_json_error('Failed to delete form');
+    }
+}
+
+function mavlers_duplicate_form_handler() {
+    check_ajax_referer('mavlers_forms_nonce', 'nonce');
+    
+    if (!current_user_can('manage_options')) {
+        wp_send_json_error('Insufficient permissions');
+    }
+
+    $form_id = intval($_POST['form_id']);
+    
+    global $wpdb;
+    $forms_table = $wpdb->prefix . 'mavlers_forms';
+    
+    // Get the original form
+    $original_form = $wpdb->get_row($wpdb->prepare(
+        "SELECT * FROM $forms_table WHERE id = %d",
+        $form_id
+    ));
+    
+    if (!$original_form) {
+        wp_send_json_error('Form not found');
+    }
+    
+    // Create a copy of the form
+    $new_form_data = array(
+        'form_name' => $original_form->form_name . ' (Copy)',
+        'form_data' => $original_form->form_data,
+        'status' => 'draft',
+        'created_at' => current_time('mysql'),
+        'updated_at' => current_time('mysql')
+    );
+    
+    $result = $wpdb->insert($forms_table, $new_form_data);
+    
+    if ($result !== false) {
+        wp_send_json_success();
+    } else {
+        wp_send_json_error('Failed to duplicate form');
+    }
+}
