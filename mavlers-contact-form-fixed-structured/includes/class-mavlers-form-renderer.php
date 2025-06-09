@@ -23,13 +23,63 @@ class Mavlers_Form_Renderer {
     }
 
     public function enqueue_scripts() {
-        wp_enqueue_style('mavlers-form', MAVLERS_FORM_PLUGIN_URL . 'assets/css/form.css', array(), MAVLERS_FORM_VERSION);
-        wp_enqueue_script('mavlers-form', MAVLERS_FORM_PLUGIN_URL . 'assets/js/form.js', array('jquery'), MAVLERS_FORM_VERSION, true);
+        // Enqueue form styles
+        wp_enqueue_style(
+            'mavlers-form-styles',
+            MAVLERS_FORM_PLUGIN_URL . 'assets/css/form.css',
+            array(),
+            MAVLERS_FORM_VERSION
+        );
+
+        // Enqueue form scripts
+        wp_enqueue_script(
+            'mavlers-form-scripts',
+            MAVLERS_FORM_PLUGIN_URL . 'assets/js/form.js',
+            array('jquery'),
+            MAVLERS_FORM_VERSION,
+            true
+        );
+
+        // Check if we need to load reCAPTCHA
+        global $wpdb;
+        $forms_table = $wpdb->prefix . 'mavlers_forms';
+        $forms = $wpdb->get_results("SELECT form_fields FROM {$forms_table} WHERE status = 'active'");
         
-        // Add reCAPTCHA if enabled
-        if (get_option('mavlers_recaptcha_enabled')) {
-            wp_enqueue_script('recaptcha', 'https://www.google.com/recaptcha/api.js', array(), null, true);
+        $load_recaptcha = false;
+        foreach ($forms as $form) {
+            $fields = json_decode($form->form_fields, true);
+            if (is_array($fields)) {
+                foreach ($fields as $field) {
+                    if (isset($field['field_type']) && $field['field_type'] === 'captcha' && 
+                        isset($field['captcha_type']) && $field['captcha_type'] === 'recaptcha') {
+                        $load_recaptcha = true;
+                        break 2;
+                    }
+                }
+            }
         }
+
+        if ($load_recaptcha) {
+            wp_enqueue_script(
+                'google-recaptcha',
+                'https://www.google.com/recaptcha/api.js',
+                array(),
+                null,
+                true
+            );
+        }
+
+        // Localize script
+        wp_localize_script('mavlers-form-scripts', 'mavlersForm', array(
+            'ajaxurl' => admin_url('admin-ajax.php'),
+            'nonce' => wp_create_nonce('mavlers_form_submission'),
+            'messages' => array(
+                'required' => __('This field is required', 'mavlers-contact-form'),
+                'email' => __('Please enter a valid email address', 'mavlers-contact-form'),
+                'success' => __('Form submitted successfully', 'mavlers-contact-form'),
+                'error' => __('An error occurred. Please try again.', 'mavlers-contact-form')
+            )
+        ));
     }
 
     public function render_form($atts) {
@@ -44,8 +94,7 @@ class Mavlers_Form_Renderer {
 
         global $wpdb;
         $forms_table = $wpdb->prefix . 'mavlers_forms';
-        $fields_table = $wpdb->prefix . 'mavlers_form_fields';
-
+        
         // Get form
         $form = $wpdb->get_row($wpdb->prepare(
             "SELECT * FROM {$forms_table} WHERE id = %d AND status = 'active'",
@@ -56,22 +105,68 @@ class Mavlers_Form_Renderer {
             return '';
         }
 
-        // Get form fields
-        $fields = $wpdb->get_results($wpdb->prepare(
-            "SELECT * FROM {$fields_table} WHERE form_id = %d ORDER BY field_order ASC",
-            $form_id
-        ));
-
+        // Decode form fields and ensure it's an array
+        $form_fields = json_decode($form->form_fields, true);
+        if (!is_array($form_fields)) {
+            $form_fields = array();
+        }
+        
         ob_start();
         ?>
-        <div class="mavlers-form-wrapper">
-            <form class="mavlers-form" id="mavlers-form-<?php echo esc_attr($form_id); ?>" method="post">
-                <?php wp_nonce_field('mavlers_form_submit', 'mavlers_form_nonce'); ?>
+        <div class="mavlers-form-wrapper" id="mavlers-form-<?php echo esc_attr($form_id); ?>">
+            <form class="mavlers-form" method="post" enctype="multipart/form-data">
                 <input type="hidden" name="form_id" value="<?php echo esc_attr($form_id); ?>">
+                <?php wp_nonce_field('mavlers_form_submission', 'mavlers_form_nonce'); ?>
 
-                <?php foreach ($fields as $field) : ?>
-                    <?php echo $this->render_field($field); ?>
-                <?php endforeach; ?>
+                <div class="mavlers-form-fields">
+                    <?php
+                    $row_open = false;
+                    foreach ($form_fields as $index => $field) {
+                        // Skip if field is not an array
+                        if (!is_array($field)) {
+                            continue;
+                        }
+
+                        // Check if we need to start a new row
+                        if (isset($field['column_layout']) && $field['column_layout'] === 'half' && !$row_open) {
+                            echo '<div class="mavlers-form-row">';
+                            $row_open = true;
+                        }
+
+                        // Get field class based on layout
+                        $field_class = 'mavlers-field-wrapper';
+                        if (isset($field['column_layout']) && $field['column_layout'] === 'half') {
+                            $field_class .= ' mavlers-field-half';
+                        } else {
+                            $field_class .= ' mavlers-field-full';
+                        }
+
+                        // Add custom CSS class if specified
+                        if (!empty($field['css_class'])) {
+                            $field_class .= ' ' . esc_attr($field['css_class']);
+                        }
+                        ?>
+                        <div class="<?php echo $field_class; ?>">
+                            <?php $this->render_field($field); ?>
+                        </div>
+                        <?php
+                        // Check if we need to close the row
+                        if (isset($field['column_layout']) && $field['column_layout'] === 'half' && 
+                            ($index === count($form_fields) - 1 || 
+                             !isset($form_fields[$index + 1]['column_layout']) || 
+                             $form_fields[$index + 1]['column_layout'] !== 'half')) {
+                            echo '</div>';
+                            $row_open = false;
+                        }
+                    }
+                    ?>
+                </div>
+
+                <div class="mavlers-form-submit">
+                    <button type="submit" class="mavlers-submit-button">
+                        <?php echo esc_html__('Submit', 'mavlers-contact-form'); ?>
+                    </button>
+                </div>
 
                 <div class="mavlers-form-messages"></div>
             </form>
@@ -81,206 +176,171 @@ class Mavlers_Form_Renderer {
     }
 
     private function render_field($field) {
-        $required = $field->field_required ? 'required' : '';
-        $css_class = $field->field_css_class ? ' ' . esc_attr($field->field_css_class) : '';
-        $field_size = $field->field_size ? ' ' . esc_attr($field->field_size) : '';
-        $validation = $field->field_validation ? json_decode($field->field_validation, true) : array();
-
-        $html = '<div class="mavlers-field-wrapper' . $css_class . '">';
+        $field_id = 'mavlers-field-' . uniqid();
+        $required = !empty($field['required']) ? 'required' : '';
+        $field_class = 'mavlers-field mavlers-field-' . esc_attr($field['field_type']);
         
-        // Field label
-        if ($field->field_type !== 'hidden' && $field->field_type !== 'html' && $field->field_type !== 'divider') {
-            $html .= sprintf(
-                '<label for="field_%s">%s%s</label>',
-                esc_attr($field->id),
-                esc_html($field->field_label),
-                $required ? ' <span class="required">*</span>' : ''
-            );
+        if (!empty($field['field_size'])) {
+            $field_class .= ' mavlers-field-' . esc_attr($field['field_size']);
         }
+        ?>
+        <div class="<?php echo $field_class; ?>">
+            <?php if (!empty($field['field_label']) && $field['field_type'] !== 'submit') : ?>
+                <label for="<?php echo $field_id; ?>" class="mavlers-field-label">
+                    <?php echo esc_html($field['field_label']); ?>
+                    <?php if ($required) : ?>
+                        <span class="mavlers-required">*</span>
+                    <?php endif; ?>
+                </label>
+            <?php endif; ?>
 
-        // Field description
-        if ($field->field_description) {
-            $html .= sprintf(
-                '<p class="field-description">%s</p>',
-                esc_html($field->field_description)
-            );
-        }
+            <?php if (!empty($field['field_description'])) : ?>
+                <div class="mavlers-field-description">
+                    <?php echo esc_html($field['field_description']); ?>
+                </div>
+            <?php endif; ?>
 
-        // Field input
-        switch ($field->field_type) {
-            case 'text':
-                $html .= sprintf(
-                    '<input type="text" id="field_%s" name="field_%s" %s class="widefat%s" %s %s %s>',
-                    esc_attr($field->id),
-                    esc_attr($field->id),
-                    $required,
-                    $field_size,
-                    $field->field_placeholder ? 'placeholder="' . esc_attr($field->field_placeholder) . '"' : '',
-                    $field->field_max_chars ? 'maxlength="' . esc_attr($field->field_max_chars) . '"' : '',
-                    $validation ? 'data-validation=\'' . esc_attr(json_encode($validation)) . '\'' : ''
-                );
-                break;
-
-            case 'paragraph':
-                $html .= sprintf(
-                    '<textarea id="field_%s" name="field_%s" %s class="widefat%s" rows="%d" %s %s>%s</textarea>',
-                    esc_attr($field->id),
-                    esc_attr($field->id),
-                    $required,
-                    $field_size,
-                    $field->field_rows ? intval($field->field_rows) : 4,
-                    $field->field_placeholder ? 'placeholder="' . esc_attr($field->field_placeholder) . '"' : '',
-                    $field->field_max_chars ? 'maxlength="' . esc_attr($field->field_max_chars) . '"' : '',
-                    esc_textarea($field->field_content)
-                );
-                break;
-
-            case 'checkbox':
-                $options = json_decode($field->field_options, true);
-                if (is_array($options)) {
-                    foreach ($options as $option) {
-                        $html .= sprintf(
-                            '<label class="checkbox-label"><input type="checkbox" name="field_%s[]" value="%s" %s> %s</label>',
-                            esc_attr($field->id),
-                            esc_attr($option),
+            <div class="mavlers-field-input">
+                <?php
+                switch ($field['field_type']) {
+                    case 'text':
+                    case 'email':
+                    case 'number':
+                    case 'tel':
+                    case 'url':
+                        printf(
+                            '<input type="%s" id="%s" name="%s" class="mavlers-input" %s %s %s>',
+                            esc_attr($field['field_type']),
+                            $field_id,
+                            esc_attr($field['field_name']),
                             $required,
-                            esc_html($option)
+                            !empty($field['field_placeholder']) ? 'placeholder="' . esc_attr($field['field_placeholder']) . '"' : '',
+                            !empty($field['field_validation']) ? 'data-validation="' . esc_attr($field['field_validation']) . '"' : ''
                         );
-                    }
-                }
-                break;
-
-            case 'dropdown':
-                $options = json_decode($field->field_options, true);
-                $html .= sprintf(
-                    '<select id="field_%s" name="field_%s" %s class="widefat%s">',
-                    esc_attr($field->id),
-                    esc_attr($field->id),
-                    $required,
-                    $field_size
-                );
-                $html .= '<option value="">' . __('Select an option', 'mavlers-contact-form') . '</option>';
-                if (is_array($options)) {
-                    foreach ($options as $option) {
-                        $html .= sprintf(
-                            '<option value="%s">%s</option>',
-                            esc_attr($option),
-                            esc_html($option)
-                        );
-                    }
-                }
-                $html .= '</select>';
-                break;
-
-            case 'number':
-                $html .= sprintf(
-                    '<input type="number" id="field_%s" name="field_%s" %s class="widefat%s" %s %s %s %s>',
-                    esc_attr($field->id),
-                    esc_attr($field->id),
-                    $required,
-                    $field_size,
-                    $field->field_min_value ? 'min="' . esc_attr($field->field_min_value) . '"' : '',
-                    $field->field_max_value ? 'max="' . esc_attr($field->field_max_value) . '"' : '',
-                    $field->field_step ? 'step="' . esc_attr($field->field_step) . '"' : '',
-                    $validation ? 'data-validation=\'' . esc_attr(json_encode($validation)) . '\'' : ''
-                );
-                break;
-
-            case 'radio':
-                $options = json_decode($field->field_options, true);
-                if (is_array($options)) {
-                    foreach ($options as $option) {
-                        $html .= sprintf(
-                            '<label class="radio-label"><input type="radio" name="field_%s" value="%s" %s> %s</label>',
-                            esc_attr($field->id),
-                            esc_attr($option),
+                        break;
+                    
+                    case 'textarea':
+                        printf(
+                            '<textarea id="%s" name="%s" class="mavlers-textarea" %s %s>%s</textarea>',
+                            $field_id,
+                            esc_attr($field['field_name']),
                             $required,
-                            esc_html($option)
+                            !empty($field['field_placeholder']) ? 'placeholder="' . esc_attr($field['field_placeholder']) . '"' : '',
+                            esc_textarea($field['field_default'] ?? '')
                         );
-                    }
+                        break;
+
+                    case 'select':
+                        echo '<select id="' . $field_id . '" name="' . esc_attr($field['field_name']) . '" class="mavlers-select" ' . $required . '>';
+                        if (!empty($field['field_placeholder'])) {
+                            echo '<option value="">' . esc_html($field['field_placeholder']) . '</option>';
+                        }
+                        if (!empty($field['field_options'])) {
+                            foreach ($field['field_options'] as $option) {
+                                printf(
+                                    '<option value="%s">%s</option>',
+                                    esc_attr($option),
+                                    esc_html($option)
+                                );
+                            }
+                        }
+                        echo '</select>';
+                        break;
+
+                    case 'checkbox':
+                    case 'radio':
+                        if (!empty($field['field_options'])) {
+                            $options = is_array($field['field_options']) ? $field['field_options'] : explode("\n", $field['field_options']);
+                            foreach ($options as $option) {
+                                $option = trim($option);
+                                if (empty($option)) continue;
+                                
+                                printf(
+                                    '<label class="mavlers-%s-label"><input type="%s" name="%s" value="%s" %s> %s</label>',
+                                    $field['field_type'],
+                                    $field['field_type'],
+                                    esc_attr($field['field_name']),
+                                    esc_attr($option),
+                                    $required,
+                                    esc_html($option)
+                                );
+                            }
+                        }
+                        break;
+                    
+                    case 'file':
+                        printf(
+                            '<input type="file" id="%s" name="%s" class="mavlers-file" %s %s>',
+                            $field_id,
+                            esc_attr($field['field_name']),
+                            $required,
+                            !empty($field['field_accept']) ? 'accept="' . esc_attr($field['field_accept']) . '"' : ''
+                        );
+                        break;
+                    
+                    case 'html':
+                        echo wp_kses_post($field['field_content'] ?? '');
+                        break;
+                    
+                    case 'divider':
+                        $divider_style = !empty($field['divider_style']) ? $field['divider_style'] : 'solid';
+                        $divider_color = !empty($field['divider_color']) ? $field['divider_color'] : '#ddd';
+                        $divider_width = !empty($field['divider_width']) ? $field['divider_width'] : 'full';
+                        $divider_margin = !empty($field['divider_margin']) ? $field['divider_margin'] : 20;
+                        $divider_text = !empty($field['divider_text']) ? $field['divider_text'] : '';
+                        
+                        $width_class = '';
+                        switch ($divider_width) {
+                            case 'half':
+                                $width_class = 'mavlers-divider-half';
+                                break;
+                            case 'third':
+                                $width_class = 'mavlers-divider-third';
+                                break;
+                            default:
+                                $width_class = 'mavlers-divider-full';
+                        }
+
+                        echo '<div class="mavlers-divider ' . esc_attr($width_class) . '" style="margin: ' . esc_attr($divider_margin) . 'px 0;">';
+                        if (!empty($divider_text)) {
+                            echo '<span class="mavlers-divider-text">' . esc_html($divider_text) . '</span>';
+                        }
+                        echo '<hr style="border-style: ' . esc_attr($divider_style) . '; border-color: ' . esc_attr($divider_color) . ';">';
+                        echo '</div>';
+                        break;
+
+                    case 'captcha':
+                        $captcha_type = !empty($field['captcha_type']) ? $field['captcha_type'] : 'simple';
+                        if ($captcha_type === 'recaptcha') {
+                            $site_key = !empty($field['site_key']) ? $field['site_key'] : '';
+                            if (empty($site_key)) {
+                                echo '<div class="mavlers-error">reCAPTCHA site key is not configured</div>';
+                            } else {
+                                echo '<div class="g-recaptcha" data-sitekey="' . esc_attr($site_key) . '"></div>';
+                            }
+                        } else {
+                            // Generate random numbers for math captcha
+                            $num1 = rand(1, 10);
+                            $num2 = rand(1, 10);
+                            $answer = $num1 + $num2;
+                            
+                            // Store the answer in a session
+                            if (!session_id()) {
+                                session_start();
+                            }
+                            $_SESSION['mavlers_captcha_answer'] = $answer;
+                            
+                            echo '<div class="mavlers-simple-captcha">';
+                            echo '<div class="mavlers-captcha-question">What is ' . esc_html($num1) . ' + ' . esc_html($num2) . '?</div>';
+                            echo '<input type="text" name="captcha_answer" class="widefat" required>';
+                            echo '</div>';
+                        }
+                        break;
                 }
-                break;
-
-            case 'hidden':
-                $html .= sprintf(
-                    '<input type="hidden" name="field_%s" value="%s">',
-                    esc_attr($field->id),
-                    esc_attr($field->field_content)
-                );
-                break;
-
-            case 'file':
-                $html .= sprintf(
-                    '<input type="file" id="field_%s" name="field_%s" %s class="widefat%s" %s %s>',
-                    esc_attr($field->id),
-                    esc_attr($field->id),
-                    $required,
-                    $field_size,
-                    $field->field_allowed_types ? 'accept="' . esc_attr($field->field_allowed_types) . '"' : '',
-                    $field->field_max_size ? 'data-max-size="' . esc_attr($field->field_max_size) . '"' : ''
-                );
-                break;
-
-            case 'html':
-                $html .= wp_kses_post($field->field_content);
-                break;
-
-            case 'divider':
-                if ($field->field_content === 'line') {
-                    $html .= '<hr>';
-                } else if ($field->field_content === 'space') {
-                    $html .= '<div style="height: 20px;"></div>';
-                } else {
-                    $html .= '<div class="divider-text">' . esc_html($field->field_content) . '</div>';
-                }
-                break;
-
-            case 'section':
-                $html .= sprintf(
-                    '<div class="form-section"><h3>%s</h3>%s</div>',
-                    esc_html($field->field_label),
-                    $field->field_description ? '<p>' . esc_html($field->field_description) . '</p>' : ''
-                );
-                break;
-
-            case 'captcha':
-                if ($field->field_content === 'recaptcha') {
-                    $site_key = get_option('mavlers_recaptcha_site_key');
-                    if ($site_key) {
-                        $html .= '<div class="g-recaptcha" data-sitekey="' . esc_attr($site_key) . '"></div>';
-                    }
-                } else {
-                    $html .= $this->render_simple_captcha();
-                }
-                break;
-
-            case 'submit':
-                $html .= sprintf(
-                    '<button type="submit" class="button button-primary%s">%s</button>',
-                    $field->field_css_class ? ' ' . esc_attr($field->field_css_class) : '',
-                    esc_html($field->field_content ?: __('Submit', 'mavlers-contact-form'))
-                );
-                break;
-        }
-
-        $html .= '</div>';
-        return $html;
-    }
-
-    private function render_simple_captcha() {
-        $num1 = rand(1, 10);
-        $num2 = rand(1, 10);
-        $sum = $num1 + $num2;
-        
-        return sprintf(
-            '<div class="simple-captcha">
-                <p>%s</p>
-                <input type="hidden" name="captcha_sum" value="%d">
-                <input type="number" name="captcha_answer" required>
-            </div>',
-            sprintf(__('Please solve this simple math problem: %d + %d = ?', 'mavlers-contact-form'), $num1, $num2),
-            $sum
-        );
+                ?>
+            </div>
+        </div>
+        <?php
     }
 }
 

@@ -80,14 +80,48 @@ class Mavlers_Form_Builder {
     }
 
     public function enqueue_builder_scripts($hook) {
-        if (strpos($hook, 'mavlers-forms-new') === false && strpos($hook, 'mavlers-forms') === false) {
+        if ('toplevel_page_mavlers-forms' !== $hook && 'mavlers-contact-form_page_mavlers-forms' !== $hook) {
             return;
         }
 
-        // Enqueue required scripts and styles
-        wp_enqueue_style('mavlers-form-builder', MAVLERS_FORM_PLUGIN_URL . 'assets/css/form-builder.css', array(), MAVLERS_FORM_VERSION);
+        // Enqueue jQuery UI
         wp_enqueue_script('jquery-ui-sortable');
-        wp_enqueue_script('mavlers-form-builder', MAVLERS_FORM_PLUGIN_URL . 'assets/js/form-builder.js', array('jquery', 'jquery-ui-sortable'), MAVLERS_FORM_VERSION, true);
+        wp_enqueue_script('jquery-ui-draggable');
+        wp_enqueue_script('jquery-ui-droppable');
+
+        // Enqueue form builder scripts
+        wp_enqueue_script(
+            'mavlers-form-builder',
+            MAVLERS_CONTACT_FORM_PLUGIN_URL . 'assets/js/form-builder.js',
+            array('jquery', 'jquery-ui-sortable'),
+            MAVLERS_CONTACT_FORM_VERSION,
+            true
+        );
+
+        // Localize script
+        wp_localize_script('mavlers-form-builder', 'mavlersFormBuilder', array(
+            'ajaxurl' => admin_url('admin-ajax.php'),
+            'nonce' => wp_create_nonce('mavlers_form_builder_nonce'),
+            'adminUrl' => admin_url('admin.php'),
+            'previewUrl' => home_url('?mavlers_preview=1'),
+            'strings' => array(
+                'deleteConfirm' => __('Are you sure you want to delete this field?', 'mavlers-contact-form'),
+                'saveFormFirst' => __('Please save the form first', 'mavlers-contact-form'),
+                'errorLoadingFields' => __('Error loading form fields', 'mavlers-contact-form'),
+                'errorSavingForm' => __('Error saving form', 'mavlers-contact-form'),
+                'errorSavingField' => __('Error saving field', 'mavlers-contact-form'),
+                'errorDeletingField' => __('Error deleting field', 'mavlers-contact-form')
+            ),
+            'fieldTypes' => $this->get_field_types()
+        ));
+
+        // Enqueue styles
+        wp_enqueue_style(
+            'mavlers-form-builder',
+            MAVLERS_CONTACT_FORM_PLUGIN_URL . 'assets/css/form-builder.css',
+            array(),
+            MAVLERS_CONTACT_FORM_VERSION
+        );
     }
 
     /**
@@ -400,19 +434,40 @@ class Mavlers_Form_Builder {
                 'label' => __('Divider', 'mavlers-contact-form'),
                 'icon' => 'dashicons-minus',
                 'settings' => array(
-                    'type' => array(
-                        'type' => 'select',
-                        'label' => __('Type', 'mavlers-contact-form'),
-                        'options' => array(
-                            'line' => __('Line', 'mavlers-contact-form'),
-                            'space' => __('Space', 'mavlers-contact-form'),
-                            'text' => __('Text', 'mavlers-contact-form')
-                        )
-                    ),
-                    'text' => array(
+                    'divider_text' => array(
                         'type' => 'text',
-                        'label' => __('Text', 'mavlers-contact-form'),
-                        'show_if' => array('type' => 'text')
+                        'label' => __('Divider Text', 'mavlers-contact-form'),
+                        'description' => __('Optional text to display in the divider', 'mavlers-contact-form')
+                    ),
+                    'divider_style' => array(
+                        'type' => 'select',
+                        'label' => __('Divider Style', 'mavlers-contact-form'),
+                        'options' => array(
+                            'solid' => __('Solid Line', 'mavlers-contact-form'),
+                            'dashed' => __('Dashed Line', 'mavlers-contact-form'),
+                            'dotted' => __('Dotted Line', 'mavlers-contact-form')
+                        ),
+                        'default' => 'solid'
+                    ),
+                    'divider_color' => array(
+                        'type' => 'text',
+                        'label' => __('Divider Color', 'mavlers-contact-form'),
+                        'default' => '#ddd'
+                    ),
+                    'divider_width' => array(
+                        'type' => 'select',
+                        'label' => __('Divider Width', 'mavlers-contact-form'),
+                        'options' => array(
+                            'full' => __('Full Width', 'mavlers-contact-form'),
+                            'half' => __('Half Width', 'mavlers-contact-form'),
+                            'third' => __('One Third', 'mavlers-contact-form')
+                        ),
+                        'default' => 'full'
+                    ),
+                    'divider_margin' => array(
+                        'type' => 'number',
+                        'label' => __('Margin (px)', 'mavlers-contact-form'),
+                        'default' => 20
                     )
                 )
             ),
@@ -675,159 +730,66 @@ class Mavlers_Form_Builder {
     }
     
     public function handle_get_form_fields() {
-        try {
-            // Verify nonce
-            if (!check_ajax_referer('mavlers_form_builder_nonce', 'nonce', false)) {
-                error_log('Mavlers Form Builder: Nonce verification failed in get_form_fields');
-                wp_send_json_error(__('Security check failed', 'mavlers-contact-form'));
-                return;
-            }
-
-            if (!isset($_POST['form_id'])) {
-                error_log('Mavlers Form Builder: Missing form ID in get_form_fields');
-                wp_send_json_error(__('Missing form ID', 'mavlers-contact-form'));
-                return;
-            }
-
-            $form_id = intval($_POST['form_id']);
-
-            if (!current_user_can('manage_options')) {
-                error_log('Mavlers Form Builder: Permission denied for user ID ' . get_current_user_id());
-                wp_send_json_error(__('Permission denied', 'mavlers-contact-form'));
-                return;
-            }
-
-            global $wpdb;
-            $forms_table = $wpdb->prefix . 'mavlers_forms';
-
-            // Get form data
-            $form = $wpdb->get_row($wpdb->prepare(
-                "SELECT form_fields FROM {$forms_table} WHERE id = %d",
-                $form_id
-            ));
-
-            if (!$form) {
-                error_log('Mavlers Form Builder: Form not found. Form ID: ' . $form_id);
-                wp_send_json_error(__('Form not found', 'mavlers-contact-form'));
-                return;
-            }
-
-            // Get fields from form_fields column
-            $fields = json_decode($form->form_fields, true);
-            
-            // Debug log the fields
-            error_log('Mavlers Form Builder: Retrieved fields: ' . print_r($fields, true));
-
-            if (!is_array($fields)) {
-                error_log('Mavlers Form Builder: Invalid fields data');
-                wp_send_json_success(array());
-                return;
-            }
-
-            wp_send_json_success($fields);
-        } catch (Exception $e) {
-            error_log('Mavlers Form Builder: Exception in handle_get_form_fields: ' . $e->getMessage());
-            wp_send_json_error(__('An error occurred while loading fields', 'mavlers-contact-form'));
+        check_ajax_referer('mavlers_form_builder_nonce', 'nonce');
+        
+        if (!current_user_can('manage_options')) {
+            wp_send_json_error('Insufficient permissions');
         }
+
+        $form_id = intval($_POST['form_id']);
+        
+        if (!$form_id) {
+            wp_send_json_error('Invalid form ID');
+        }
+
+        global $wpdb;
+        $forms_table = $wpdb->prefix . 'mavlers_forms';
+        $form = $wpdb->get_row($wpdb->prepare(
+            "SELECT * FROM {$forms_table} WHERE id = %d",
+            $form_id
+        ));
+
+        if (!$form) {
+            wp_send_json_error('Form not found');
+        }
+
+        $fields = json_decode($form->form_fields, true) ?? array();
+        
+        // Debug information
+        error_log('Loading fields for form ' . $form_id);
+        error_log('Form data: ' . print_r($form, true));
+        error_log('Fields: ' . print_r($fields, true));
+
+        wp_send_json_success($fields);
     }
     
     public function handle_form_save() {
-        try {
-            // Verify nonce
-            if (!check_ajax_referer('mavlers_form_builder_nonce', 'nonce', false)) {
-                error_log('Mavlers Form Builder: Nonce verification failed');
-                wp_send_json_error(__('Security check failed', 'mavlers-contact-form'));
-                return;
-            }
+        check_ajax_referer('mavlers_form_builder_nonce', 'nonce');
+        
+        if (!current_user_can('manage_options')) {
+            wp_send_json_error('Insufficient permissions');
+        }
 
-            if (!isset($_POST['form_data']) || !is_array($_POST['form_data'])) {
-                error_log('Mavlers Form Builder: Missing form data. POST data: ' . print_r($_POST, true));
-                wp_send_json_error(__('Missing form data', 'mavlers-contact-form'));
-                return;
-            }
+        $form_id = isset($_POST['form_id']) ? intval($_POST['form_id']) : 0;
+        $form_data = json_decode(stripslashes($_POST['form_data']), true);
 
-            $form_data = $_POST['form_data'];
-            $form_id = isset($_POST['form_id']) ? intval($_POST['form_id']) : 0;
+        if (!$form_data || !isset($form_data['title'])) {
+            wp_send_json_error('Invalid form data');
+        }
 
-            if (!current_user_can('manage_options')) {
-                error_log('Mavlers Form Builder: Permission denied for user ID ' . get_current_user_id());
-                wp_send_json_error(__('Permission denied', 'mavlers-contact-form'));
-                return;
-            }
+        // Debug information
+        error_log('Saving form ' . $form_id);
+        error_log('Form data: ' . print_r($form_data, true));
 
-            // Validate fields
-            if (!empty($form_data['fields']) && is_array($form_data['fields'])) {
-                foreach ($form_data['fields'] as $field) {
-                    // Skip validation for submit and HTML field types
-                    if (in_array($field['field_type'], ['submit', 'html'])) {
-                        continue;
-                    }
+        $result = $this->save_form($form_id, array(
+            'form_name' => sanitize_text_field($form_data['title']),
+            'form_fields' => $form_data['fields']
+        ));
 
-                    // Validate required fields
-                    if (empty($field['field_label'])) {
-                        error_log('Mavlers Form Builder: Field label is required for field type: ' . $field['field_type']);
-                        wp_send_json_error(__('Field label is required', 'mavlers-contact-form'));
-                        return;
-                    }
-                }
-            }
-
-            global $wpdb;
-            $forms_table = $wpdb->prefix . 'mavlers_forms';
-
-            // Debug log the incoming form data
-            error_log('Mavlers Form Builder: Saving form data: ' . print_r($form_data, true));
-
-            // Prepare form data
-            $form_data_to_save = array(
-                'form_name' => sanitize_text_field($form_data['title']),
-                'form_fields' => json_encode($form_data['fields']),
-                'updated_at' => current_time('mysql')
-            );
-
-            if ($form_id) {
-                // Update existing form
-                $result = $wpdb->update(
-                    $forms_table,
-                    $form_data_to_save,
-                    array('id' => $form_id)
-                );
-
-                if ($result === false) {
-                    error_log('Mavlers Form Builder: Failed to update form. Error: ' . $wpdb->last_error);
-                    wp_send_json_error(__('Failed to update form', 'mavlers-contact-form'));
-                    return;
-                }
-            } else {
-                // Create new form
-                $form_data_to_save['created_at'] = current_time('mysql');
-                $form_data_to_save['status'] = 'active';
-
-                $result = $wpdb->insert($forms_table, $form_data_to_save);
-
-                if ($result === false) {
-                    error_log('Mavlers Form Builder: Failed to create form. Error: ' . $wpdb->last_error);
-                    wp_send_json_error(__('Failed to create form', 'mavlers-contact-form'));
-                    return;
-                }
-
-                $form_id = $wpdb->insert_id;
-            }
-
-            // Verify saved form
-            $saved_form = $wpdb->get_row($wpdb->prepare(
-                "SELECT * FROM {$forms_table} WHERE id = %d",
-                $form_id
-            ));
-            error_log('Mavlers Form Builder: Saved form verification: ' . print_r($saved_form, true));
-
-            wp_send_json_success(array(
-                'form_id' => $form_id,
-                'message' => __('Form saved successfully', 'mavlers-contact-form')
-            ));
-        } catch (Exception $e) {
-            error_log('Mavlers Form Builder: Exception in handle_form_save: ' . $e->getMessage());
-            wp_send_json_error(__('An error occurred while saving the form', 'mavlers-contact-form'));
+        if ($result) {
+            wp_send_json_success(array('form_id' => $result));
+        } else {
+            wp_send_json_error('Failed to save form');
         }
     }
     
@@ -889,39 +851,212 @@ class Mavlers_Form_Builder {
 
     public function render_field_preview($field) {
         $html = '';
-        $required = isset($field['required']) && $field['required'] ? 'required' : '';
-        $placeholder = isset($field['placeholder']) ? 'placeholder="' . esc_attr($field['placeholder']) . '"' : '';
+        $field_type = isset($field['field_type']) ? $field['field_type'] : '';
+        $field_label = isset($field['field_label']) ? $field['field_label'] : '';
+        $field_name = isset($field['field_name']) ? $field['field_name'] : '';
+        $field_required = isset($field['field_required']) ? $field['field_required'] : false;
+        $field_placeholder = isset($field['field_placeholder']) ? $field['field_placeholder'] : '';
+        $field_description = isset($field['field_description']) ? $field['field_description'] : '';
+        $field_options = isset($field['field_options']) ? $field['field_options'] : array();
+        $field_content = isset($field['field_content']) ? $field['field_content'] : '';
 
-        switch ($field['type']) {
+        // Common attributes
+        $required = $field_required ? 'required' : '';
+        $placeholder = $field_placeholder ? 'placeholder="' . esc_attr($field_placeholder) . '"' : '';
+
+        switch ($field_type) {
             case 'text':
-                $html = sprintf(
-                    '<input type="text" %s %s class="widefat" %s>',
-                    $required,
-                    $placeholder,
-                    $required ? 'required' : ''
-                );
-                break;
-
             case 'email':
+            case 'number':
+            case 'tel':
+            case 'url':
                 $html = sprintf(
-                    '<input type="email" %s %s class="widefat" %s>',
+                    '<input type="%s" name="%s" class="widefat" %s %s>',
+                    esc_attr($field_type),
+                    esc_attr($field_name),
                     $required,
-                    $placeholder,
-                    $required ? 'required' : ''
+                    $placeholder
                 );
                 break;
 
             case 'textarea':
                 $html = sprintf(
-                    '<textarea %s %s class="widefat" %s></textarea>',
+                    '<textarea name="%s" class="widefat" %s %s></textarea>',
+                    esc_attr($field_name),
                     $required,
-                    $placeholder,
-                    $required ? 'required' : ''
+                    $placeholder
                 );
+                break;
+
+            case 'select':
+                $html = '<select name="' . esc_attr($field_name) . '" class="widefat" ' . $required . '>';
+                if ($field_placeholder) {
+                    $html .= '<option value="">' . esc_html($field_placeholder) . '</option>';
+                }
+                if (is_array($field_options)) {
+                    foreach ($field_options as $option) {
+                        $html .= sprintf(
+                            '<option value="%s">%s</option>',
+                            esc_attr($option),
+                            esc_html($option)
+                        );
+                    }
+                }
+                $html .= '</select>';
+                break;
+
+            case 'checkbox':
+            case 'radio':
+                if (is_array($field_options)) {
+                    foreach ($field_options as $option) {
+                        $html .= sprintf(
+                            '<label class="mavlers-%s-label"><input type="%s" name="%s" value="%s" %s> %s</label>',
+                            $field_type,
+                            $field_type,
+                            esc_attr($field_name),
+                            esc_attr($option),
+                            $required,
+                            esc_html($option)
+                        );
+                    }
+                }
+                break;
+
+            case 'file':
+                $html = sprintf(
+                    '<input type="file" name="%s" class="widefat" %s>',
+                    esc_attr($field_name),
+                    $required
+                );
+                break;
+
+            case 'html':
+                $html = wp_kses_post($field_content);
+                break;
+
+            case 'divider':
+                $divider_style = isset($field['divider_style']) ? $field['divider_style'] : 'solid';
+                $divider_color = isset($field['divider_color']) ? $field['divider_color'] : '#ddd';
+                $divider_width = isset($field['divider_width']) ? $field['divider_width'] : 'full';
+                $divider_text = isset($field['divider_text']) ? $field['divider_text'] : '';
+
+                $width_class = '';
+                switch ($divider_width) {
+                    case 'half':
+                        $width_class = 'mavlers-divider-half';
+                        break;
+                    case 'third':
+                        $width_class = 'mavlers-divider-third';
+                        break;
+                    default:
+                        $width_class = 'mavlers-divider-full';
+                }
+
+                $html = '<div class="mavlers-divider ' . esc_attr($width_class) . '">';
+                if ($divider_text) {
+                    $html .= '<span class="mavlers-divider-text">' . esc_html($divider_text) . '</span>';
+                }
+                $html .= '<hr style="border-style: ' . esc_attr($divider_style) . '; border-color: ' . esc_attr($divider_color) . ';">';
+                $html .= '</div>';
+                break;
+
+            case 'submit':
+                $button_text = isset($field['text']) ? $field['text'] : __('Submit', 'mavlers-contact-form');
+                $html = sprintf(
+                    '<button type="submit" class="mavlers-submit-button">%s</button>',
+                    esc_html($button_text)
+                );
+                break;
+
+            default:
+                $html = '<p class="mavlers-field-error">' . __('Unknown field type', 'mavlers-contact-form') . '</p>';
                 break;
         }
 
         return $html;
+    }
+
+    public function save_form($form_id, $form_data) {
+        global $wpdb;
+        $forms_table = $wpdb->prefix . 'mavlers_forms';
+
+        $data = array(
+            'form_name' => sanitize_text_field($form_data['form_name']),
+            'form_fields' => wp_json_encode($form_data['form_fields']),
+            'updated_at' => current_time('mysql')
+        );
+
+        if ($form_id) {
+            $wpdb->update(
+                $forms_table,
+                $data,
+                array('id' => $form_id)
+            );
+            return $form_id;
+        } else {
+            $data['created_at'] = current_time('mysql');
+            $data['status'] = 'active';
+            $wpdb->insert($forms_table, $data);
+            return $wpdb->insert_id;
+        }
+    }
+
+    public function save_field($form_id, $field_data) {
+        global $wpdb;
+        $fields_table = $wpdb->prefix . 'mavlers_form_fields';
+
+        $data = array(
+            'form_id' => $form_id,
+            'field_type' => sanitize_text_field($field_data['field_type']),
+            'field_label' => sanitize_text_field($field_data['field_label']),
+            'field_name' => sanitize_text_field($field_data['field_name']),
+            'field_meta' => wp_json_encode($field_data),
+            'field_order' => intval($field_data['field_order']),
+            'updated_at' => current_time('mysql')
+        );
+
+        if (isset($field_data['id']) && $field_data['id']) {
+            $wpdb->update(
+                $fields_table,
+                $data,
+                array('id' => $field_data['id']),
+                array('%d', '%s', '%s', '%s', '%s', '%d', '%s'),
+                array('%d')
+            );
+            return $field_data['id'];
+        } else {
+            $data['created_at'] = current_time('mysql');
+            $wpdb->insert($fields_table, $data);
+            return $wpdb->insert_id;
+        }
+    }
+
+    public function delete_field($field_id) {
+        global $wpdb;
+        $fields_table = $wpdb->prefix . 'mavlers_form_fields';
+        
+        return $wpdb->delete(
+            $fields_table,
+            array('id' => $field_id),
+            array('%d')
+        );
+    }
+
+    public function update_field_order($form_id, $fields) {
+        global $wpdb;
+        $fields_table = $wpdb->prefix . 'mavlers_form_fields';
+
+        foreach ($fields as $field) {
+            $wpdb->update(
+                $fields_table,
+                array('field_order' => intval($field['field_order'])),
+                array('id' => $field['id']),
+                array('%d'),
+                array('%d')
+            );
+        }
+
+        return true;
     }
 }
 

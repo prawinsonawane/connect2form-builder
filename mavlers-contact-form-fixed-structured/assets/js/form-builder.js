@@ -179,12 +179,12 @@ jQuery(document).ready(function($) {
                         response.data.forEach(field => {
                             console.log('Processing field:', field);
                             // Validate field data before adding
-                            if (field && field.field_type && field.field_label) {
+                            if (field && field.field_type) {
                                 const fieldData = {
                                     id: field.id || 'field_' + Date.now(),
                                     field_type: field.field_type,
-                                    field_label: field.field_label,
-                                    field_name: field.field_name || field.field_label.toLowerCase().replace(/\s+/g, '_'),
+                                    field_label: field.field_label || '',
+                                    field_name: field.field_name || field.field_label?.toLowerCase().replace(/\s+/g, '_') || '',
                                     field_required: field.field_required || false,
                                     field_placeholder: field.field_placeholder || '',
                                     field_description: field.field_description || '',
@@ -193,6 +193,14 @@ jQuery(document).ready(function($) {
                                     field_order: this.tempFields.length,
                                     column_layout: field.column_layout || 'full'
                                 };
+
+                                // Add specific properties based on field type
+                                if (field.field_type === 'submit') {
+                                    fieldData.text = field.text || 'Submit';
+                                } else if (field.field_type === 'html') {
+                                    fieldData.content = field.content || field.field_content || '';
+                                    fieldData.field_content = field.content || field.field_content || '';
+                                }
                                 
                                 console.log('Processed field data for preview:', fieldData);
                                 this.tempFields.push(fieldData);
@@ -252,6 +260,7 @@ jQuery(document).ready(function($) {
                         <div class="mavlers-modal-body">
                             <form class="mavlers-field-settings-form">
                                 <input type="hidden" name="field_type" value="${type}">
+                                ${fieldData ? `<input type="hidden" name="field_id" id="field-id" value="${fieldData.id}">` : ''}
                                 ${settings}
                             </form>
                         </div>
@@ -269,9 +278,12 @@ jQuery(document).ready(function($) {
             
             // Debug the field type input after modal is created
             const $fieldTypeInput = $modal.find('input[name="field_type"]');
+            const $fieldIdInput = $modal.find('#field-id');
             console.log('Modal created:', $modal.length > 0);
             console.log('Field type input found:', $fieldTypeInput.length > 0);
             console.log('Field type input value:', $fieldTypeInput.val());
+            console.log('Field ID input found:', $fieldIdInput.length > 0);
+            console.log('Field ID input value:', $fieldIdInput.val());
             
             // Handle conditional fields
             this.handleConditionalFields($modal);
@@ -279,6 +291,21 @@ jQuery(document).ready(function($) {
 
         handleConditionalFields: function($modal) {
             const $form = $modal.find('.mavlers-field-settings-form');
+            
+            // Handle captcha type visibility
+            const $captchaType = $form.find('#captcha-type');
+            if ($captchaType.length) {
+                const toggleCaptchaSettings = () => {
+                    const type = $captchaType.val();
+                    $form.find('.recaptcha-settings').toggle(type === 'recaptcha');
+                    $form.find('.simple-captcha-settings').toggle(type === 'simple');
+                };
+                
+                $captchaType.on('change', toggleCaptchaSettings);
+                toggleCaptchaSettings();
+            }
+            
+            // Handle other conditional fields
             $form.find('.mavlers-field-setting[data-show-if]').each(function() {
                 const $setting = $(this);
                 const showIf = $setting.data('show-if');
@@ -308,6 +335,39 @@ jQuery(document).ready(function($) {
             }
 
             let settings = '';
+            
+            // Special handling for divider fields
+            if (type === 'divider') {
+                settings = `
+                    <div class="mavlers-field-setting">
+                        <label for="field-divider_text">Divider Text</label>
+                        <input type="text" id="field-divider_text" name="divider_text" value="${fieldData ? fieldData.divider_text || 'Divider' : 'Divider'}">
+                    </div>
+                    <div class="mavlers-field-setting">
+                        <label for="field-divider_style">Divider Style</label>
+                        <select id="field-divider_style" name="divider_style">
+                            <option value="solid" ${fieldData && fieldData.divider_style === 'solid' ? 'selected' : ''}>Solid</option>
+                            <option value="dashed" ${fieldData && fieldData.divider_style === 'dashed' ? 'selected' : ''}>Dashed</option>
+                            <option value="dotted" ${fieldData && fieldData.divider_style === 'dotted' ? 'selected' : ''}>Dotted</option>
+                        </select>
+                    </div>
+                    <div class="mavlers-field-setting">
+                        <label for="field-divider_color">Divider Color</label>
+                        <input type="color" id="field-divider_color" name="divider_color" value="${fieldData ? fieldData.divider_color || '#ddd' : '#ddd'}">
+                    </div>
+                    <div class="mavlers-field-setting">
+                        <label for="field-divider_width">Divider Width</label>
+                        <select id="field-divider_width" name="divider_width">
+                            <option value="full" ${fieldData && fieldData.divider_width === 'full' ? 'selected' : ''}>Full Width</option>
+                            <option value="half" ${fieldData && fieldData.divider_width === 'half' ? 'selected' : ''}>Half Width</option>
+                            <option value="third" ${fieldData && fieldData.divider_width === 'third' ? 'selected' : ''}>One Third Width</option>
+                        </select>
+                    </div>
+                `;
+                return settings;
+            }
+
+            // Handle other field types
             for (const [key, setting] of Object.entries(fieldType.settings)) {
                 // Get the value from fieldData if it exists, otherwise use empty string
                 let value = '';
@@ -405,10 +465,12 @@ jQuery(document).ready(function($) {
             // Get form and field type
             const $form = $modal.find('.mavlers-field-settings-form');
             const fieldType = $modal.data('field-type');
+            const fieldId = $form.find('#field-id').val();
             
             console.log('Modal found in saveFieldSettings:', $modal.length > 0);
             console.log('Form found in saveFieldSettings:', $form.length > 0);
             console.log('Field type from modal data:', fieldType);
+            console.log('Field ID:', fieldId);
             
             if (!fieldType || !this.fieldTypes[fieldType]) {
                 console.error('Invalid field type:', fieldType);
@@ -433,8 +495,9 @@ jQuery(document).ready(function($) {
                 }
             });
 
-            // Skip label validation for submit and HTML fields
-            if (fieldType !== 'submit' && fieldType !== 'html') {
+            // Skip label validation for special field types
+            const skipLabelValidation = ['submit', 'html', 'captcha', 'divider', 'hidden'];
+            if (!skipLabelValidation.includes(fieldType)) {
                 const label = formData.label;
                 if (!label) {
                     this.showNotification('Field label is required', 'error');
@@ -448,15 +511,24 @@ jQuery(document).ready(function($) {
                 fieldName = 'submit_button';
             } else if (fieldType === 'html') {
                 fieldName = 'html_content';
+            } else if (fieldType === 'captcha') {
+                fieldName = 'captcha_field';
+            } else if (fieldType === 'divider') {
+                fieldName = 'divider_field';
+            } else if (fieldType === 'hidden') {
+                fieldName = formData.name || 'hidden_field';
             } else {
                 fieldName = formData.name || (formData.label ? formData.label.toLowerCase().replace(/\s+/g, '_') : '');
             }
 
             // Create a new field object with all required properties
             const fieldData = {
-                id: 'field_' + Date.now(),
+                id: fieldId || 'field_' + Date.now(), // Use existing ID if editing
                 field_type: fieldType,
-                field_label: fieldType === 'submit' ? formData.text || 'Submit' : (fieldType === 'html' ? 'HTML Content' : formData.label),
+                field_label: fieldType === 'submit' ? formData.text || 'Submit' : 
+                           (fieldType === 'html' ? 'HTML Content' : 
+                           (fieldType === 'divider' ? formData.divider_text || '' : 
+                           (fieldType === 'captcha' ? 'Captcha' : formData.label))),
                 field_name: fieldName,
                 field_required: formData.required || false,
                 field_placeholder: formData.placeholder || '',
@@ -473,30 +545,55 @@ jQuery(document).ready(function($) {
             } else if (fieldType === 'html') {
                 fieldData.content = formData.content || '';
                 fieldData.field_content = formData.content || ''; // Add both for compatibility
+            } else if (fieldType === 'divider') {
+                fieldData.divider_text = formData.divider_text || '';
+                fieldData.divider_style = formData.divider_style || 'solid';
+                fieldData.divider_color = formData.divider_color || '#ddd';
+                fieldData.divider_width = formData.divider_width || 'full';
+            } else if (fieldType === 'captcha') {
+                fieldData.captcha_type = formData.captcha_type || 'simple';
+                if (fieldData.captcha_type === 'recaptcha') {
+                    fieldData.site_key = formData.site_key || '';
+                } else {
+                    fieldData.captcha_question = formData.captcha_question || 'What is 2 + 3?';
+                }
             }
 
             console.log('Created field data:', fieldData);
 
-            // Add to temp fields array
-            this.tempFields.push(fieldData);
-
-            // Add to preview
-            this.addFieldToPreview(fieldData);
+            if (fieldId) {
+                // Update existing field
+                const existingFieldIndex = this.tempFields.findIndex(field => field.id === fieldId);
+                if (existingFieldIndex !== -1) {
+                    // Preserve the original field order
+                    fieldData.field_order = this.tempFields[existingFieldIndex].field_order;
+                    this.tempFields[existingFieldIndex] = fieldData;
+                    
+                    // Update the preview
+                    const $existingField = $(`[data-field-id="${fieldId}"]`);
+                    if ($existingField.length) {
+                        $existingField.replaceWith(this.createFieldElement(fieldData));
+                    }
+                }
+            } else {
+                // Add new field
+                this.tempFields.push(fieldData);
+                this.addFieldToPreview(fieldData);
+            }
 
             // Close modal
             $modal.remove();
         },
 
-        addFieldToPreview: function(fieldData) {
-            console.log('Adding field to preview:', fieldData);
+        createFieldElement: function(fieldData) {
             const columnClass = fieldData.column_layout === 'half' ? 'mavlers-field-half' : 'mavlers-field-full';
             
             // For HTML fields, store the content in data-field-data
             const fieldDataToStore = fieldData.field_type === 'html' 
                 ? { ...fieldData, content: fieldData.content || fieldData.field_content }
                 : fieldData;
-
-            const $field = $(`
+            
+            return $(`
                 <div class="mavlers-field ${columnClass}" 
                      data-field-id="${fieldData.id}"
                      data-field-type="${fieldData.field_type}"
@@ -520,10 +617,15 @@ jQuery(document).ready(function($) {
                     </div>
                 </div>
             `);
+        },
+
+        addFieldToPreview: function(fieldData) {
+            console.log('Adding field to preview:', fieldData);
+            const $field = this.createFieldElement(fieldData);
 
             // Check if we need to create a new row
             const $lastField = $('#form-fields .mavlers-field:last');
-            if ($lastField.length && $lastField.hasClass('mavlers-field-half') && columnClass === 'mavlers-field-half') {
+            if ($lastField.length && $lastField.hasClass('mavlers-field-half') && $field.hasClass('mavlers-field-half')) {
                 // Add to the same row
                 $lastField.after($field);
             } else {
@@ -535,84 +637,125 @@ jQuery(document).ready(function($) {
         },
 
         getFieldPreview: function(fieldData) {
+            console.log('Generating preview for field:', fieldData);
+            
+            if (!fieldData || !fieldData.field_type) {
+                console.error('Invalid field data:', fieldData);
+                return '';
+            }
+
             const required = fieldData.field_required ? 'required' : '';
             const placeholder = fieldData.field_placeholder ? `placeholder="${fieldData.field_placeholder}"` : '';
             const cssClass = fieldData.field_css_class ? `class="${fieldData.field_css_class}"` : 'class="widefat"';
 
             switch (fieldData.field_type) {
                 case 'text':
-                    return `<input type="text" ${required} ${placeholder} ${cssClass}>`;
+                case 'email':
+                case 'number':
+                case 'tel':
+                case 'url':
+                    return `<input type="${fieldData.field_type}" name="${fieldData.field_name}" ${required} ${placeholder} ${cssClass}>`;
+                
                 case 'textarea':
                     const rows = fieldData.field_rows || 4;
-                    return `<textarea ${required} ${placeholder} ${cssClass} rows="${rows}"></textarea>`;
+                    return `<textarea name="${fieldData.field_name}" ${required} ${placeholder} ${cssClass} rows="${rows}"></textarea>`;
+                
                 case 'checkbox':
                     let checkboxes = '';
-                    const options = fieldData.field_options ? fieldData.field_options.split('\n') : [];
+                    const options = Array.isArray(fieldData.field_options) ? fieldData.field_options : 
+                                  (typeof fieldData.field_options === 'string' ? fieldData.field_options.split('\n') : []);
                     options.forEach(option => {
-                        checkboxes += `
-                            <label>
-                                <input type="checkbox" name="${fieldData.field_name}[]" value="${option.trim()}" ${required}>
-                                ${option.trim()}
-                            </label>
-                        `;
+                        if (option.trim()) {
+                            checkboxes += `
+                                <label class="mavlers-checkbox-label">
+                                    <input type="checkbox" name="${fieldData.field_name}[]" value="${option.trim()}" ${required}>
+                                    ${option.trim()}
+                                </label>
+                            `;
+                        }
                     });
                     return checkboxes;
+                
                 case 'dropdown':
-                    let dropdown = `<select ${required} ${cssClass}>`;
-                    const selectOptions = fieldData.field_options ? fieldData.field_options.split('\n') : [];
+                case 'select':
+                    let dropdown = `<select name="${fieldData.field_name}" ${required} ${cssClass}>`;
+                    if (fieldData.field_placeholder) {
+                        dropdown += `<option value="">${fieldData.field_placeholder}</option>`;
+                    }
+                    const selectOptions = Array.isArray(fieldData.field_options) ? fieldData.field_options : 
+                                       (typeof fieldData.field_options === 'string' ? fieldData.field_options.split('\n') : []);
                     selectOptions.forEach(option => {
-                        dropdown += `<option value="${option.trim()}">${option.trim()}</option>`;
+                        if (option.trim()) {
+                            dropdown += `<option value="${option.trim()}">${option.trim()}</option>`;
+                        }
                     });
                     dropdown += '</select>';
                     return dropdown;
-                case 'number':
-                    const min = fieldData.field_min ? `min="${fieldData.field_min}"` : '';
-                    const max = fieldData.field_max ? `max="${fieldData.field_max}"` : '';
-                    const step = fieldData.field_step ? `step="${fieldData.field_step}"` : '';
-                    return `<input type="number" ${required} ${min} ${max} ${step} ${cssClass}>`;
+                
                 case 'radio':
                     let radios = '';
-                    const radioOptions = fieldData.field_options ? fieldData.field_options.split('\n') : [];
+                    const radioOptions = Array.isArray(fieldData.field_options) ? fieldData.field_options : 
+                                      (typeof fieldData.field_options === 'string' ? fieldData.field_options.split('\n') : []);
                     radioOptions.forEach(option => {
-                        radios += `
-                            <label>
-                                <input type="radio" name="${fieldData.field_name}" value="${option.trim()}" ${required}>
-                                ${option.trim()}
-                            </label>
-                        `;
+                        if (option.trim()) {
+                            radios += `
+                                <label class="mavlers-radio-label">
+                                    <input type="radio" name="${fieldData.field_name}" value="${option.trim()}" ${required}>
+                                    ${option.trim()}
+                                </label>
+                            `;
+                        }
                     });
                     return radios;
-                case 'hidden':
-                    return `<input type="hidden" name="${fieldData.field_name}" value="${fieldData.field_value}">`;
+                
                 case 'file':
-                    return `<input type="file" ${required} ${cssClass}>`;
+                    return `<input type="file" name="${fieldData.field_name}" ${required} ${cssClass}>`;
+                
                 case 'html':
                     return fieldData.content || fieldData.field_content || '';
+                
                 case 'divider':
-                    if (fieldData.field_type === 'line') {
-                        return '<hr>';
-                    } else if (fieldData.field_type === 'space') {
-                        return '<div style="height: 20px;"></div>';
-                    } else {
-                        return `<div class="divider-text">${fieldData.field_text}</div>`;
+                    const dividerStyle = fieldData.divider_style || 'solid';
+                    const dividerColor = fieldData.divider_color || '#ddd';
+                    const dividerWidth = fieldData.divider_width || 'full';
+                    const dividerText = fieldData.divider_text || '';
+                    
+                    let widthClass = 'mavlers-divider-full';
+                    if (dividerWidth === 'half') {
+                        widthClass = 'mavlers-divider-half';
+                    } else if (dividerWidth === 'third') {
+                        widthClass = 'mavlers-divider-third';
                     }
-                case 'section':
-                    return `
-                        <div class="form-section">
-                            <h3>${fieldData.field_title}</h3>
-                            ${fieldData.field_description ? `<p>${fieldData.field_description}</p>` : ''}
-                        </div>
-                    `;
+                    
+                    let html = `<div class="mavlers-divider ${widthClass}">`;
+                    if (dividerText) {
+                        html += `<span class="mavlers-divider-text">${dividerText}</span>`;
+                    }
+                    html += `<hr style="border-style: ${dividerStyle}; border-color: ${dividerColor};">`;
+                    html += '</div>';
+                    return html;
+                
                 case 'captcha':
-                    if (fieldData.field_type === 'recaptcha') {
-                        return '<div class="g-recaptcha" data-sitekey="' + fieldData.field_site_key + '"></div>';
+                    const captchaType = fieldData.captcha_type || 'simple';
+                    if (captchaType === 'recaptcha') {
+                        return `<div class="g-recaptcha" data-sitekey="${fieldData.site_key || ''}"></div>`;
                     } else {
-                        return '<div class="simple-captcha">Simple Math CAPTCHA</div>';
+                        return `
+                            <div class="mavlers-simple-captcha">
+                                <div class="mavlers-captcha-question">
+                                    ${fieldData.captcha_question || 'What is 2 + 3?'}
+                                </div>
+                                <input type="text" name="captcha_answer" class="widefat" required>
+                            </div>
+                        `;
                     }
+                
                 case 'submit':
-                    return `<button type="submit" ${cssClass}>${fieldData.text || fieldData.field_text || 'Submit'}</button>`;
+                    return `<button type="submit" class="mavlers-submit-button">${fieldData.text || 'Submit'}</button>`;
+                
                 default:
-                    return `<input type="text" ${required} ${placeholder} ${cssClass}>`;
+                    console.warn('Unknown field type:', fieldData.field_type);
+                    return '';
             }
         },
 
@@ -711,6 +854,15 @@ jQuery(document).ready(function($) {
                         field_order: index,
                         column_layout: fieldData.column_layout || 'full'
                     };
+
+                    // Add specific properties based on field type
+                    if (fieldData.field_type === 'submit') {
+                        processedField.text = fieldData.text || 'Submit';
+                    } else if (fieldData.field_type === 'html') {
+                        processedField.content = fieldData.content || fieldData.field_content || '';
+                        processedField.field_content = fieldData.content || fieldData.field_content || '';
+                    }
+
                     console.log('Processed field data:', processedField);
                     fields.push(processedField);
                 }

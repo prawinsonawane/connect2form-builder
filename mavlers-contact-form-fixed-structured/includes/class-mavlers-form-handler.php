@@ -28,102 +28,124 @@ class Mavlers_Form_Handler {
     }
 
     public function handle_form_submission() {
-        if (!isset($_POST['mavlers_form_submit']) || !isset($_POST['form_id'])) {
-            return;
-        }
+        check_ajax_referer('mavlers_form_submission', 'nonce');
 
-        $form_id = intval($_POST['form_id']);
+        $form_id = isset($_POST['form_id']) ? intval($_POST['form_id']) : 0;
         if (!$form_id) {
-            return;
+            wp_send_json_error('Invalid form ID');
         }
 
-        // Verify nonce
-        if (!isset($_POST['mavlers_form_nonce']) || !wp_verify_nonce($_POST['mavlers_form_nonce'], 'mavlers_form_' . $form_id)) {
-            wp_die(__('Invalid form submission', 'mavlers-contact-form'));
+        // Start session if not already started
+        if (!session_id()) {
+            session_start();
+        }
+
+        // Validate captcha if present
+        if (isset($_POST['captcha_answer'])) {
+            $user_answer = intval($_POST['captcha_answer']);
+            $correct_answer = isset($_SESSION['mavlers_captcha_answer']) ? intval($_SESSION['mavlers_captcha_answer']) : 0;
+            
+            if ($user_answer !== $correct_answer) {
+                wp_send_json_error('Invalid captcha answer');
+            }
+            
+            // Clear the captcha answer from session
+            unset($_SESSION['mavlers_captcha_answer']);
         }
 
         // Get form data
         global $wpdb;
-        $table_name = $wpdb->prefix . 'mavlers_forms';
+        $forms_table = $wpdb->prefix . 'mavlers_forms';
         $form = $wpdb->get_row($wpdb->prepare(
-            "SELECT * FROM $table_name WHERE id = %d",
+            "SELECT * FROM {$forms_table} WHERE id = %d AND status = 'active'",
             $form_id
         ));
 
         if (!$form) {
-            wp_die(__('Form not found', 'mavlers-contact-form'));
+            wp_send_json_error('Form not found');
         }
 
+        // Process form submission
         $form_fields = json_decode($form->form_fields, true);
-        $submission_data = array();
-        $errors = array();
+        if (!is_array($form_fields)) {
+            wp_send_json_error('Invalid form fields');
+        }
 
-        // Validate and sanitize form data
+        // Validate required fields
         foreach ($form_fields as $field) {
-            $field_name = sanitize_title($field['label']);
-            $field_value = isset($_POST[$field_name]) ? $_POST[$field_name] : '';
-
-            // Basic validation
-            if ($field['required'] && empty($field_value)) {
-                $errors[] = sprintf(__('%s is required', 'mavlers-contact-form'), $field['label']);
-                continue;
+            if (!empty($field['field_required']) && empty($_POST[$field['field_name']])) {
+                wp_send_json_error(sprintf('Field "%s" is required', $field['field_label']));
             }
-
-            // Type-specific validation
-            switch ($field['type']) {
-                case 'email':
-                    if (!empty($field_value) && !is_email($field_value)) {
-                        $errors[] = sprintf(__('%s must be a valid email address', 'mavlers-contact-form'), $field['label']);
-                    }
-                    break;
-            }
-
-            $submission_data[$field['label']] = sanitize_text_field($field_value);
         }
 
-        // If there are errors, display them
-        if (!empty($errors)) {
-            set_transient('mavlers_form_errors_' . $form_id, $errors, 45);
-            return;
+        // Save submission
+        $submissions_table = $wpdb->prefix . 'mavlers_form_submissions';
+        $submission_data = array(
+            'form_id' => $form_id,
+            'submission_data' => json_encode($_POST),
+            'created_at' => current_time('mysql')
+        );
+
+        $result = $wpdb->insert($submissions_table, $submission_data);
+        if ($result === false) {
+            wp_send_json_error('Failed to save submission');
         }
 
-        // Save the form entry
-        $db = Mavlers_Database::get_instance();
-        $db->save_form_entry($form_id, $submission_data);
+        // Send email notification if configured
+        if (!empty($form->notification_email)) {
+            $this->send_notification_email($form, $_POST);
+        }
 
-        // Send notifications
-        $this->send_notification_email($form_id, $submission_data);
-        $this->send_auto_responder($submission_data);
-
-        // Set success message
-        set_transient('mavlers_form_success_' . $form_id, true, 45);
-
-        // Redirect back to the form
-        wp_safe_redirect(add_query_arg('submitted', '1', wp_get_referer()));
-        exit;
+        wp_send_json_success('Form submitted successfully');
     }
 
-    private function send_notification_email($form_id, $submission_data) {
-        $admin_email = get_option('mavlers_admin_email', get_option('admin_email'));
-        $site_name = get_bloginfo('name');
+    private function send_notification_email($form, $submission_data) {
+        $settings = Mavlers_Settings::get_instance()->get_form_settings($form->id);
+        $admin_email = $settings['admin_email'];
+        $from_name = $settings['from_name'];
+        $from_email = $settings['from_email'];
+        $email_format = $settings['email_format'];
+        $email_header = $settings['email_header'];
+        $email_footer = $settings['email_footer'];
 
-        // Get email templates
-        $header = get_option('mavlers_email_header', '');
-        $footer = get_option('mavlers_email_footer', '');
-
-        $subject = sprintf(__('New form submission from %s', 'mavlers-contact-form'), $site_name);
+        $subject = sprintf(__('New form submission from %s', 'mavlers-contact-form'), get_bloginfo('name'));
         
-        $message = $header . "\n\n";
-        $message .= __('New form submission details:', 'mavlers-contact-form') . "\n\n";
-        foreach ($submission_data as $label => $value) {
-            $message .= sprintf("%s: %s\n", $label, $value);
+        // Build email message
+        $message = '';
+        if ($email_format === 'html') {
+            $message .= '<!DOCTYPE html><html><body>';
+            $message .= wpautop($email_header);
+            $message .= '<h2>' . __('New form submission details:', 'mavlers-contact-form') . '</h2>';
+            $message .= '<table style="width: 100%; border-collapse: collapse;">';
+            foreach ($submission_data as $label => $value) {
+                if ($label !== 'form_id' && $label !== 'nonce' && $label !== 'captcha_answer') {
+                    $message .= sprintf(
+                        '<tr><th style="text-align: left; padding: 8px; border-bottom: 1px solid #ddd;">%s</th>' .
+                        '<td style="padding: 8px; border-bottom: 1px solid #ddd;">%s</td></tr>',
+                        esc_html($label),
+                        esc_html($value)
+                    );
+                }
+            }
+            $message .= '</table>';
+            $message .= wpautop($email_footer);
+            $message .= '</body></html>';
+        } else {
+            $message .= $email_header . "\n\n";
+            $message .= __('New form submission details:', 'mavlers-contact-form') . "\n\n";
+            foreach ($submission_data as $label => $value) {
+                if ($label !== 'form_id' && $label !== 'nonce' && $label !== 'captcha_answer') {
+                    $message .= sprintf("%s: %s\n", $label, $value);
+                }
+            }
+            $message .= "\n" . $email_footer;
         }
-        $message .= "\n" . $footer;
 
-        $headers = array(
-            'Content-Type: text/html; charset=UTF-8',
-            'From: ' . $site_name . ' <' . $admin_email . '>'
-        );
+        $headers = array();
+        if ($email_format === 'html') {
+            $headers[] = 'Content-Type: text/html; charset=UTF-8';
+        }
+        $headers[] = 'From: ' . $from_name . ' <' . $from_email . '>';
 
         $sent = wp_mail($admin_email, $subject, $message, $headers);
 
@@ -137,7 +159,22 @@ class Mavlers_Form_Handler {
         );
     }
 
-    private function send_auto_responder($submission_data) {
+    private function send_auto_responder($form, $submission_data) {
+        $settings = Mavlers_Settings::get_instance()->get_form_settings($form->id);
+        
+        // Check if auto-responder is enabled for this form
+        if (!$settings['enable_auto_responder']) {
+            return;
+        }
+
+        $from_name = $settings['from_name'];
+        $from_email = $settings['from_email'];
+        $email_format = $settings['email_format'];
+        $email_header = $settings['email_header'];
+        $email_footer = $settings['email_footer'];
+        $subject = $settings['auto_responder_subject'];
+        $content = $settings['auto_responder_content'];
+
         // Find email field
         $user_email = '';
         foreach ($submission_data as $label => $value) {
@@ -151,24 +188,29 @@ class Mavlers_Form_Handler {
             return;
         }
 
-        $site_name = get_bloginfo('name');
-        $subject = get_option('mavlers_auto_responder_subject', 'Thank you for contacting us');
-        $content = get_option('mavlers_auto_responder_content', '');
-
         // Replace placeholders
         $content = str_replace('{name}', $submission_data['Name'] ?? '', $content);
-        $content = str_replace('{site_name}', $site_name, $content);
+        $content = str_replace('{site_name}', get_bloginfo('name'), $content);
 
-        // Get email templates
-        $header = get_option('mavlers_email_header', '');
-        $footer = get_option('mavlers_email_footer', '');
+        // Build email message
+        $message = '';
+        if ($email_format === 'html') {
+            $message .= '<!DOCTYPE html><html><body>';
+            $message .= wpautop($email_header);
+            $message .= wpautop($content);
+            $message .= wpautop($email_footer);
+            $message .= '</body></html>';
+        } else {
+            $message .= $email_header . "\n\n";
+            $message .= $content . "\n\n";
+            $message .= $email_footer;
+        }
 
-        $message = $header . "\n\n" . $content . "\n\n" . $footer;
-
-        $headers = array(
-            'Content-Type: text/html; charset=UTF-8',
-            'From: ' . $site_name . ' <' . get_option('admin_email') . '>'
-        );
+        $headers = array();
+        if ($email_format === 'html') {
+            $headers[] = 'Content-Type: text/html; charset=UTF-8';
+        }
+        $headers[] = 'From: ' . $from_name . ' <' . $from_email . '>';
 
         $sent = wp_mail($user_email, $subject, $message, $headers);
 
