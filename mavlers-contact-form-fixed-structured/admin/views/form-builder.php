@@ -28,6 +28,11 @@ $form_builder_nonce = wp_create_nonce('mavlers_form_builder_nonce');
 
 // Get field types
 $field_types = Mavlers_Form_Builder::get_instance()->get_field_types();
+
+// Debug information
+error_log('Form ID: ' . $form_id);
+error_log('Form Data: ' . print_r($form, true));
+error_log('Form Fields: ' . print_r($form_fields, true));
 ?>
 
 <div class="wrap">
@@ -35,24 +40,11 @@ $field_types = Mavlers_Form_Builder::get_instance()->get_field_types();
         <?php echo $form_id ? __('Edit Form', 'mavlers-contact-form') : __('Add New Form', 'mavlers-contact-form'); ?>
     </h1>
 
-<script>
-    var mavlersFormBuilder = {
-        form_id: <?php echo intval($form_id); ?>,
-        fields: <?php echo json_encode($form_fields); ?>,
-        nonce: "<?php echo esc_js($form_builder_nonce); ?>",
-        fieldTypes: <?php echo json_encode($field_types); ?>,
-        ajaxurl: "<?php echo esc_js(admin_url('admin-ajax.php')); ?>",
-        adminUrl: "<?php echo esc_js(admin_url('admin.php')); ?>",
-        previewUrl: "<?php echo esc_js(home_url('?mavlers_preview=1')); ?>",
-        strings: {
-            deleteConfirm: "<?php esc_attr_e('Are you sure you want to delete this field?', 'mavlers-contact-form'); ?>",
-            saveFormFirst: "<?php esc_attr_e('Please save the form first before previewing.', 'mavlers-contact-form'); ?>"
-        }
-    };
-</script>
-
     <a href="<?php echo admin_url('admin.php?page=mavlers-forms'); ?>" class="page-title-action">
         <?php _e('Back to Forms', 'mavlers-contact-form'); ?>
+    </a>
+    <a href="<?php echo admin_url('admin.php?page=mavlers-forms&action=settings&form_id=' . $form_id); ?>" class="page-title-action">
+        <?php _e('Form Settings', 'mavlers-contact-form'); ?>
     </a>
     <hr class="wp-header-end">
 
@@ -88,7 +80,7 @@ $field_types = Mavlers_Form_Builder::get_instance()->get_field_types();
                     <input type="hidden" id="mavlers_nonce" value="<?php echo esc_attr($form_builder_nonce); ?>">
                     <input type="text" id="form-title" class="widefat" 
                            placeholder="<?php esc_attr_e('Enter form title', 'mavlers-contact-form'); ?>"
-                           value="<?php echo $form ? esc_attr($form->form_name) : ''; ?>">
+                           value="<?php echo esc_attr($form_name); ?>">
                     <div class="mavlers-form-actions">
                         <button type="button" class="button button-primary" id="save-form">
                             <?php echo $form_id ? __('Update Form', 'mavlers-contact-form') : __('Save Form', 'mavlers-contact-form'); ?>
@@ -182,6 +174,34 @@ $field_types = Mavlers_Form_Builder::get_instance()->get_field_types();
                     </div>
                 </div>
 
+                <!-- Divider Field Settings -->
+                <div class="field-settings-section" data-field-types="divider">
+                    <div class="form-field">
+                        <label for="divider-text"><?php _e('Divider Text', 'mavlers-contact-form'); ?></label>
+                        <input type="text" name="divider_text" id="divider-text" class="widefat" value="Divider">
+                    </div>
+                    <div class="form-field">
+                        <label for="divider-style"><?php _e('Divider Style', 'mavlers-contact-form'); ?></label>
+                        <select name="divider_style" id="divider-style" class="widefat">
+                            <option value="solid"><?php _e('Solid', 'mavlers-contact-form'); ?></option>
+                            <option value="dashed"><?php _e('Dashed', 'mavlers-contact-form'); ?></option>
+                            <option value="dotted"><?php _e('Dotted', 'mavlers-contact-form'); ?></option>
+                        </select>
+                    </div>
+                    <div class="form-field">
+                        <label for="divider-color"><?php _e('Divider Color', 'mavlers-contact-form'); ?></label>
+                        <input type="color" name="divider_color" id="divider-color" value="#ddd">
+                    </div>
+                    <div class="form-field">
+                        <label for="divider-width"><?php _e('Divider Width', 'mavlers-contact-form'); ?></label>
+                        <select name="divider_width" id="divider-width" class="widefat">
+                            <option value="full"><?php _e('Full Width', 'mavlers-contact-form'); ?></option>
+                            <option value="half"><?php _e('Half Width', 'mavlers-contact-form'); ?></option>
+                            <option value="third"><?php _e('One Third Width', 'mavlers-contact-form'); ?></option>
+                        </select>
+                    </div>
+                </div>
+
                 <!-- Submit Button Settings -->
                 <div class="field-settings-section" data-field-types="submit">
                     <div class="form-field">
@@ -195,6 +215,27 @@ $field_types = Mavlers_Form_Builder::get_instance()->get_field_types();
                     <div class="form-field">
                         <label for="html-content"><?php _e('HTML Content', 'mavlers-contact-form'); ?></label>
                         <textarea name="content" id="html-content" class="widefat" rows="10"></textarea>
+                    </div>
+                </div>
+
+                <!-- Captcha Field Settings -->
+                <div class="field-settings-section" data-field-types="captcha">
+                    <div class="form-field">
+                        <label for="captcha-type"><?php _e('Captcha Type', 'mavlers-contact-form'); ?></label>
+                        <select name="captcha_type" id="captcha-type" class="widefat">
+                            <option value="simple"><?php _e('Simple Math Captcha', 'mavlers-contact-form'); ?></option>
+                            <option value="recaptcha"><?php _e('reCAPTCHA', 'mavlers-contact-form'); ?></option>
+                        </select>
+                    </div>
+                    <div class="form-field recaptcha-settings" style="display: none;">
+                        <label for="site-key"><?php _e('Site Key', 'mavlers-contact-form'); ?></label>
+                        <input type="text" name="site_key" id="site-key" class="widefat">
+                        <p class="description"><?php _e('Enter your reCAPTCHA site key', 'mavlers-contact-form'); ?></p>
+                    </div>
+                    <div class="form-field simple-captcha-settings">
+                        <label for="captcha-question"><?php _e('Captcha Question', 'mavlers-contact-form'); ?></label>
+                        <input type="text" name="captcha_question" id="captcha-question" class="widefat" value="What is 2 + 3?">
+                        <p class="description"><?php _e('Enter a simple math question for the captcha', 'mavlers-contact-form'); ?></p>
                     </div>
                 </div>
             </form>
@@ -219,6 +260,8 @@ jQuery(document).ready(function($) {
     // Initialize form builder
     if (typeof FormBuilder !== 'undefined') {
         FormBuilder.init();
+    } else {
+        console.error('FormBuilder is not defined');
     }
 
     // Show/hide field settings sections based on field type
