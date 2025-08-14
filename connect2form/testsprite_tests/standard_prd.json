@@ -1,0 +1,171 @@
+{
+  "meta": {
+    "project": "Connect2Form - Advanced Contact Form Builder",
+    "date": "2025-08-08",
+    "prepared_by": "Software Development Manager"
+  },
+  "product_overview": "Connect2Form is a professional WordPress plugin that provides an intuitive drag-and-drop form builder allowing users to create custom contact forms with over 15 field types. It features advanced CRM integrations including Mailchimp and HubSpot, robust security measures, and is fully compliant with accessibility standards. The plugin supports mobile responsiveness, conditional logic, email notifications, and spam protection to deliver a comprehensive form solution for WordPress sites.",
+  "core_goals": [
+    "Enable users to create highly customizable and accessible forms via a drag-and-drop interface.",
+    "Seamlessly integrate with popular CRM and marketing tools such as Mailchimp and HubSpot for real-time data synchronization.",
+    "Ensure enterprise-grade security with protections against CSRF, SQL injection, XSS, and spam attacks.",
+    "Comply with WCAG 2.1 AA accessibility standards for inclusive user experiences.",
+    "Optimize performance with caching, lazy loading, and database query optimizations.",
+    "Support WordPress standards and compatibility with major page builders for seamless theme integration.",
+    "Provide developers with extensible hooks and filters for customization and advanced workflows."
+  ],
+  "key_features": [
+    "Drag & Drop Form Builder with over 15 customizable field types including text, email, file upload, and date picker.",
+    "CRM Integrations: Built-in support for Mailchimp and HubSpot with real-time contact syncing, field mapping, and API communication.",
+    "Robust Security: Enhanced nonce verification, input sanitization, rate limiting, file upload validation, and protection against SQL injection and XSS.",
+    "Accessibility Compliance: Full WCAG 2.1 AA adherence including screen reader support, keyboard navigation, ARIA labels, focus management, and high contrast mode.",
+    "Mobile Responsiveness: Fully responsive forms that render appropriately on all devices including desktops, tablets, and smartphones.",
+    "Conditional Logic: Ability to show or hide form fields dynamically based on user input.",
+    "Email Notifications: Customizable email templates with SMTP support for notifications.",
+    "Spam Protection: Support for reCAPTCHA v2/v3 and honeypot fields to prevent spam submissions.",
+    "Performance Optimizations: Database query caching, asset optimization, lazy loading, memory management, and cleanup routines.",
+    "Admin Interface: WordPress backend UI for managing forms, submissions, and plugin settings.",
+    "Developer Friendly: Extensive hooks and filters for form data manipulation, submission handling, email customization, validation, and integrations settings.",
+    "Integration Manager: Modular integration framework facilitating adding and managing third-party service integrations.",
+    "GDPR Compliance Features: Data retention controls and privacy options for compliance management."
+  ],
+  "user_flow_summary": [
+    "User logs into WordPress admin and navigates to the Connect2Form section to create or manage forms.",
+    "User utilizes the drag-and-drop builder to design a form, adding various field types and applying conditional logic as needed.",
+    "User configures form settings including email notifications, spam protection measures, and styling options.",
+    "User integrates the form with CRM systems like Mailchimp or HubSpot by setting up API credentials and mapping fields.",
+    "User embeds the generated shortcode into WordPress pages or posts to render the form on the frontend.",
+    "Site visitors access the page, fill out the form, undergo validation and spam protection checks, and submit their entries.",
+    "Form submissions are securely processed, stored in the database, and optionally synchronized with connected CRMs.",
+    "Administrators review and manage form submissions from the backend admin interface with options for exporting data.",
+    "Users can customize the plugin behavior further using available hooks and filters or extend integrations via the Integration Manager."
+  ],
+  "validation_criteria": [
+    "Forms can be created, saved, and edited successfully using the drag-and-drop builder without errors.",
+    "All supported field types render correctly on the frontend and accept valid input while enforcing validation rules.",
+    "Form submissions are processed securely with nonce validation, sanitization, and protection against injection attacks.",
+    "CRM integrations with Mailchimp and HubSpot perform real-time synchronization and handle API errors gracefully.",
+    "Accessibility features meet WCAG 2.1 AA standards as verified by audits including screen reader compatibility and keyboard navigation.",
+    "Spam protection mechanisms such as reCAPTCHA and honeypot effectively prevent automated submissions.",
+    "Email notifications are sent correctly with customizable templates and SMTP settings.",
+    "Plugin admin interface and settings pages function correctly and maintain state across sessions.",
+    "Performance benchmarks demonstrate optimized load times and memory usage compared to baseline.",
+    "Integration hooks and filters respond correctly to customizations and do not break core functionality."
+  ],
+  "code_summary": {
+    "tech_stack": [
+      "PHP",
+      "WordPress",
+      "MySQL",
+      "JavaScript",
+      "jQuery",
+      "AJAX",
+      "CSS",
+      "HTML"
+    ],
+    "features": [
+      {
+        "name": "Form Builder",
+        "description": "Core form building functionality with drag-and-drop interface and field management",
+        "files": [
+          "includes/class-connect2form-form-builder.php",
+          "assets/js/form-builder.js",
+          "assets/css/form-builder.css"
+        ]
+      },
+      {
+        "name": "Form Rendering",
+        "description": "Frontend form rendering with shortcode support and accessibility features",
+        "files": [
+          "includes/class-connect2form-form-renderer.php",
+          "includes/class-connect2form-accessibility.php"
+        ]
+      },
+      {
+        "name": "Form Submission Handler",
+        "description": "Handles form submissions, validation, and data processing",
+        "files": [
+          "includes/class-connect2form-submission-handler.php"
+        ]
+      },
+      {
+        "name": "Admin Interface",
+        "description": "WordPress admin interface for managing forms, submissions, and settings",
+        "files": [
+          "includes/class-connect2form-admin.php",
+          "includes/class-connect2form-forms-list-table.php",
+          "includes/class-connect2form-submissions-list-table.php",
+          "assets/js/admin.js",
+          "assets/css/admin.css"
+        ]
+      },
+      {
+        "name": "Settings Management",
+        "description": "Plugin settings and configuration management",
+        "files": [
+          "includes/class-connect2form-settings.php"
+        ]
+      },
+      {
+        "name": "Database Management",
+        "description": "Database operations, migrations, and table management",
+        "files": [
+          "includes/class-connect2form-activator.php",
+          "includes/class-connect2form-deactivator.php",
+          "includes/c2f-wpdb-helpers.php"
+        ]
+      },
+      {
+        "name": "Performance Optimization",
+        "description": "Caching, optimization, and performance improvements",
+        "files": [
+          "includes/class-connect2form-performance.php"
+        ]
+      },
+      {
+        "name": "Security Features",
+        "description": "Security measures, nonce validation, and data sanitization",
+        "files": [
+          "includes/class-connect2form-security.php"
+        ]
+      },
+      {
+        "name": "Integrations Manager",
+        "description": "Third-party integrations including HubSpot, with service layer architecture",
+        "files": [
+          "addons/integrations-manager/integrations-manager.php",
+          "addons/integrations-manager/src/",
+          "addons/integrations-manager/assets/",
+          "addons/integrations-manager/templates/"
+        ]
+      },
+      {
+        "name": "HubSpot Integration",
+        "description": "Specific HubSpot integration with field mapping and API communication",
+        "files": [
+          "addons/integrations-manager/src/Integrations/Hubspot/HubspotIntegration.php",
+          "addons/integrations-manager/src/Integrations/Hubspot/templates/hubspot-form-settings.php",
+          "addons/integrations-manager/assets/js/admin/hubspot-form.js"
+        ]
+      },
+      {
+        "name": "Service Layer",
+        "description": "Service-oriented architecture with FormService, SubmissionService, and DatabaseManager",
+        "files": [
+          "addons/integrations-manager/src/Core/Services/ServiceManager.php",
+          "addons/integrations-manager/src/Core/Services/FormService.php",
+          "addons/integrations-manager/src/Core/Services/SubmissionService.php",
+          "addons/integrations-manager/src/Core/Services/DatabaseManager.php",
+          "addons/integrations-manager/src/Core/Services/CacheManager.php"
+        ]
+      },
+      {
+        "name": "Plugin Core",
+        "description": "Main plugin initialization, hooks, and core functionality",
+        "files": [
+          "connect2form.php"
+        ]
+      }
+    ]
+  }
+}

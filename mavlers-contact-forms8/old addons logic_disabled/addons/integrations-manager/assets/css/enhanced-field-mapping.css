@@ -1,0 +1,343 @@
+/**
+ * Enhanced Field Mapping Styles
+ * 
+ * CSS styles for the enhanced field mapping modal interface
+ */
+
+/* Modal Styles */
+.enhanced-mapping-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 100000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(3px);
+}
+
+.modal-content {
+    position: relative;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    width: 90%;
+    max-width: 1200px;
+    max-height: 80vh;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Modal Header */
+.modal-header {
+    padding: 20px 24px;
+    border-bottom: 1px solid #e1e1e1;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #f8f9fa;
+}
+
+.modal-header h3 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 600;
+    color: #2c3e50;
+}
+
+.close-modal {
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: #666;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+}
+
+.close-modal:hover {
+    background: #e74c3c;
+    color: #fff;
+}
+
+/* Modal Body */
+.modal-body {
+    flex: 1;
+    padding: 24px;
+    overflow-y: auto;
+    position: relative;
+}
+
+/* Mapping Container */
+.mapping-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+    min-height: 400px;
+}
+
+.mapping-column {
+    background: #f8f9fa;
+    border: 2px solid #e1e1e1;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.column-header {
+    background: #2c3e50;
+    color: #fff;
+    padding: 16px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.column-header h4 {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.field-count {
+    background: rgba(255, 255, 255, 0.2);
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 12px;
+}
+
+/* Fields List */
+.fields-list {
+    padding: 16px;
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.field-item {
+    background: #fff;
+    border: 1px solid #e1e1e1;
+    border-radius: 6px;
+    padding: 12px 16px;
+    margin-bottom: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.field-item:hover {
+    border-color: #3498db;
+    box-shadow: 0 2px 8px rgba(52, 152, 219, 0.1);
+    transform: translateY(-1px);
+}
+
+.field-item.connected {
+    border-color: #27ae60;
+    background: #f8fff8;
+}
+
+.field-item.required::before {
+    content: "";
+    position: absolute;
+    left: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 4px;
+    height: 4px;
+    background: #e74c3c;
+    border-radius: 50%;
+}
+
+.field-item.required {
+    padding-left: 24px;
+}
+
+.field-label {
+    font-weight: 500;
+    color: #2c3e50;
+}
+
+.field-type,
+.field-id {
+    font-size: 12px;
+    color: #7f8c8d;
+    background: #ecf0f1;
+    padding: 2px 6px;
+    border-radius: 3px;
+}
+
+.required {
+    color: #e74c3c;
+    font-weight: bold;
+    margin-left: 4px;
+}
+
+/* Loading Placeholder */
+.loading-placeholder {
+    text-align: center;
+    padding: 40px 20px;
+    color: #7f8c8d;
+}
+
+.spinning {
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+/* Mapping Status */
+.mapping-status {
+    margin-top: 20px;
+    padding: 12px 16px;
+    background: #e8f4fd;
+    border: 1px solid #bee5eb;
+    border-radius: 6px;
+    color: #2c3e50;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.mapping-status .dashicons {
+    color: #3498db;
+}
+
+/* Modal Footer */
+.modal-footer {
+    padding: 16px 24px;
+    border-top: 1px solid #e1e1e1;
+    background: #f8f9fa;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.modal-footer .button {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+/* Setting Badge */
+.setting-badge {
+    display: inline-block;
+    padding: 2px 6px;
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    border-radius: 3px;
+    margin-left: 8px;
+}
+
+.setting-badge.new {
+    background: #e67e22;
+    color: #fff;
+}
+
+/* Enhanced Mapping Controls */
+.enhanced-mapping-controls {
+    display: flex;
+    gap: 8px;
+    margin-top: 8px;
+}
+
+.enhanced-mapping-controls .button {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .modal-content {
+        width: 95%;
+        max-height: 90vh;
+    }
+    
+    .mapping-container {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+    
+    .modal-header,
+    .modal-footer {
+        padding: 16px;
+    }
+    
+    .modal-body {
+        padding: 16px;
+    }
+}
+
+/* Connection Animation */
+.field-item.connecting {
+    animation: pulse 0.6s ease-in-out infinite alternate;
+}
+
+@keyframes pulse {
+    from {
+        box-shadow: 0 0 0 0 rgba(52, 152, 219, 0.7);
+    }
+    to {
+        box-shadow: 0 0 0 10px rgba(52, 152, 219, 0);
+    }
+}
+
+/* Error States */
+.error {
+    color: #e74c3c;
+    background: #fdf2f2;
+    border: 1px solid #fbb4af;
+    padding: 12px;
+    border-radius: 6px;
+    text-align: center;
+}
+
+/* Success States */
+.success {
+    color: #27ae60;
+    background: #f8fff8;
+    border: 1px solid #86d993;
+    padding: 12px;
+    border-radius: 6px;
+}
+
+/* Scrollbar Styling */
+.fields-list::-webkit-scrollbar {
+    width: 6px;
+}
+
+.fields-list::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 3px;
+}
+
+.fields-list::-webkit-scrollbar-thumb {
+    background: #bdc3c7;
+    border-radius: 3px;
+}
+
+.fields-list::-webkit-scrollbar-thumb:hover {
+    background: #95a5a6;
+} 

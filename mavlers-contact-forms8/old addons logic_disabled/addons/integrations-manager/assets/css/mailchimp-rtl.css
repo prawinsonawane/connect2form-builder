@@ -1,0 +1,609 @@
+/**
+ * RTL (Right-to-Left) Styles for Mailchimp Integration
+ * 
+ * Supports Arabic, Hebrew, Persian, and other RTL languages
+ */
+
+/* Base RTL Layout */
+.mailchimp-admin-container[dir="rtl"],
+.mailchimp-admin-container.rtl {
+    direction: rtl;
+    text-align: right;
+}
+
+/* Header and Navigation */
+.rtl .mailchimp-header-content {
+    flex-direction: row-reverse;
+}
+
+.rtl .mailchimp-title .dashicons {
+    margin-left: 10px;
+    margin-right: 0;
+}
+
+.rtl .mailchimp-language-controls {
+    flex-direction: row-reverse;
+}
+
+.rtl .nav-tab {
+    margin-left: 0;
+    margin-right: 5px;
+}
+
+.rtl .nav-tab .dashicons {
+    margin-left: 8px;
+    margin-right: 0;
+}
+
+/* Form Elements */
+.rtl .form-table th {
+    text-align: right;
+    padding-right: 0;
+    padding-left: 10px;
+}
+
+.rtl .form-table td {
+    text-align: right;
+}
+
+.rtl .api-key-wrapper {
+    flex-direction: row-reverse;
+}
+
+.rtl .api-key-wrapper input {
+    text-align: right;
+}
+
+.rtl .toggle-visibility {
+    margin-left: 0;
+    margin-right: 10px;
+}
+
+.rtl .required {
+    margin-left: 5px;
+    margin-right: 0;
+}
+
+/* Button Groups */
+.rtl .form-actions {
+    flex-direction: row-reverse;
+}
+
+.rtl .button-group {
+    flex-direction: row-reverse;
+}
+
+.rtl .button .dashicons {
+    margin-left: 5px;
+    margin-right: 0;
+}
+
+/* Field Mapping */
+.rtl .field-mapping-container {
+    direction: rtl;
+}
+
+.rtl .field-mapping-item {
+    flex-direction: row-reverse;
+}
+
+.rtl .drag-handle {
+    margin-left: 0;
+    margin-right: 10px;
+}
+
+.rtl .field-source {
+    text-align: right;
+    border-right: none;
+    border-left: 3px solid #ffe01b;
+}
+
+.rtl .field-target {
+    text-align: right;
+}
+
+.rtl .mapping-arrow {
+    transform: scaleX(-1);
+}
+
+/* Analytics Dashboard */
+.rtl .analytics-grid {
+    direction: rtl;
+}
+
+.rtl .analytics-card .card-icon {
+    float: right;
+    margin-left: 0;
+    margin-right: 15px;
+}
+
+.rtl .analytics-card .card-content {
+    text-align: right;
+}
+
+.rtl .chart-container {
+    direction: ltr; /* Keep charts LTR for readability */
+}
+
+.rtl .chart-legend {
+    text-align: right;
+}
+
+/* Custom Fields Manager */
+.rtl .custom-fields-grid {
+    direction: rtl;
+}
+
+.rtl .field-item {
+    text-align: right;
+}
+
+.rtl .field-item .field-actions {
+    left: auto;
+    right: 10px;
+}
+
+.rtl .field-type-badge {
+    margin-left: 0;
+    margin-right: 10px;
+}
+
+/* Status Indicators */
+.rtl .status-indicator {
+    float: right;
+    margin-left: 0;
+    margin-right: 10px;
+}
+
+.rtl .status-content {
+    flex-direction: row-reverse;
+}
+
+.rtl .status-icon {
+    margin-left: 10px;
+    margin-right: 0;
+}
+
+/* Quick Actions Panel */
+.rtl .mailchimp-quick-actions {
+    left: 20px;
+    right: auto;
+}
+
+.rtl .quick-action {
+    text-align: right;
+    flex-direction: row-reverse;
+}
+
+.rtl .quick-action .dashicons {
+    margin-left: 8px;
+    margin-right: 0;
+}
+
+.rtl .health-item {
+    flex-direction: row-reverse;
+}
+
+.rtl .health-item .indicator {
+    margin-left: 8px;
+    margin-right: 0;
+}
+
+/* Modal Dialogs */
+.rtl .modal-header {
+    flex-direction: row-reverse;
+}
+
+.rtl .modal-footer {
+    flex-direction: row-reverse;
+}
+
+.rtl .modal-close {
+    left: 20px;
+    right: auto;
+}
+
+/* Toast Notifications */
+.rtl .mailchimp-toast-container {
+    left: 20px;
+    right: auto;
+}
+
+.rtl .toast {
+    transform: translateX(-100%);
+    text-align: right;
+}
+
+.rtl .toast.show {
+    transform: translateX(0);
+}
+
+/* Tables */
+.rtl .wp-list-table th {
+    text-align: right;
+}
+
+.rtl .wp-list-table td {
+    text-align: right;
+}
+
+.rtl .row-actions {
+    float: left;
+}
+
+.rtl .row-actions a {
+    margin-left: 0;
+    margin-right: 10px;
+}
+
+/* Search and Filters */
+.rtl .search-box {
+    float: left;
+}
+
+.rtl .search-box input[type="search"] {
+    text-align: right;
+}
+
+.rtl .tablenav .actions {
+    float: left;
+}
+
+/* Accordion and Expandable Sections */
+.rtl .accordion-header .dashicons {
+    float: left;
+    margin-left: 5px;
+    margin-right: 0;
+}
+
+.rtl .expandable-section .toggle-icon {
+    float: left;
+}
+
+/* Progress Bars */
+.rtl .progress-bar {
+    direction: ltr; /* Keep progress LTR for consistency */
+}
+
+.rtl .progress-text {
+    direction: rtl;
+    text-align: right;
+}
+
+/* Dropdown Menus */
+.rtl .dropdown-menu {
+    left: auto;
+    right: 0;
+}
+
+.rtl .dropdown-item {
+    text-align: right;
+}
+
+.rtl .dropdown-item .dashicons {
+    float: right;
+    margin-left: 8px;
+    margin-right: 0;
+}
+
+/* Pagination */
+.rtl .pagination {
+    direction: ltr; /* Keep pagination LTR */
+}
+
+.rtl .pagination-info {
+    float: left;
+}
+
+/* Help Text and Descriptions */
+.rtl .description {
+    text-align: right;
+}
+
+.rtl .help-tip {
+    float: left;
+    margin-left: 5px;
+    margin-right: 0;
+}
+
+/* Loading States */
+.rtl .loading-placeholder {
+    text-align: center; /* Center is universal */
+}
+
+.rtl .spinner {
+    float: none; /* Center spinners */
+    margin: 0 auto;
+}
+
+/* Tabs Content */
+.rtl .tab-content {
+    direction: rtl;
+}
+
+.rtl .tab-pane {
+    text-align: right;
+}
+
+/* Form Validation */
+.rtl .validation-message {
+    text-align: right;
+}
+
+.rtl .error-icon {
+    float: right;
+    margin-left: 5px;
+    margin-right: 0;
+}
+
+/* Responsive RTL Adjustments */
+@media (max-width: 768px) {
+    .rtl .mailchimp-header-content {
+        flex-direction: column;
+    }
+    
+    .rtl .mailchimp-language-controls {
+        width: 100%;
+        justify-content: space-between;
+    }
+    
+    .rtl .api-key-wrapper {
+        flex-direction: column;
+    }
+    
+    .rtl .mailchimp-quick-actions {
+        position: relative;
+        left: auto;
+        right: auto;
+        width: 100%;
+        margin-top: 20px;
+    }
+    
+    .rtl .quick-action {
+        flex-direction: row;
+        text-align: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .rtl .form-table,
+    .rtl .form-table tbody,
+    .rtl .form-table tr,
+    .rtl .form-table th,
+    .rtl .form-table td {
+        display: block;
+        width: 100%;
+    }
+    
+    .rtl .form-table th {
+        text-align: right;
+        padding-bottom: 5px;
+    }
+    
+    .rtl .form-table td {
+        padding-top: 5px;
+        padding-bottom: 15px;
+    }
+}
+
+/* Arabic-specific adjustments */
+.rtl[lang="ar"] .mailchimp-title,
+.rtl[lang="ar"] .section-title {
+    font-family: "Tahoma", "Arial", sans-serif;
+}
+
+.rtl[lang="ar"] input,
+.rtl[lang="ar"] textarea,
+.rtl[lang="ar"] select {
+    font-family: "Tahoma", "Arial", sans-serif;
+}
+
+/* Hebrew-specific adjustments */
+.rtl[lang="he"] .mailchimp-title,
+.rtl[lang="he"] .section-title {
+    font-family: "Arial Hebrew", "David", "Tahoma", sans-serif;
+}
+
+.rtl[lang="he"] input,
+.rtl[lang="he"] textarea,
+.rtl[lang="he"] select {
+    font-family: "Arial Hebrew", "David", "Tahoma", sans-serif;
+}
+
+/* Persian-specific adjustments */
+.rtl[lang="fa"] .mailchimp-title,
+.rtl[lang="fa"] .section-title {
+    font-family: "Tahoma", "Arial", "Iran Sans", sans-serif;
+}
+
+.rtl[lang="fa"] input,
+.rtl[lang="fa"] textarea,
+.rtl[lang="fa"] select {
+    font-family: "Tahoma", "Arial", "Iran Sans", sans-serif;
+}
+
+/* High Contrast Mode Support */
+@media (prefers-contrast: high) {
+    .rtl .field-mapping-item {
+        border: 2px solid;
+    }
+    
+    .rtl .status-indicator {
+        border: 1px solid;
+    }
+    
+    .rtl .nav-tab.nav-tab-active {
+        border-bottom-width: 4px;
+    }
+}
+
+/* Reduced Motion Support */
+@media (prefers-reduced-motion: reduce) {
+    .rtl .toast {
+        transition: opacity 0.3s ease;
+        transform: none;
+    }
+    
+    .rtl .fade-in,
+    .rtl .slide-in {
+        animation: none;
+    }
+}
+
+/* Print Styles for RTL */
+@media print {
+    .rtl .mailchimp-admin-container {
+        direction: rtl;
+    }
+    
+    .rtl .mailchimp-quick-actions,
+    .rtl .mailchimp-toast-container {
+        display: none;
+    }
+    
+    .rtl .form-table th {
+        text-align: right;
+        font-weight: bold;
+    }
+    
+    .rtl .form-table td {
+        text-align: right;
+    }
+}
+
+/* Dark Mode RTL Support */
+@media (prefers-color-scheme: dark) {
+    .rtl .mailchimp-admin-container {
+        background: #1a1a1a;
+        color: #ffffff;
+    }
+    
+    .rtl .mailchimp-header {
+        background: linear-gradient(135deg, #ffd700 0%, #ffb347 100%);
+        color: #000000;
+    }
+    
+    .rtl .form-table th {
+        color: #ffffff;
+    }
+    
+    .rtl .nav-tab {
+        background: #2a2a2a;
+        color: #ffffff;
+        border-color: #444444;
+    }
+    
+    .rtl .nav-tab.nav-tab-active {
+        background: #1a1a1a;
+        border-bottom-color: #ffd700;
+    }
+}
+
+/* Focus Styles for RTL */
+.rtl input:focus,
+.rtl textarea:focus,
+.rtl select:focus,
+.rtl button:focus {
+    outline: 2px solid #005cee;
+    outline-offset: 2px;
+}
+
+.rtl .nav-tab:focus {
+    box-shadow: inset 0 0 0 2px #005cee;
+}
+
+/* Custom Scrollbar for RTL */
+.rtl .mailchimp-admin-container ::-webkit-scrollbar {
+    width: 12px;
+}
+
+.rtl .mailchimp-admin-container ::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+.rtl .mailchimp-admin-container ::-webkit-scrollbar-thumb {
+    background: #c1c1c1;
+    border-radius: 6px;
+}
+
+.rtl .mailchimp-admin-container ::-webkit-scrollbar-thumb:hover {
+    background: #a8a8a8;
+}
+
+/* Utility Classes for RTL */
+.rtl .text-left {
+    text-align: right !important;
+}
+
+.rtl .text-right {
+    text-align: left !important;
+}
+
+.rtl .float-left {
+    float: right !important;
+}
+
+.rtl .float-right {
+    float: left !important;
+}
+
+.rtl .margin-left {
+    margin-right: inherit;
+    margin-left: 0;
+}
+
+.rtl .margin-right {
+    margin-left: inherit;
+    margin-right: 0;
+}
+
+.rtl .padding-left {
+    padding-right: inherit;
+    padding-left: 0;
+}
+
+.rtl .padding-right {
+    padding-left: inherit;
+    padding-right: 0;
+}
+
+/* Border Utilities for RTL */
+.rtl .border-left {
+    border-right: inherit;
+    border-left: none;
+}
+
+.rtl .border-right {
+    border-left: inherit;
+    border-right: none;
+}
+
+/* Position Utilities for RTL */
+.rtl .left-0 {
+    right: 0;
+    left: auto;
+}
+
+.rtl .right-0 {
+    left: 0;
+    right: auto;
+}
+
+/* Animation Utilities for RTL */
+.rtl .slide-in-left {
+    animation: slideInRight 0.3s ease;
+}
+
+.rtl .slide-in-right {
+    animation: slideInLeft 0.3s ease;
+}
+
+@keyframes slideInLeft {
+    from { transform: translateX(-20px); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes slideInRight {
+    from { transform: translateX(20px); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+} 

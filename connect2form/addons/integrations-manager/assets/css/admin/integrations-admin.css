@@ -1,0 +1,518 @@
+/**
+ * Connect2Form - Integrations Admin Styles
+ * 
+ * Clean, modern CSS with no inline styles in PHP
+ * Proper separation of concerns
+ */
+
+/* ==========================================================================
+   Page Layout
+   ========================================================================== */
+
+.connect2form-integrations-page {
+    margin: 20px 20px 0 2px;
+}
+
+.page-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 0 0 20px 0;
+    font-size: 24px;
+    font-weight: 400;
+    line-height: 1.3;
+}
+
+.page-title .dashicons {
+    font-size: 28px;
+    color: #0073aa;
+}
+
+.page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    padding: 20px;
+    background: #fff;
+    border: 1px solid #ccd0d4;
+    border-radius: 4px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+}
+
+.page-description {
+    margin: 0;
+    color: #666;
+    font-size: 14px;
+    flex: 1;
+}
+
+/* ==========================================================================
+   Statistics Summary
+   ========================================================================== */
+
+.stats-summary {
+    display: flex;
+    gap: 20px;
+}
+
+.stat-item {
+    text-align: center;
+    min-width: 80px;
+}
+
+.stat-number {
+    display: block;
+    font-size: 24px;
+    font-weight: 600;
+    color: #0073aa;
+    line-height: 1;
+}
+
+.stat-label {
+    display: block;
+    font-size: 12px;
+    color: #666;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-top: 4px;
+}
+
+/* ==========================================================================
+   Navigation Tabs
+   ========================================================================== */
+
+.nav-tab-wrapper {
+    margin-bottom: 0;
+    border-bottom: 1px solid #ccd0d4;
+}
+
+.nav-tab {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 12px 20px;
+    text-decoration: none;
+    border: 1px solid transparent;
+    border-bottom: none;
+    margin-bottom: -1px;
+    background: #f1f1f1;
+    color: #666;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+.nav-tab:hover {
+    background: #fff;
+    color: #0073aa;
+}
+
+.nav-tab-active {
+    background: #fff;
+    color: #0073aa;
+    border-color: #ccd0d4;
+    border-bottom-color: #fff;
+}
+
+.nav-tab .dashicons {
+    font-size: 16px;
+}
+
+/* ==========================================================================
+   Tab Content
+   ========================================================================== */
+
+.tab-content {
+    background: #fff;
+    border: 1px solid #ccd0d4;
+    border-top: none;
+    padding: 30px;
+    min-height: 400px;
+}
+
+/* ==========================================================================
+   Integrations Grid
+   ========================================================================== */
+
+.integrations-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 24px;
+}
+
+.integration-card {
+    background: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    overflow: hidden;
+}
+
+.integration-card:hover {
+    border-color: #0073aa;
+    box-shadow: 0 4px 12px rgba(0,115,170,0.1);
+    transform: translateY(-2px);
+}
+
+/* ==========================================================================
+   Card Header
+   ========================================================================== */
+
+.card-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    padding: 20px;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.integration-icon-wrapper {
+    flex-shrink: 0;
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0,115,170,0.1);
+    border-radius: 8px;
+}
+
+.integration-icon-wrapper .dashicons {
+    font-size: 24px;
+}
+
+.integration-icon {
+    width: 32px;
+    height: 32px;
+    object-fit: contain;
+}
+
+.integration-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.integration-name {
+    margin: 0 0 6px 0;
+    font-size: 18px;
+    font-weight: 600;
+    color: #23282d;
+    line-height: 1.2;
+}
+
+.integration-description {
+    margin: 0;
+    color: #666;
+    font-size: 14px;
+    line-height: 1.4;
+}
+
+.integration-status {
+    flex-shrink: 0;
+}
+
+/* ==========================================================================
+   Status Indicators
+   ========================================================================== */
+
+.status-indicator {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    border-radius: 16px;
+    font-size: 12px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.status-indicator.configured {
+    background: #d4edda;
+    color: #155724;
+}
+
+.status-indicator.not-configured {
+    background: #fff3cd;
+    color: #856404;
+}
+
+.status-indicator .dashicons {
+    font-size: 14px;
+}
+
+/* ==========================================================================
+   Card Body
+   ========================================================================== */
+
+.card-body {
+    padding: 20px;
+}
+
+.integration-actions {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 16px;
+}
+
+.integration-actions .button {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 16px;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+.integration-actions .button .dashicons {
+    font-size: 16px;
+}
+
+.integration-actions .button-primary:hover {
+    background: #005a87;
+    border-color: #005a87;
+}
+
+.integration-actions .button-secondary:hover {
+    background: #f0f0f0;
+    border-color: #999;
+}
+
+/* ==========================================================================
+   Integration Meta
+   ========================================================================== */
+
+.integration-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.meta-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 13px;
+}
+
+.meta-label {
+    color: #666;
+    font-weight: 500;
+}
+
+.meta-value {
+    color: #23282d;
+}
+
+/* ==========================================================================
+   No Integrations State
+   ========================================================================== */
+
+.no-integrations {
+    text-align: center;
+    padding: 60px 20px;
+    grid-column: 1 / -1;
+}
+
+.no-integrations-icon {
+    margin-bottom: 20px;
+}
+
+.no-integrations-icon .dashicons {
+    font-size: 64px;
+    color: #ddd;
+}
+
+.no-integrations h3 {
+    margin: 0 0 10px 0;
+    color: #666;
+    font-size: 20px;
+    font-weight: 500;
+}
+
+.no-integrations p {
+    margin: 0;
+    color: #999;
+    font-size: 14px;
+}
+
+/* ==========================================================================
+   Modal Styles
+   ========================================================================== */
+
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.5);
+    z-index: 100000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-content {
+    background: #fff;
+    border-radius: 8px;
+    width: 90%;
+    max-width: 500px;
+    max-height: 80vh;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+}
+
+.modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.modal-header h4 {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.modal-close {
+    background: none;
+    border: none;
+    padding: 6px;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background 0.2s ease;
+}
+
+.modal-close:hover {
+    background: #f0f0f0;
+}
+
+.modal-close .dashicons {
+    font-size: 20px;
+    color: #666;
+}
+
+.modal-body {
+    padding: 20px;
+}
+
+/* ==========================================================================
+   Loading States
+   ========================================================================== */
+
+.loading {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #666;
+}
+
+.spinner {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    border: 2px solid #e0e0e0;
+    border-top-color: #0073aa;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* ==========================================================================
+   Status Badges
+   ========================================================================== */
+
+.status-badge {
+    display: inline-block;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.status-badge.badge-success {
+    background: #d4edda;
+    color: #155724;
+}
+
+.status-badge.badge-error {
+    background: #f8d7da;
+    color: #721c24;
+}
+
+.status-badge.badge-warning {
+    background: #fff3cd;
+    color: #856404;
+}
+
+.status-badge.badge-info {
+    background: #d1ecf1;
+    color: #0c5460;
+}
+
+.status-badge.badge-default {
+    background: #e2e3e5;
+    color: #383d41;
+}
+
+/* ==========================================================================
+   Responsive Design
+   ========================================================================== */
+
+@media (max-width: 768px) {
+    .page-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 16px;
+    }
+    
+    .integrations-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .card-header {
+        flex-direction: column;
+        text-align: center;
+        gap: 12px;
+    }
+    
+    .integration-actions {
+        flex-direction: column;
+    }
+    
+    .modal-content {
+        width: 95%;
+        margin: 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    .connect2form-integrations-page {
+        margin: 10px 10px 0 0;
+    }
+    
+    .page-title {
+        font-size: 20px;
+    }
+    
+    .page-title .dashicons {
+        font-size: 24px;
+    }
+    
+    .tab-content {
+        padding: 20px;
+    }
+} 

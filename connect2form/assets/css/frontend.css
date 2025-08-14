@@ -1,0 +1,819 @@
+*
+{
+    box-sizing: border-box;
+}
+/* Form Wrapper */
+.connect2form-form-wrapper {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 0px;
+}
+
+/* Form Fields */
+.connect2form-field {
+    margin-bottom: 20px;
+}
+
+.connect2form-field label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 600;
+    font-size:16px;
+    text-transform:capitalize;
+}
+
+.connect2form-field .required {
+    color: #dc3232;
+   
+    margin-left: 3px;
+}
+input .error{
+    border: 1px solid #dc3232;
+}
+.field-error {
+    color: #dc3232;;
+}
+.connect2form-field label.connect2form-radio-label, .connect2form-field label.connect2form-checkbox-label {
+    font-weight: 400;
+}
+
+.connect2form-field select
+{
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 16px;
+    padding-right: 35px;
+}
+.file-preview {
+    
+    margin-top: 10px;
+}
+
+.file-preview img {
+    width: 70px;
+}
+/* Input Fields */
+.connect2form-field input[type="text"], .connect2form-field input[type="email"], .connect2form-field input[type="phone"], .connect2form-field input[type="number"], .connect2form-field input[type="date"], .connect2form-field select, .connect2form-field textarea {
+    width: 100%;
+    padding: 0px 12px;
+    border: 1px solid #cbcbcb;
+    font-size: 14px;
+    height: 50px;
+    background-color: #fff;    
+    color: #333;
+}
+.connect2form-field input[type="file"]{
+width: 100%;
+font-size: 16px;
+}
+.connect2form-field input[type="text"]::placeholder,
+.connect2form-field input[type="email"]::placeholder,
+.connect2form-field input[type="phone"]::placeholder,
+.connect2form-field input[type="number"]::placeholder,
+.connect2form-field input[type="date"]::placeholder,
+.connect2form-field textarea::placeholder {
+    color: #333;
+}
+.connect2form-field input[type="text"]:focus,
+.connect2form-field input[type="email"]:focus,
+.connect2form-field input[type="phone"]:focus,
+.connect2form-field input[type="number"]:focus,
+.connect2form-field input[type="date"]:focus,
+.connect2form-field select:focus,
+.connect2form-field textarea:focus,
+.connect2form-field input[type="file"]:focus {
+    border-color: #2271b1;
+    box-shadow: none;
+    outline: none;
+}
+.connect2form-field input[type="file"]:focus {
+    border: transparent;
+}
+/* Placeholder Styling */
+.connect2form-field input[type="text"]::placeholder,
+.connect2form-field input[type="email"]::placeholder,
+.connect2form-field input[type="phone"]::placeholder,
+.connect2form-field input[type="number"]::placeholder,
+.connect2form-field input[type="date"]::placeholder,
+.connect2form-field textarea::placeholder {
+    color: #333;
+}
+.connect2form-field textarea
+{
+    height: 100px;
+    resize: none;
+    padding: 12px;
+}
+/* Radio and Checkbox Fields */
+.connect2form-radio-label,
+.connect2form-checkbox-label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: normal;
+}
+
+.connect2form-field-radio,
+.connect2form-field-checkbox {
+    margin-top: 10px;
+}
+
+/* Custom Radio Button Styling */
+.connect2form-radio-label {
+    position: relative;
+    padding-left: 30px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.connect2form-radio-label input[type="radio"] {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+}
+
+.connect2form-radio-label span {
+    position: relative;
+    padding-left: 0;
+}
+
+.connect2form-radio-label::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 16px;
+    height: 16px;
+    border: 2px solid #cbcbcb;
+    border-radius: 50%;
+    background-color: #fff;
+    transition: all 0.3s ease;
+}
+
+.connect2form-radio-label::after {
+    content: '';
+    position: absolute;
+    left: 6px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: #2271b1;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.connect2form-radio-label:hover::before {
+    border-color: #2271b1;
+}
+
+.connect2form-radio-label input[type="radio"]:checked + span::before {
+    border-color: #2271b1;
+}
+
+.connect2form-radio-label input[type="radio"]:checked::before {
+    border-color: #2271b1;
+}
+
+.connect2form-radio-label input[type="radio"]:checked ~ ::after,
+.connect2form-radio-label:has(input[type="radio"]:checked)::after {
+    opacity: 1;
+}
+
+  
+  input[type="file"]::file-selector-button {
+    padding: 10px;
+    border-width: 0;
+    border-radius: 4px;
+    background-color: #2271b1;
+    color: #FFFFFF;
+    font-weight: bold;
+    transition: all .25s ease-in-out;
+    cursor: pointer;
+    margin-right: 10px;
+  }
+
+  .file-preview .file-name {
+    font-size: 16px;
+}
+/* Custom Checkbox Styling */
+.connect2form-checkbox-label {
+    position: relative;
+    padding-left: 30px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.connect2form-checkbox-label input[type="checkbox"] {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+}
+
+.connect2form-checkbox-label span {
+    position: relative;
+    padding-left: 0;
+}
+
+.connect2form-checkbox-label::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 16px;
+    height: 16px;
+    border: 2px solid #cbcbcb;
+    border-radius: 3px;
+    background-color: #fff;
+    transition: all 0.3s ease;
+}
+
+.connect2form-checkbox-label::after {
+    content: '';
+    position: absolute;
+    left: 6px;
+    top: 3px;
+    transform: rotate(45deg);
+    width: 6px;
+    height: 10px;
+    border: solid #2271b1;
+    border-width: 0 2px 2px 0;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.connect2form-checkbox-label:hover::before {
+    border-color: #2271b1;
+}
+
+.connect2form-checkbox-label input[type="checkbox"]:checked + span::before {
+    background-color: #2271b1;
+    border-color: #2271b1;
+}
+
+.connect2form-checkbox-label input[type="checkbox"]:checked::before {
+    background-color: #2271b1;
+    border-color: #2271b1;
+}
+
+.connect2form-checkbox-label input[type="checkbox"]:checked ~ ::after,
+.connect2form-checkbox-label:has(input[type="checkbox"]:checked)::after {
+    opacity: 1;
+}
+
+/* Focus states for accessibility */
+.connect2form-radio-label input[type="radio"]:focus + span::before,
+.connect2form-checkbox-label input[type="checkbox"]:focus + span::before {
+    box-shadow: 0 0 0 3px rgba(34, 113, 177, 0.2);
+}
+
+/* Disabled states */
+.connect2form-radio-label input[type="radio"]:disabled + span,
+.connect2form-checkbox-label input[type="checkbox"]:disabled + span {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.connect2form-radio-label input[type="radio"]:disabled::before,
+.connect2form-checkbox-label input[type="checkbox"]:disabled::before {
+    background-color: #f5f5f5;
+    border-color: #ddd;
+}
+
+/* Image Choice Fields */
+.connect2form-image-choice {
+    display: inline-block;
+    margin: 0 10px 10px 0;
+    text-align: center;
+    cursor: pointer;
+}
+
+.connect2form-image-choice input[type="radio"] {
+    display: none;
+}
+
+.connect2form-image-choice img {
+    max-width: 150px;
+    height: auto;
+    border: 2px solid transparent;
+    transition: border-color 0.3s ease;
+}
+
+.connect2form-image-choice input[type="radio"]:checked + img {
+    border-color: #2271b1;
+}
+
+.connect2form-image-choice .choice-label {
+    display: block;
+    margin-top: 5px;
+    font-size: 12px;
+}
+
+/* File Upload Field */
+.connect2form-field-file_upload input[type="file"] {
+    padding: 10px;
+    border: 2px dashed #ddd;
+    background: #f9f9f9;
+    width: 100%;
+    cursor: pointer;
+}
+
+.connect2form-field-file_upload input[type="file"]:hover {
+    border-color: #2271b1;
+}
+
+/* Submit Button */
+.connect2form-submit-wrapper {
+    margin-top: 30px;
+}
+
+.connect2form-submit {
+    padding: 16px 24px;
+    background-color: #000;
+    color: #fff;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    min-width: 145px;
+    text-transform: uppercase;
+}
+.connect2form-submit:hover {
+    background-color: #135e96;
+}
+
+/* Form Messages */
+.connect2form-message {
+    margin-top: 20px;
+    padding: 10px 15px;
+    display: none;
+}
+
+.connect2form-message.success {
+    background-color: #dff0d8;
+    border: 1px solid #d6e9c6;
+    color: #3c763d;
+}
+
+.connect2form-message.error {
+    background-color: #f2dede;
+    border: 1px solid #ebccd1;
+    color: #a94442;
+}
+
+/* Date Picker */
+.connect2form-datepicker {
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="%23666" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>');
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 16px;
+    padding-right: 35px;
+    width: 100%;
+    height: 50px;
+    border: 1px solid #cbcbcb;
+    border-radius: 4px;
+    font-size: 14px;
+    color: #333;
+    background-color: #fff;
+    box-sizing: border-box;
+    margin-bottom: 10px;
+}
+
+.connect2form-datepicker:focus {
+    outline: none;
+    border-color: #007cba;
+    box-shadow: 0 0 0 2px rgba(0, 124, 186, 0.2);
+}
+
+.connect2form-datepicker::placeholder {
+    color: #999;
+    opacity: 1;
+}
+
+/* Date field styling for DD-MM-YYYY format */
+.connect2form-field input[type="text"][pattern*="date"] {
+    font-family: monospace;
+}
+
+/* Date field container styling */
+.connect2form-field:has(.connect2form-datepicker) {
+    margin-bottom: 20px;
+}
+
+.connect2form-field .connect2form-datepicker {
+    margin-top: 5px;
+}
+
+/* Datepicker dropdown styling */
+.datepicker-dropdown {
+    position: absolute;
+    z-index: 1000;
+    background: white;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    min-width: 280px;
+    padding: 0;
+    margin-top: 5px;
+}
+
+.datepicker-container {
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    padding: 15px;
+    min-width: 280px;
+}
+
+.datepicker-panel {
+    min-width: 280px;
+}
+
+.datepicker-panel ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 2px;
+    justify-items: center;
+}
+
+.datepicker-panel li {
+    padding: 8px 4px;
+    text-align: center;
+    cursor: pointer;
+    border-radius: 4px;
+    margin: 0;
+    width: 100%;
+    box-sizing: border-box;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 35px;
+}
+
+.datepicker-panel li:hover {
+    background-color: #f0f8ff;
+    color: #007cba;
+}
+
+.datepicker-panel li.picked {
+    background-color: #007cba;
+    color: white;
+    font-weight: bold;
+}
+
+.datepicker-panel li.disabled {
+    color: #ccc;
+    cursor: not-allowed;
+    background-color: #f9f9f9;
+}
+
+.datepicker-panel li.muted {
+    color: #999;
+    background-color: #f5f5f5;
+}
+
+.datepicker-panel li.highlighted {
+    background-color: #e6f3ff;
+    color: #007cba;
+    font-weight: bold;
+}
+
+/* Calendar header styling */
+.datepicker-panel ul:first-child {
+    background-color: #f8f9fa;
+    border-bottom: 1px solid #e9ecef;
+    padding: 10px 0;
+    margin-bottom: 10px;
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 2px;
+    justify-items: center;
+}
+
+.datepicker-panel ul:first-child li {
+    font-weight: bold;
+    color: #495057;
+    cursor: default;
+    width: 100%;
+    padding: 8px 4px;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 35px;
+    box-sizing: border-box;
+}
+
+.datepicker-panel ul:first-child li:hover {
+    background-color: transparent;
+    color: #495057;
+}
+
+
+/* reCAPTCHA */
+.g-recaptcha {
+    margin: 10px 0;
+}
+
+/* CAPTCHA field styling */
+.connect2form-field-captcha {
+    margin-bottom: 20px;
+}
+
+.connect2form-field-captcha .g-recaptcha {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 10px 0;
+}
+
+/* Ensure no label is shown for CAPTCHA fields */
+.connect2form-field-captcha label {
+    display: none !important;
+}
+
+/* Hide browser validation messages for date fields */
+.connect2form-field input[type="date"]::-webkit-validation-bubble-message {
+    display: none !important;
+}
+
+.connect2form-field input[type="date"]::-webkit-validation-bubble-arrow {
+    display: none !important;
+}
+
+/* Prevent browser validation messages */
+.connect2form-field input[type="date"]:invalid {
+    box-shadow: none;
+}
+
+.connect2form-field input[type="date"]:invalid::-webkit-validation-bubble-message {
+    display: none !important;
+}
+.connect2form-field.connect2form-field-text.twocol-left {
+    width: 50%;
+    float: left;
+    padding-right: 15px;
+}
+.connect2form-field.connect2form-field-text.twocol-right {
+    width: 50%;
+    float: left;
+}
+
+.connect2form-field.connect2form-field-text.twocol-right {
+    width: 50%;
+    float: left;
+}
+
+.connect2form-field.connect2form-field-text.no-label label,.connect2form-field.connect2form-field-email.no-label label, .connect2form-field.connect2form-field-textarea.no-label label{
+    display: none;
+}
+
+.connect2form-field.connect2form-field-text.no-label input, .connect2form-field.connect2form-field-email.no-label input, .connect2form-field.connect2form-field-textarea.no-label textarea,.connect2form-field.connect2form-field-select.no-label select{
+    border:0;
+    border-bottom: 1px solid #333;
+}
+
+.custom-select {
+    position: relative;
+}
+.custom-select >select
+{
+    display: none;
+}
+.selected-option {
+    width: 100%;
+    padding: 0px 12px;
+    border: 1px solid #cbcbcb;
+    font-size: 14px;
+    height: 50px;
+    background-color: #fff;
+    color: #333;
+    line-height: 50px;
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 16px;
+    font-weight: 400;
+
+    transition: 0.4s;
+}
+.selected-option.active
+{
+        background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 15 12 9 18 15'%3e%3c/polyline%3e%3c/svg%3e");
+
+}
+ul.options-list {
+    position: absolute;
+    background-color: #fff;
+    z-index: 1;
+    left: 0;
+    right: 0;
+    list-style: none;
+    padding-left: 0;
+    margin: 0;
+    border: 1px solid #cbcbcb;
+    cursor: pointer;
+    display: none;
+        max-height: 200px;
+    overflow: auto;
+}
+li.option-item {
+    font-size: 14px;
+    padding: 6px 13px;
+    text-transform: capitalize;
+    transition: 0.4s;
+}
+li.option-item:hover
+{
+    background-color: #135e96;
+    color: #fff;
+}
+/* Responsive Design */
+@media screen and (max-width: 600px) {
+    .connect2form-form-wrapper {
+        padding: 0;
+    }
+
+    .connect2form-image-choice img {
+        max-width: 120px;
+    }
+
+    .connect2form-submit {
+        width: 100%;
+    }
+} 
+
+/* Field Layout Styles for Frontend */
+.connect2form-form-wrapper .connect2form-field[data-layout="two-column"] {
+    width: 48%;
+    display: inline-block;
+    margin-left: calc(4% - 5px);
+    vertical-align: top;
+    box-sizing: border-box;
+}
+
+.connect2form-form-wrapper .connect2form-field[data-layout="two-column"]:nth-child(2n) {
+    margin-left: 0;
+}
+
+.connect2form-form-wrapper .connect2form-field[data-layout="three-column"] {
+    width: 31%;
+    display: inline-block;
+    margin-right: 2%;
+    vertical-align: top;
+    box-sizing: border-box;
+}
+
+.connect2form-form-wrapper .connect2form-field[data-layout="three-column"]:nth-child(3n) {
+    margin-right: 0;
+}
+
+/* Form container for multi-column layouts */
+.connect2form-form-wrapper.multi-column {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2%;
+}
+
+.connect2form-form-wrapper.multi-column .connect2form-field {
+    margin-bottom: 20px;
+}
+
+/* Responsive adjustments for multi-column layouts */
+@media (max-width: 768px) {
+    .connect2form-form-wrapper .connect2form-field[data-layout="two-column"],
+    .connect2form-form-wrapper .connect2form-field[data-layout="three-column"] {
+        width: 100%;
+        margin-right: 0;
+    }
+    
+    .connect2form-form-wrapper.multi-column {
+        flex-direction: column;
+        gap: 0;
+    }
+} 
+
+/* Phone Number Field Styling */
+.connect2form-field input[type="tel"] {
+    width: 100%;
+    padding: 0px 12px;
+    border: 1px solid #cbcbcb;
+    font-size: 14px;
+    height: 50px;
+    background-color: #fff;    
+    color: #333;
+}
+
+.connect2form-field input[type="tel"]:focus {
+    border-color: #2271b1;
+    box-shadow: 0 0 0 1px #2271b1;
+    outline: none;
+}
+
+.connect2form-field input[type="tel"]::placeholder {
+    color: #333;
+}
+
+/* Phone number validation styling */
+.connect2form-field input[type="tel"]:invalid {
+    border-color: #dc3232;
+}
+
+.connect2form-field input[type="tel"]:valid {
+    border-color: #46b450;
+}
+
+/* Conditional Fields */
+.connect2form-field[data-conditional="true"] {
+    transition: all 0.3s ease;
+    overflow: hidden;
+}
+
+.connect2form-field[data-conditional="true"]:not([style*="display: none"]) {
+    animation: slideDown 0.3s ease;
+}
+
+.connect2form-field[data-conditional="true"][style*="display: none"] {
+    animation: slideUp 0.3s ease;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        max-height: 0;
+        margin-bottom: 0;
+    }
+    to {
+        opacity: 1;
+        max-height: 500px;
+        margin-bottom: 20px;
+    }
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 1;
+        max-height: 500px;
+        margin-bottom: 20px;
+    }
+    to {
+        opacity: 0;
+        max-height: 0;
+        margin-bottom: 0;
+    }
+}
+
+/* Disabled required fields when hidden */
+.connect2form-field[data-conditional="true"][style*="display: none"] input[required],
+.connect2form-field[data-conditional="true"][style*="display: none"] select[required],
+.connect2form-field[data-conditional="true"][style*="display: none"] textarea[required] {
+    pointer-events: none;
+} 
+
+.datepicker-panel.datepicker-hide{display: none;}
+
+/* Ensure datepicker can be hidden */
+.datepicker-dropdown.hidden,
+.datepicker-container.hidden {
+    display: none !important;
+}
+
+/* Manual hide class */
+.datepicker-hidden {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+}
+
+/* Force hide datepicker when hidden */
+.datepicker-dropdown[style*="display: none"],
+.datepicker-container[style*="display: none"] {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+}

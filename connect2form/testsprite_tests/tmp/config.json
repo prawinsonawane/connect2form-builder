@@ -1,0 +1,16 @@
+{
+  "status": "commited",
+  "type": "backend",
+  "scope": "codebase",
+  "localEndpoint": "http://localhost:80",
+  "backendAuthType": "public",
+  "executionArgs": {
+    "projectName": "connect2form",
+    "projectPath": "c:/Users/UP1314/Local Sites/mavlers/app/public/wp-content/plugins/connect2form",
+    "testIds": [],
+    "additionalInstruction": "Test the WordPress plugin functionality including form creation, submission handling, admin interface, and HubSpot integration",
+    "envs": {
+      "API_KEY": "sk-user-JU_W9Q78184a47_93uOW2BNtDisyhkduU5T7IlpUwSH3GgWe97HV5KtDyjvkvAU0G-XarFNMDewMCijqbL7pLDbZN34gxrRWFwA4KjwsByZ-ZxULPUxd9_SSTMLT98REPyQ"
+    }
+  }
+}

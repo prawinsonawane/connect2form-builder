@@ -1,0 +1,473 @@
+*
+{
+    box-sizing: border-box;
+}
+/* Form Wrapper */
+.mavlers-cf-form-wrapper {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 0px;
+}
+
+/* Form Fields */
+.mavlers-cf-field {
+    margin-bottom: 20px;
+}
+
+.mavlers-cf-field label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 600;
+    font-size:16px;
+    text-transform:capitalize;
+}
+
+.mavlers-cf-field .required {
+    color: #dc3232;
+    margin-left: 3px;
+}
+.mavlers-cf-field label.mavlers-cf-radio-label, .mavlers-cf-field label.mavlers-cf-checkbox-label {
+    font-weight: 400;
+}
+
+.mavlers-cf-field select
+{
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 16px;
+    padding-right: 35px;
+}
+.file-preview {
+    
+    margin-top: 10px;
+}
+
+.file-preview img {
+    width: 70px;
+}
+/* Input Fields */
+.mavlers-cf-field input[type="text"], .mavlers-cf-field input[type="email"], .mavlers-cf-field input[type="number"], .mavlers-cf-field input[type="date"], .mavlers-cf-field select, .mavlers-cf-field textarea {
+    width: 100%;
+    padding: 0px 12px;
+    border: 1px solid #cbcbcb;
+    font-size: 14px;
+    height: 50px;
+    background-color: #fff;    
+    color: #333;
+}
+.mavlers-cf-field input[type="file"]{
+width: 100%;
+font-size: 16px;
+}
+.mavlers-cf-field input[type="text"]::placeholder,
+.mavlers-cf-field input[type="email"]::placeholder,
+.mavlers-cf-field input[type="number"]::placeholder,
+.mavlers-cf-field input[type="date"]::placeholder,
+.mavlers-cf-field textarea::placeholder {
+    color: #333;
+}
+.mavlers-cf-field input[type="text"]:focus,
+.mavlers-cf-field input[type="email"]:focus,
+.mavlers-cf-field input[type="number"]:focus,
+.mavlers-cf-field input[type="date"]:focus,
+.mavlers-cf-field select:focus,
+.mavlers-cf-field textarea:focus,
+.mavlers-cf-field input[type="file"]:focus {
+    border-color: #2271b1;
+    box-shadow: none;
+    outline: none;
+}
+.mavlers-cf-field input[type="file"]:focus {
+    border: transparent;
+}
+/* Placeholder Styling */
+.mavlers-cf-field input[type="text"]::placeholder,
+.mavlers-cf-field input[type="email"]::placeholder,
+.mavlers-cf-field input[type="number"]::placeholder,
+.mavlers-cf-field input[type="date"]::placeholder,
+.mavlers-cf-field textarea::placeholder {
+    color: #333;
+}
+.mavlers-cf-field textarea
+{
+    height: 100px;
+    resize: none;
+    padding: 12px;
+}
+/* Radio and Checkbox Fields */
+.mavlers-cf-radio-label,
+.mavlers-cf-checkbox-label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: normal;
+}
+
+.mavlers-cf-field-radio,
+.mavlers-cf-field-checkbox {
+    margin-top: 10px;
+}
+
+/* Custom Radio Button Styling */
+.mavlers-cf-radio-label {
+    position: relative;
+    padding-left: 30px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.mavlers-cf-radio-label input[type="radio"] {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+}
+
+.mavlers-cf-radio-label span {
+    position: relative;
+    padding-left: 0;
+}
+
+.mavlers-cf-radio-label::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 16px;
+    height: 16px;
+    border: 2px solid #cbcbcb;
+    border-radius: 50%;
+    background-color: #fff;
+    transition: all 0.3s ease;
+}
+
+.mavlers-cf-radio-label::after {
+    content: '';
+    position: absolute;
+    left: 6px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: #2271b1;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.mavlers-cf-radio-label:hover::before {
+    border-color: #2271b1;
+}
+
+.mavlers-cf-radio-label input[type="radio"]:checked + span::before {
+    border-color: #2271b1;
+}
+
+.mavlers-cf-radio-label input[type="radio"]:checked::before {
+    border-color: #2271b1;
+}
+
+.mavlers-cf-radio-label input[type="radio"]:checked ~ ::after,
+.mavlers-cf-radio-label:has(input[type="radio"]:checked)::after {
+    opacity: 1;
+}
+
+  
+  input[type="file"]::file-selector-button {
+    padding: 10px;
+    border-width: 0;
+    border-radius: 4px;
+    background-color: #2271b1;
+    color: #FFFFFF;
+    font-weight: bold;
+    transition: all .25s ease-in-out;
+    cursor: pointer;
+    margin-right: 10px;
+  }
+
+  .file-preview .file-name {
+    font-size: 16px;
+}
+/* Custom Checkbox Styling */
+.mavlers-cf-checkbox-label {
+    position: relative;
+    padding-left: 30px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.mavlers-cf-checkbox-label input[type="checkbox"] {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+}
+
+.mavlers-cf-checkbox-label span {
+    position: relative;
+    padding-left: 0;
+}
+
+.mavlers-cf-checkbox-label::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 16px;
+    height: 16px;
+    border: 2px solid #cbcbcb;
+    border-radius: 3px;
+    background-color: #fff;
+    transition: all 0.3s ease;
+}
+
+.mavlers-cf-checkbox-label::after {
+    content: '';
+    position: absolute;
+    left: 6px;
+    top: 3px;
+    transform: rotate(45deg);
+    width: 6px;
+    height: 10px;
+    border: solid #2271b1;
+    border-width: 0 2px 2px 0;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.mavlers-cf-checkbox-label:hover::before {
+    border-color: #2271b1;
+}
+
+.mavlers-cf-checkbox-label input[type="checkbox"]:checked + span::before {
+    background-color: #2271b1;
+    border-color: #2271b1;
+}
+
+.mavlers-cf-checkbox-label input[type="checkbox"]:checked::before {
+    background-color: #2271b1;
+    border-color: #2271b1;
+}
+
+.mavlers-cf-checkbox-label input[type="checkbox"]:checked ~ ::after,
+.mavlers-cf-checkbox-label:has(input[type="checkbox"]:checked)::after {
+    opacity: 1;
+}
+
+/* Focus states for accessibility */
+.mavlers-cf-radio-label input[type="radio"]:focus + span::before,
+.mavlers-cf-checkbox-label input[type="checkbox"]:focus + span::before {
+    box-shadow: 0 0 0 3px rgba(34, 113, 177, 0.2);
+}
+
+/* Disabled states */
+.mavlers-cf-radio-label input[type="radio"]:disabled + span,
+.mavlers-cf-checkbox-label input[type="checkbox"]:disabled + span {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.mavlers-cf-radio-label input[type="radio"]:disabled::before,
+.mavlers-cf-checkbox-label input[type="checkbox"]:disabled::before {
+    background-color: #f5f5f5;
+    border-color: #ddd;
+}
+
+/* Image Choice Fields */
+.mavlers-cf-image-choice {
+    display: inline-block;
+    margin: 0 10px 10px 0;
+    text-align: center;
+    cursor: pointer;
+}
+
+.mavlers-cf-image-choice input[type="radio"] {
+    display: none;
+}
+
+.mavlers-cf-image-choice img {
+    max-width: 150px;
+    height: auto;
+    border: 2px solid transparent;
+    transition: border-color 0.3s ease;
+}
+
+.mavlers-cf-image-choice input[type="radio"]:checked + img {
+    border-color: #2271b1;
+}
+
+.mavlers-cf-image-choice .choice-label {
+    display: block;
+    margin-top: 5px;
+    font-size: 12px;
+}
+
+/* File Upload Field */
+.mavlers-cf-field-file_upload input[type="file"] {
+    padding: 10px;
+    border: 2px dashed #ddd;
+    background: #f9f9f9;
+    width: 100%;
+    cursor: pointer;
+}
+
+.mavlers-cf-field-file_upload input[type="file"]:hover {
+    border-color: #2271b1;
+}
+
+/* Submit Button */
+.mavlers-cf-submit-wrapper {
+    margin-top: 30px;
+}
+
+.mavlers-cf-submit {
+    padding: 16px 24px;
+    background-color: #000;
+    color: #fff;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    min-width: 145px;
+    text-transform: uppercase;
+}
+.mavlers-cf-submit:hover {
+    background-color: #135e96;
+}
+
+/* Form Messages */
+.mavlers-cf-message {
+    margin-top: 20px;
+    padding: 10px 15px;
+    display: none;
+}
+
+.mavlers-cf-message.success {
+    background-color: #dff0d8;
+    border: 1px solid #d6e9c6;
+    color: #3c763d;
+}
+
+.mavlers-cf-message.error {
+    background-color: #f2dede;
+    border: 1px solid #ebccd1;
+    color: #a94442;
+}
+
+/* Date Picker */
+.mavlers-cf-datepicker {
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="%23666" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>');
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 16px;
+    padding-right: 35px;
+}
+
+/* reCAPTCHA */
+.g-recaptcha {
+    margin: 10px 0;
+}
+.mavlers-cf-field.mavlers-cf-field-text.twocol-left {
+    width: 50%;
+    float: left;
+    padding-right: 15px;
+}
+.mavlers-cf-field.mavlers-cf-field-text.twocol-right {
+    width: 50%;
+    float: left;
+}
+
+.mavlers-cf-field.mavlers-cf-field-text.twocol-right {
+    width: 50%;
+    float: left;
+}
+
+.mavlers-cf-field.mavlers-cf-field-text.no-label label,.mavlers-cf-field.mavlers-cf-field-email.no-label label, .mavlers-cf-field.mavlers-cf-field-textarea.no-label label{
+    display: none;
+}
+
+.mavlers-cf-field.mavlers-cf-field-text.no-label input, .mavlers-cf-field.mavlers-cf-field-email.no-label input, .mavlers-cf-field.mavlers-cf-field-textarea.no-label textarea,.mavlers-cf-field.mavlers-cf-field-select.no-label select{
+    border:0;
+    border-bottom: 1px solid #333;
+}
+
+.custom-select {
+    position: relative;
+}
+.custom-select >select
+{
+    display: none;
+}
+.selected-option {
+    width: 100%;
+    padding: 0px 12px;
+    border: 1px solid #cbcbcb;
+    font-size: 14px;
+    height: 50px;
+    background-color: #fff;
+    color: #333;
+    line-height: 50px;
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 16px;
+    font-weight: 400;
+
+    transition: 0.4s;
+}
+.selected-option.active
+{
+        background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 15 12 9 18 15'%3e%3c/polyline%3e%3c/svg%3e");
+
+}
+ul.options-list {
+    position: absolute;
+    background-color: #fff;
+    z-index: 1;
+    left: 0;
+    right: 0;
+    list-style: none;
+    padding-left: 0;
+    margin: 0;
+    border: 1px solid #cbcbcb;
+    cursor: pointer;
+    display: none;
+        max-height: 200px;
+    overflow: auto;
+}
+li.option-item {
+    font-size: 14px;
+    padding: 6px 13px;
+    text-transform: capitalize;
+    transition: 0.4s;
+}
+li.option-item:hover
+{
+    background-color: #135e96;
+    color: #fff;
+}
+/* Responsive Design */
+@media screen and (max-width: 600px) {
+    .mavlers-cf-form-wrapper {
+        padding: 0;
+    }
+
+    .mavlers-cf-image-choice img {
+        max-width: 120px;
+    }
+
+    .mavlers-cf-submit {
+        width: 100%;
+    }
+} 

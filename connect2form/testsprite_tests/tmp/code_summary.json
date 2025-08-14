@@ -1,0 +1,116 @@
+{
+  "tech_stack": [
+    "PHP",
+    "WordPress",
+    "MySQL",
+    "JavaScript",
+    "jQuery",
+    "AJAX",
+    "CSS",
+    "HTML"
+  ],
+  "features": [
+    {
+      "name": "Form Builder",
+      "description": "Core form building functionality with drag-and-drop interface and field management",
+      "files": [
+        "includes/class-connect2form-form-builder.php",
+        "assets/js/form-builder.js",
+        "assets/css/form-builder.css"
+      ]
+    },
+    {
+      "name": "Form Rendering",
+      "description": "Frontend form rendering with shortcode support and accessibility features",
+      "files": [
+        "includes/class-connect2form-form-renderer.php",
+        "includes/class-connect2form-accessibility.php"
+      ]
+    },
+    {
+      "name": "Form Submission Handler",
+      "description": "Handles form submissions, validation, and data processing",
+      "files": [
+        "includes/class-connect2form-submission-handler.php"
+      ]
+    },
+    {
+      "name": "Admin Interface",
+      "description": "WordPress admin interface for managing forms, submissions, and settings",
+      "files": [
+        "includes/class-connect2form-admin.php",
+        "includes/class-connect2form-forms-list-table.php",
+        "includes/class-connect2form-submissions-list-table.php",
+        "assets/js/admin.js",
+        "assets/css/admin.css"
+      ]
+    },
+    {
+      "name": "Settings Management",
+      "description": "Plugin settings and configuration management",
+      "files": [
+        "includes/class-connect2form-settings.php"
+      ]
+    },
+    {
+      "name": "Database Management",
+      "description": "Database operations, migrations, and table management",
+      "files": [
+        "includes/class-connect2form-activator.php",
+        "includes/class-connect2form-deactivator.php",
+        "includes/c2f-wpdb-helpers.php"
+      ]
+    },
+    {
+      "name": "Performance Optimization",
+      "description": "Caching, optimization, and performance improvements",
+      "files": [
+        "includes/class-connect2form-performance.php"
+      ]
+    },
+    {
+      "name": "Security Features",
+      "description": "Security measures, nonce validation, and data sanitization",
+      "files": [
+        "includes/class-connect2form-security.php"
+      ]
+    },
+    {
+      "name": "Integrations Manager",
+      "description": "Third-party integrations including HubSpot, with service layer architecture",
+      "files": [
+        "addons/integrations-manager/integrations-manager.php",
+        "addons/integrations-manager/src/",
+        "addons/integrations-manager/assets/",
+        "addons/integrations-manager/templates/"
+      ]
+    },
+    {
+      "name": "HubSpot Integration",
+      "description": "Specific HubSpot integration with field mapping and API communication",
+      "files": [
+        "addons/integrations-manager/src/Integrations/Hubspot/HubspotIntegration.php",
+        "addons/integrations-manager/src/Integrations/Hubspot/templates/hubspot-form-settings.php",
+        "addons/integrations-manager/assets/js/admin/hubspot-form.js"
+      ]
+    },
+    {
+      "name": "Service Layer",
+      "description": "Service-oriented architecture with FormService, SubmissionService, and DatabaseManager",
+      "files": [
+        "addons/integrations-manager/src/Core/Services/ServiceManager.php",
+        "addons/integrations-manager/src/Core/Services/FormService.php",
+        "addons/integrations-manager/src/Core/Services/SubmissionService.php",
+        "addons/integrations-manager/src/Core/Services/DatabaseManager.php",
+        "addons/integrations-manager/src/Core/Services/CacheManager.php"
+      ]
+    },
+    {
+      "name": "Plugin Core",
+      "description": "Main plugin initialization, hooks, and core functionality",
+      "files": [
+        "connect2form.php"
+      ]
+    }
+  ]
+}

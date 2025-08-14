@@ -1,0 +1,527 @@
+/**
+ * Mailchimp Integration Styles
+ * 
+ * Comprehensive styling for Mailchimp integration with top-right corner messaging
+ */
+
+/* Top-right corner message system */
+.mavlers-cf-message {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 999999;
+    max-width: 400px;
+    padding: 15px 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 1.4;
+    transform: translateX(100%);
+    transition: transform 0.3s ease-in-out;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.mavlers-cf-message-show {
+    transform: translateX(0);
+}
+
+.mavlers-cf-message-success {
+    background-color: #d4edda;
+    color: #155724;
+    border-left: 4px solid #28a745;
+}
+
+.mavlers-cf-message-error {
+    background-color: #f8d7da;
+    color: #721c24;
+    border-left: 4px solid #dc3545;
+}
+
+.mavlers-cf-message-warning {
+    background-color: #fff3cd;
+    color: #856404;
+    border-left: 4px solid #ffc107;
+}
+
+.mavlers-cf-message-info {
+    background-color: #d1ecf1;
+    color: #0c5460;
+    border-left: 4px solid #17a2b8;
+}
+
+.mavlers-cf-message-close {
+    background: none;
+    border: none;
+    color: inherit;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-left: 10px;
+    opacity: 0.7;
+    transition: opacity 0.2s;
+}
+
+.mavlers-cf-message-close:hover {
+    opacity: 1;
+}
+
+.mavlers-cf-message-text {
+    flex: 1;
+}
+
+/* Mailchimp Integration Container */
+.mailchimp-integration-container {
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 20px;
+    margin: 20px 0;
+}
+
+.mailchimp-settings-section {
+    margin-bottom: 25px;
+}
+
+.mailchimp-settings-section h3 {
+    margin: 0 0 15px 0;
+    color: #333;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+/* Form Fields */
+.mailchimp-form-field {
+    margin-bottom: 15px;
+}
+
+.mailchimp-form-field label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 500;
+    color: #555;
+}
+
+.mailchimp-form-field input[type="text"],
+.mailchimp-form-field input[type="password"],
+.mailchimp-form-field select {
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+    transition: border-color 0.2s;
+}
+
+.mailchimp-form-field input[type="text"]:focus,
+.mailchimp-form-field input[type="password"]:focus,
+.mailchimp-form-field select:focus {
+    border-color: #0073aa;
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(0, 115, 170, 0.2);
+}
+
+.mailchimp-form-field input[type="checkbox"] {
+    margin-right: 8px;
+}
+
+.mailchimp-form-field .description {
+    font-size: 12px;
+    color: #666;
+    margin-top: 4px;
+}
+
+/* Buttons */
+.mailchimp-button {
+    display: inline-flex;
+    align-items: center;
+    padding: 8px 16px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background: #f7f7f7;
+    color: #555;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+    margin-right: 10px;
+    margin-bottom: 10px;
+}
+
+.mailchimp-button:hover {
+    background: #e7e7e7;
+    border-color: #ccc;
+    color: #333;
+}
+
+.mailchimp-button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.mailchimp-button-primary {
+    background: #0073aa;
+    border-color: #0073aa;
+    color: #fff;
+}
+
+.mailchimp-button-primary:hover {
+    background: #005a87;
+    border-color: #005a87;
+    color: #fff;
+}
+
+.mailchimp-button-success {
+    background: #28a745;
+    border-color: #28a745;
+    color: #fff;
+}
+
+.mailchimp-button-success:hover {
+    background: #218838;
+    border-color: #218838;
+    color: #fff;
+}
+
+.mailchimp-button-danger {
+    background: #dc3545;
+    border-color: #dc3545;
+    color: #fff;
+}
+
+.mailchimp-button-danger:hover {
+    background: #c82333;
+    border-color: #c82333;
+    color: #fff;
+}
+
+/* Field Mapping Table */
+.mailchimp-field-mapping-section {
+    margin-top: 20px;
+    padding: 20px;
+    background: #f9f9f9;
+    border-radius: 6px;
+    border: 1px solid #e1e1e1;
+}
+
+.mailchimp-field-mapping-section h4 {
+    margin: 0 0 15px 0;
+    color: #333;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+#mailchimp-field-mapping-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #fff;
+    border-radius: 4px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+#mailchimp-field-mapping-table th {
+    background: #f5f5f5;
+    padding: 12px 15px;
+    text-align: left;
+    font-weight: 600;
+    color: #333;
+    border-bottom: 1px solid #ddd;
+}
+
+#mailchimp-field-mapping-table td {
+    padding: 12px 15px;
+    border-bottom: 1px solid #eee;
+    vertical-align: middle;
+}
+
+#mailchimp-field-mapping-table tr:last-child td {
+    border-bottom: none;
+}
+
+#mailchimp-field-mapping-table tr:hover {
+    background-color: #f8f9fa;
+}
+
+.mailchimp-field-mapping-row {
+    transition: background-color 0.2s;
+}
+
+/* Loading States */
+.mailchimp-loading {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    border: 2px solid #f3f3f3;
+    border-top: 2px solid #0073aa;
+    border-radius: 50%;
+    animation: mailchimp-spin 1s linear infinite;
+    margin-right: 8px;
+}
+
+@keyframes mailchimp-spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.mailchimp-loading-text {
+    color: #666;
+    font-style: italic;
+}
+
+/* Status Indicators */
+.mailchimp-status {
+    display: inline-flex;
+    align-items: center;
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.mailchimp-status-success {
+    background: #d4edda;
+    color: #155724;
+}
+
+.mailchimp-status-error {
+    background: #f8d7da;
+    color: #721c24;
+}
+
+.mailchimp-status-warning {
+    background: #fff3cd;
+    color: #856404;
+}
+
+.mailchimp-status-info {
+    background: #d1ecf1;
+    color: #0c5460;
+}
+
+/* Status Indicators for Field Mapping */
+.mapping-status {
+    text-align: center;
+    vertical-align: middle;
+}
+
+.status-indicator {
+    display: inline-block;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    transition: all 0.2s ease;
+}
+
+.status-unmapped {
+    background-color: #f8f9fa;
+    color: #6c757d;
+    border: 1px solid #dee2e6;
+}
+
+.status-mapped {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+/* Enhanced field mapping table styles */
+#mailchimp-field-mapping-table .mailchimp-merge-field-select {
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+    transition: border-color 0.2s ease;
+}
+
+#mailchimp-field-mapping-table .mailchimp-merge-field-select:focus {
+    border-color: #007cba;
+    outline: none;
+    box-shadow: 0 0 0 1px #007cba;
+}
+
+#mailchimp-field-mapping-table .mailchimp-merge-field-select option {
+    padding: 8px;
+}
+
+/* Auto-mapping and clear buttons */
+.mailchimp-field-mapping-actions {
+    margin-top: 15px;
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.mailchimp-field-mapping-actions .mailchimp-button {
+    flex: 1;
+    min-width: 150px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .mavlers-cf-message {
+        top: 10px;
+        right: 10px;
+        left: 10px;
+        max-width: none;
+        transform: translateY(-100%);
+    }
+    
+    .mavlers-cf-message-show {
+        transform: translateY(0);
+    }
+    
+    .mailchimp-button {
+        display: block;
+        width: 100%;
+        margin-right: 0;
+        text-align: center;
+        justify-content: center;
+    }
+    
+    #mailchimp-field-mapping-table {
+        font-size: 12px;
+    }
+    
+    #mailchimp-field-mapping-table th,
+    #mailchimp-field-mapping-table td {
+        padding: 8px 10px;
+    }
+}
+
+/* Responsive status indicators */
+@media (max-width: 768px) {
+    .status-indicator {
+        font-size: 11px;
+        padding: 3px 6px;
+    }
+    
+    .mailchimp-field-mapping-actions {
+        flex-direction: column;
+    }
+    
+    .mailchimp-field-mapping-actions .mailchimp-button {
+        min-width: auto;
+    }
+}
+
+/* High Contrast Mode Support */
+@media (prefers-contrast: high) {
+    .mavlers-cf-message {
+        border: 2px solid currentColor;
+    }
+    
+    .mailchimp-form-field input,
+    .mailchimp-form-field select {
+        border-width: 2px;
+    }
+    
+    .mailchimp-button {
+        border-width: 2px;
+    }
+}
+
+/* Reduced Motion Support */
+@media (prefers-reduced-motion: reduce) {
+    .mavlers-cf-message {
+        transition: none;
+    }
+    
+    .mailchimp-loading {
+        animation: none;
+    }
+    
+    .mailchimp-button {
+        transition: none;
+    }
+}
+
+/* Accessibility Improvements */
+.mailchimp-form-field input:focus,
+.mailchimp-form-field select:focus,
+.mailchimp-button:focus {
+    outline: 2px solid #0073aa;
+    outline-offset: 2px;
+}
+
+.mailchimp-button:focus {
+    box-shadow: 0 0 0 2px rgba(0, 115, 170, 0.2);
+}
+
+/* Screen Reader Only */
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+/* Required Field Indicators */
+.mailchimp-form-field.required label::after {
+    content: " *";
+    color: #dc3545;
+}
+
+/* Error States */
+.mailchimp-form-field.has-error input,
+.mailchimp-form-field.has-error select {
+    border-color: #dc3545;
+}
+
+.mailchimp-form-field.has-error .error-message {
+    color: #dc3545;
+    font-size: 12px;
+    margin-top: 4px;
+}
+
+/* Success States */
+.mailchimp-form-field.has-success input,
+.mailchimp-form-field.has-success select {
+    border-color: #28a745;
+}
+
+/* Disabled States */
+.mailchimp-form-field input:disabled,
+.mailchimp-form-field select:disabled {
+    background-color: #f5f5f5;
+    color: #666;
+    cursor: not-allowed;
+} 
+
+/* Email required field styling */
+.mailchimp-field-mapping-row.email-required {
+    background-color: #fff8e1;
+    border-left: 3px solid #ff9800;
+}
+
+.mailchimp-field-mapping-row.email-required td:first-child {
+    font-weight: 600;
+    color: #e65100;
+}
+
+.mailchimp-field-mapping-row.email-required .mailchimp-merge-field-select {
+    border-color: #ff9800;
+}
+
+.mailchimp-field-mapping-row.email-required .mailchimp-merge-field-select:focus {
+    border-color: #f57c00;
+    box-shadow: 0 0 0 1px #f57c00;
+}
+
+/* Email field in dropdown styling */
+.mailchimp-merge-field-select option[value="EMAIL"] {
+    font-weight: 600;
+    color: #e65100;
+} 

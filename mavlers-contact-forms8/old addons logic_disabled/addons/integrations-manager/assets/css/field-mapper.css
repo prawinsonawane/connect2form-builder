@@ -1,0 +1,779 @@
+/*
+ * Mavlers Contact Forms - Field Mapper Styles
+ * 
+ * Styles specific to field mapping functionality
+ */
+
+/* ==========================================================================
+   Field Mapping Interface
+   ========================================================================== */
+
+.field-mapping-interface {
+    padding: 20px 0;
+}
+
+.mapping-instructions {
+    margin-bottom: 24px;
+    padding: 16px 20px;
+    background: #f8f9fa;
+    border: 1px solid #e0e5e8;
+    border-radius: 4px;
+}
+
+.mapping-instructions p {
+    margin: 0 0 12px 0;
+    color: #646970;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.mapping-tips {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    margin-top: 12px;
+}
+
+.tip-icon {
+    color: #007cba;
+    margin-top: 2px;
+}
+
+.mapping-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    margin-bottom: 24px;
+}
+
+.form-fields-column,
+.integration-fields-column {
+    background: #fff;
+    border: 1px solid #e0e5e8;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.column-header {
+    padding: 16px 20px;
+    background: #f8f9fa;
+    border-bottom: 1px solid #e0e5e8;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.column-header h4 {
+    margin: 0;
+    color: #1d2327;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.field-count {
+    font-size: 13px;
+    color: #646970;
+    background: #e0e5e8;
+    padding: 4px 8px;
+    border-radius: 2px;
+}
+
+.field-list {
+    max-height: 400px;
+    overflow-y: auto;
+    padding: 8px 0;
+}
+
+.field-item {
+    padding: 12px 20px;
+    border-bottom: 1px solid #f1f1f1;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    position: relative;
+}
+
+.field-item:last-child {
+    border-bottom: none;
+}
+
+.field-item:hover {
+    background: #f8f9fa;
+}
+
+.field-item.draggable:hover {
+    background: #e7f5ff;
+    cursor: grab;
+}
+
+.field-item.draggable:active {
+    cursor: grabbing;
+}
+
+.field-item.droppable.drag-over {
+    background: #e7f5ff;
+    border-left: 3px solid #007cba;
+}
+
+.field-item.mapped {
+    background: #e7f5e7;
+    border-left: 3px solid #46b450;
+}
+
+.field-item.mapped::before {
+    content: "✓";
+    position: absolute;
+    right: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #46b450;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.field-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.field-icon {
+    font-size: 16px;
+    color: #646970;
+    width: 20px;
+    text-align: center;
+}
+
+.field-details {
+    flex: 1;
+    min-width: 0;
+}
+
+.field-label {
+    font-weight: 600;
+    color: #1d2327;
+    font-size: 14px;
+    margin: 0 0 4px 0;
+    word-break: break-word;
+}
+
+.field-meta {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    margin-top: 4px;
+}
+
+.field-type {
+    font-size: 12px;
+    color: #646970;
+    background: #f1f1f1;
+    padding: 2px 6px;
+    border-radius: 2px;
+}
+
+.required-indicator {
+    color: #dc3232;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.field-description {
+    font-size: 13px;
+    color: #646970;
+    margin-top: 4px;
+    line-height: 1.4;
+}
+
+.field-actions {
+    margin-top: 8px;
+}
+
+.quick-map-btn {
+    background: none;
+    border: 1px solid #007cba;
+    color: #007cba;
+    padding: 4px 8px;
+    border-radius: 2px;
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.quick-map-btn:hover {
+    background: #007cba;
+    color: #fff;
+}
+
+/* Mapping Controls */
+.mapping-controls {
+    padding: 12px 20px;
+    border-top: 1px solid #f1f1f1;
+}
+
+.form-field-selector {
+    width: 100%;
+    padding: 6px 10px;
+    border: 1px solid #e0e5e8;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+.form-field-selector:focus {
+    border-color: #007cba;
+    outline: none;
+    box-shadow: 0 0 0 1px #007cba;
+}
+
+.remove-mapping {
+    background: none;
+    border: none;
+    color: #dc3232;
+    cursor: pointer;
+    padding: 4px;
+    margin-left: 8px;
+    border-radius: 2px;
+    transition: all 0.2s ease;
+}
+
+.remove-mapping:hover {
+    background: #dc3232;
+    color: #fff;
+}
+
+.mapped-field-info {
+    margin-top: 8px;
+    padding: 8px;
+    background: #e7f5e7;
+    border-radius: 4px;
+    font-size: 13px;
+}
+
+.mapped-to {
+    color: #46b450;
+}
+
+.mapped-to strong {
+    color: #1d2327;
+}
+
+/* Connection Visualization */
+.mapping-indicators {
+    position: relative;
+    padding: 20px 0;
+    background: linear-gradient(to right, #f8f9fa 0%, #fff 50%, #f8f9fa 100%);
+    text-align: center;
+    font-size: 13px;
+    color: #646970;
+}
+
+/* Auto Mapping */
+.auto-map-section {
+    margin: 20px 0;
+    text-align: center;
+}
+
+.auto-map-all {
+    background: #007cba;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.2s ease;
+}
+
+.auto-map-all:hover {
+    background: #005a87;
+}
+
+/* Mapping Statistics */
+.mapping-stats {
+    display: flex;
+    justify-content: center;
+    gap: 24px;
+    margin: 16px 0;
+}
+
+.connection-lines {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.connection-line {
+    position: absolute;
+    height: 2px;
+    background: #46b450;
+    transform-origin: left center;
+}
+
+/* Mapping Actions */
+.mapping-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 0;
+    border-top: 1px solid #e0e5e8;
+    margin-top: 20px;
+}
+
+.actions-left {
+    display: flex;
+    gap: 12px;
+}
+
+.validation-status {
+    font-size: 14px;
+    padding: 6px 12px;
+    border-radius: 4px;
+}
+
+.validation-status.valid {
+    background: #e7f5e7;
+    color: #46b450;
+}
+
+.validation-status.invalid {
+    background: #fce7e7;
+    color: #dc3232;
+}
+
+/* Responsive Field Mapping */
+@media (max-width: 1200px) {
+    .field-mapping-modal .modal-content {
+        max-width: 95%;
+    }
+    
+    .mapping-container {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+    
+    .mapping-indicators {
+        display: none;
+    }
+}
+
+@media (max-width: 768px) {
+    .mapping-container {
+        gap: 12px;
+    }
+    
+    .field-list {
+        max-height: 300px;
+    }
+    
+    .connection-lines {
+        display: none;
+    }
+    
+    .mapping-actions {
+        flex-direction: column;
+        gap: 12px;
+        align-items: stretch;
+    }
+    
+    .actions-left {
+        justify-content: center;
+    }
+}
+
+/* Drag and Drop States */
+.field-item.ui-draggable-dragging {
+    transform: rotate(2deg);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    background: #fff;
+    border: 1px solid #007cba;
+    z-index: 1000;
+}
+
+.field-item.ui-droppable-hover {
+    background: #e7f5ff;
+    border-left: 3px solid #007cba;
+}
+
+/* Loading States for Field Mapping */
+.field-mapping-loading {
+    text-align: center;
+    padding: 40px;
+    color: #646970;
+}
+
+.field-mapping-loading .dashicons {
+    font-size: 24px;
+    animation: spin 1s linear infinite;
+    margin-bottom: 12px;
+}
+
+/* Error States */
+.field-mapping-error {
+    text-align: center;
+    padding: 40px;
+    color: #dc3232;
+}
+
+.field-mapping-error .dashicons {
+    font-size: 24px;
+    margin-bottom: 12px;
+}
+
+/* Success States */
+.field-mapping-success {
+    text-align: center;
+    padding: 20px;
+    background: #e7f5e7;
+    color: #46b450;
+    border-radius: 4px;
+    margin: 16px 0;
+}
+
+.field-mapping-success .dashicons {
+    font-size: 20px;
+    margin-right: 8px;
+}
+
+/* Field Type Icons */
+.field-icon.text::before { content: "📝"; }
+.field-icon.email::before { content: "📧"; }
+.field-icon.phone::before { content: "📞"; }
+.field-icon.number::before { content: "🔢"; }
+.field-icon.date::before { content: "📅"; }
+.field-icon.url::before { content: "🔗"; }
+.field-icon.textarea::before { content: "📄"; }
+.field-icon.select::before { content: "📋"; }
+.field-icon.checkbox::before { content: "☑️"; }
+.field-icon.radio::before { content: "🔘"; }
+.field-icon.file::before { content: "📎"; }
+
+/* Animation for successful mapping */
+@keyframes mapSuccess {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+.field-item.just-mapped {
+    animation: mapSuccess 0.3s ease-out;
+}
+
+/* Custom scrollbar for field lists */
+.field-list::-webkit-scrollbar {
+    width: 6px;
+}
+
+.field-list::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+.field-list::-webkit-scrollbar-thumb {
+    background: #c3c4c7;
+    border-radius: 3px;
+}
+
+.field-list::-webkit-scrollbar-thumb:hover {
+    background: #8c8f94;
+} 
+
+/* 
+ * Modal Structure Styles
+ * ========================================================================== */
+
+.field-mapping-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 160000;
+    display: none;
+}
+
+.field-mapping-modal .modal-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+}
+
+.field-mapping-modal .modal-container {
+    position: relative;
+    width: 90%;
+    max-width: 900px;
+    margin: 50px auto;
+    background: #fff;
+    border-radius: 4px;
+    box-shadow: 0 3px 30px rgba(0, 0, 0, 0.2);
+    max-height: calc(100vh - 100px);
+    min-height: 400px;
+    display: flex;
+    flex-direction: column;
+}
+
+.field-mapping-modal .modal-header {
+    padding: 20px 24px;
+    border-bottom: 1px solid #ddd;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #f8f9fa;
+}
+
+.field-mapping-modal .modal-header h3 {
+    margin: 0;
+    color: #1d2327;
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.field-mapping-modal .modal-close {
+    background: none;
+    border: none;
+    font-size: 24px;
+    color: #666;
+    cursor: pointer;
+    padding: 0;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.field-mapping-modal .modal-close:hover {
+    color: #000;
+}
+
+.field-mapping-modal .modal-content {
+    flex: 1;
+    overflow-y: auto;
+    padding: 24px;
+}
+
+.field-mapping-modal .modal-footer {
+    padding: 16px 24px;
+    border-top: 1px solid #ddd;
+    background: #f8f9fa;
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+    flex-shrink: 0;
+    position: relative;
+    z-index: 1;
+}
+
+/* Field Mapping Container Styles */
+.field-mapping-container {
+    max-width: 100%;
+}
+
+.mapping-instructions {
+    margin-bottom: 24px;
+    padding: 16px;
+    background: #f8f9fa;
+    border: 1px solid #e0e5e8;
+    border-radius: 4px;
+}
+
+.mapping-instructions p {
+    margin: 0 0 12px 0;
+    color: #646970;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.mapping-instructions p:last-child {
+    margin-bottom: 0;
+}
+
+.mapping-error {
+    padding: 20px;
+    background: #fcf2f2;
+    border: 1px solid #e5b4b4;
+    border-radius: 4px;
+    color: #721c24;
+}
+
+.mapping-error h4 {
+    margin: 0 0 12px 0;
+    color: #721c24;
+}
+
+.mapping-error ul {
+    margin: 8px 0 12px 20px;
+}
+
+.mapping-stats-top {
+    margin-bottom: 16px;
+    padding: 12px 16px;
+    background: #e7f5ff;
+    border-radius: 4px;
+    border-left: 4px solid #007cba;
+}
+
+.mapping-stats-top p {
+    margin: 0;
+    color: #1d2327;
+    font-size: 14px;
+}
+
+/* Mapping Table Styles */
+.mapping-table {
+    border: 1px solid #e0e5e8;
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 16px;
+}
+
+.mapping-header {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    background: #f8f9fa;
+    border-bottom: 1px solid #e0e5e8;
+}
+
+.form-field-column,
+.integration-field-column {
+    padding: 16px;
+    font-weight: 600;
+    color: #1d2327;
+    border-right: 1px solid #e0e5e8;
+}
+
+.integration-field-column {
+    border-right: none;
+}
+
+.mapping-rows {
+    background: #fff;
+}
+
+.mapping-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    border-bottom: 1px solid #f1f1f1;
+    min-height: 60px;
+}
+
+.mapping-row:last-child {
+    border-bottom: none;
+}
+
+.mapping-row:hover {
+    background: #f8f9fa;
+}
+
+.form-field-selector,
+.integration-field-info {
+    padding: 16px;
+    display: flex;
+    align-items: center;
+    border-right: 1px solid #f1f1f1;
+}
+
+.integration-field-info {
+    border-right: none;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+}
+
+.form-field-selector select {
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 3px;
+    font-size: 14px;
+}
+
+.form-field-selector select:focus {
+    border-color: #007cba;
+    outline: none;
+    box-shadow: 0 0 0 1px #007cba;
+}
+
+.integration-field-info strong {
+    color: #1d2327;
+    font-size: 14px;
+    margin-bottom: 4px;
+}
+
+.integration-field-info small {
+    color: #646970;
+    font-size: 12px;
+    line-height: 1.4;
+}
+
+/* Mapping Stats */
+.mapping-stats {
+    padding: 12px 16px;
+    background: #f8f9fa;
+    border-radius: 4px;
+    text-align: center;
+    color: #646970;
+    font-size: 14px;
+    margin-top: 16px;
+}
+
+.mapping-stats #mapped-fields-count {
+    font-weight: 600;
+    color: #007cba;
+}
+
+/* Loading States */
+.loading {
+    text-align: center;
+    padding: 40px 20px;
+    color: #646970;
+}
+
+.loading .dashicons {
+    animation: spin 1s linear infinite;
+    margin-right: 8px;
+}
+
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+.error {
+    text-align: center;
+    padding: 20px;
+    color: #dc3232;
+    background: #fcf2f2;
+    border: 1px solid #e5b4b4;
+    border-radius: 4px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .field-mapping-modal .modal-container {
+        width: 95%;
+        margin: 20px auto;
+        max-height: calc(100vh - 40px);
+    }
+    
+    .mapping-header,
+    .mapping-row {
+        grid-template-columns: 1fr;
+    }
+    
+    .form-field-column,
+    .integration-field-column,
+    .form-field-selector,
+    .integration-field-info {
+        border-right: none;
+        border-bottom: 1px solid #f1f1f1;
+    }
+    
+    .mapping-row .integration-field-info {
+        border-bottom: none;
+    }
+} 

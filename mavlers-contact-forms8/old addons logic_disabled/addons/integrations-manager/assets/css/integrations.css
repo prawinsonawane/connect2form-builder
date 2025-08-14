@@ -1,0 +1,1090 @@
+/*
+ * Mavlers Contact Forms - Integration Manager Styles
+ * 
+ * Main stylesheet for the integration system
+ */
+
+/* ==========================================================================
+   Global Variables & Reset
+   ========================================================================== */
+
+:root {
+    --mavlers-primary: #007cba;
+    --mavlers-primary-dark: #005a87;
+    --mavlers-secondary: #50575e;
+    --mavlers-success: #46b450;
+    --mavlers-warning: #ffb900;
+    --mavlers-error: #dc3232;
+    --mavlers-light-gray: #f1f1f1;
+    --mavlers-border: #c3c4c7;
+    --mavlers-border-focus: #007cba;
+    --mavlers-text-primary: #1d2327;
+    --mavlers-text-secondary: #646970;
+    --mavlers-white: #ffffff;
+    --mavlers-radius: 4px;
+    --mavlers-shadow: 0 1px 3px rgba(0, 0, 0, 0.13);
+    --mavlers-shadow-hover: 0 2px 8px rgba(0, 0, 0, 0.15);
+    --mavlers-transition: all 0.2s ease-in-out;
+}
+
+/* ==========================================================================
+   Integration Section (Form Builder)
+   ========================================================================== */
+
+.mavlers-cf-additional-integrations {
+    background: var(--mavlers-white);
+    border: 1px solid var(--mavlers-border);
+    border-radius: var(--mavlers-radius);
+    margin-top: 20px;
+}
+
+.integration-section-header {
+    padding: 20px 24px 16px;
+    border-bottom: 1px solid var(--mavlers-light-gray);
+}
+
+.integration-section-header h4 {
+    margin: 0 0 8px 0;
+    color: var(--mavlers-text-primary);
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.integration-section-header .description {
+    margin: 0;
+    color: var(--mavlers-text-secondary);
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+/* No Integrations State */
+.no-integrations-notice {
+    padding: 40px 24px;
+    text-align: center;
+}
+
+.integration-placeholder {
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+.integration-placeholder .dashicons {
+    font-size: 64px;
+    color: var(--mavlers-text-secondary);
+    margin-bottom: 16px;
+}
+
+.integration-placeholder h5 {
+    margin: 0 0 12px 0;
+    color: var(--mavlers-text-primary);
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.integration-placeholder p {
+    margin: 0 0 20px 0;
+    color: var(--mavlers-text-secondary);
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+/* Available Integrations */
+.available-integrations {
+    padding: 24px;
+}
+
+.integration-card {
+    background: var(--mavlers-white);
+    border: 1px solid var(--mavlers-border);
+    border-radius: var(--mavlers-radius);
+    margin-bottom: 16px;
+    transition: var(--mavlers-transition);
+    position: relative;
+    overflow: hidden;
+}
+
+.integration-card:hover {
+    border-color: var(--mavlers-border-focus);
+    box-shadow: var(--mavlers-shadow-hover);
+}
+
+.integration-card-header {
+    display: flex;
+    align-items: center;
+    padding: 20px;
+    gap: 16px;
+}
+
+.integration-info {
+    display: flex;
+    align-items: center;
+    flex: 1;
+    gap: 16px;
+}
+
+.integration-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: var(--mavlers-radius);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--mavlers-white);
+    font-size: 20px;
+    flex-shrink: 0;
+}
+
+.integration-icon img {
+    width: 32px;
+    height: 32px;
+    border-radius: 2px;
+}
+
+.integration-details h5 {
+    margin: 0 0 4px 0;
+    color: var(--mavlers-text-primary);
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.integration-description {
+    margin: 0;
+    color: var(--mavlers-text-secondary);
+    font-size: 14px;
+    line-height: 1.4;
+}
+
+.integration-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+/* Integration Toggle Switch */
+.integration-toggle {
+    position: relative;
+    display: inline-block;
+    width: 44px;
+    height: 24px;
+    cursor: pointer;
+}
+
+.integration-toggle input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.toggle-slider {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    border-radius: 24px;
+    transition: var(--mavlers-transition);
+}
+
+.toggle-slider:before {
+    position: absolute;
+    content: "";
+    height: 18px;
+    width: 18px;
+    left: 3px;
+    bottom: 3px;
+    background-color: var(--mavlers-white);
+    border-radius: 50%;
+    transition: var(--mavlers-transition);
+}
+
+.integration-toggle input:checked + .toggle-slider {
+    background-color: var(--mavlers-success);
+}
+
+.integration-toggle input:checked + .toggle-slider:before {
+    transform: translateX(20px);
+}
+
+/* Integration Status */
+.integration-status {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 20px;
+    background-color: var(--mavlers-light-gray);
+    border-top: 1px solid var(--mavlers-border);
+    font-size: 13px;
+}
+
+.status-indicator {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-weight: 500;
+}
+
+.status-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+}
+
+.status-active .status-dot {
+    background-color: var(--mavlers-success);
+}
+
+.status-inactive .status-dot {
+    background-color: var(--mavlers-text-secondary);
+}
+
+.last-sync {
+    color: var(--mavlers-text-secondary);
+}
+
+/* Integration Configuration Panel */
+.integration-config-panel {
+    border-top: 1px solid var(--mavlers-border);
+    background-color: #fafafa;
+}
+
+.config-panel-content {
+    padding: 20px;
+}
+
+/* Context Notices */
+.context-notice {
+    padding: 12px 16px;
+    margin: 16px 0;
+    border-radius: var(--mavlers-radius);
+    font-size: 14px;
+}
+
+.context-notice.global {
+    background: #e7f5ff;
+    border: 1px solid var(--mavlers-primary);
+    color: var(--mavlers-text-primary);
+}
+
+.context-notice.form-specific {
+    background: #f0fff0;
+    border: 1px solid var(--mavlers-success);
+    color: var(--mavlers-text-primary);
+}
+
+.context-notice p {
+    margin: 0;
+}
+
+.context-notice strong {
+    color: var(--mavlers-text-primary);
+}
+
+.loading-spinner {
+    text-align: center;
+    padding: 40px 20px;
+    color: var(--mavlers-text-secondary);
+}
+
+.loading-spinner .dashicons {
+    animation: spin 1s linear infinite;
+    margin-right: 8px;
+}
+
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+/* Integration Actions Bar */
+.integration-actions-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 24px;
+    border-top: 1px solid var(--mavlers-border);
+    background-color: var(--mavlers-light-gray);
+}
+
+/* ==========================================================================
+   Modal Styles
+   ========================================================================== */
+
+.mavlers-cf-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 100000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(2px);
+}
+
+.modal-content {
+    position: relative;
+    background: var(--mavlers-white);
+    border-radius: 8px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+    max-width: 90vw;
+    max-height: 90vh;
+    width: 800px;
+    display: flex;
+    flex-direction: column;
+    animation: modalSlideIn 0.2s ease-out;
+}
+
+@keyframes modalSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px) scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 24px;
+    border-bottom: 1px solid var(--mavlers-border);
+}
+
+.modal-header h3 {
+    margin: 0;
+    color: var(--mavlers-text-primary);
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.modal-close {
+    background: none;
+    border: none;
+    padding: 4px;
+    cursor: pointer;
+    color: var(--mavlers-text-secondary);
+    transition: var(--mavlers-transition);
+}
+
+.modal-close:hover {
+    color: var(--mavlers-text-primary);
+}
+
+.modal-body {
+    flex: 1;
+    overflow-y: auto;
+    padding: 24px;
+}
+
+.modal-footer {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 12px;
+    padding: 20px 24px;
+    border-top: 1px solid var(--mavlers-border);
+    background-color: var(--mavlers-light-gray);
+}
+
+/* Field Mapping Modal Specific */
+.field-mapping-modal .modal-content {
+    width: 1200px;
+    max-width: 95vw;
+}
+
+/* ==========================================================================
+   Field Mapping Interface
+   ========================================================================== */
+
+.field-mapping-interface {
+    min-height: 500px;
+}
+
+.mapping-instructions {
+    margin-bottom: 24px;
+    padding: 16px;
+    background-color: #e7f3ff;
+    border-radius: var(--mavlers-radius);
+    border-left: 4px solid var(--mavlers-primary);
+}
+
+.mapping-instructions p {
+    margin: 0 0 12px 0;
+    color: var(--mavlers-text-primary);
+}
+
+.mapping-tips {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--mavlers-text-secondary);
+    font-size: 13px;
+}
+
+.tip-icon {
+    color: var(--mavlers-warning);
+}
+
+.mapping-container {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    gap: 24px;
+    min-height: 400px;
+}
+
+.form-fields-column,
+.integration-fields-column {
+    background: var(--mavlers-white);
+    border: 1px solid var(--mavlers-border);
+    border-radius: var(--mavlers-radius);
+    overflow: hidden;
+}
+
+.column-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 20px;
+    background-color: var(--mavlers-light-gray);
+    border-bottom: 1px solid var(--mavlers-border);
+}
+
+.column-header h4 {
+    margin: 0;
+    color: var(--mavlers-text-primary);
+    font-size: 15px;
+    font-weight: 600;
+}
+
+.field-count {
+    color: var(--mavlers-text-secondary);
+    font-size: 13px;
+    font-weight: 500;
+}
+
+.field-list {
+    max-height: 400px;
+    overflow-y: auto;
+    padding: 12px;
+}
+
+/* Field Items */
+.field-item {
+    background: var(--mavlers-white);
+    border: 1px solid var(--mavlers-border);
+    border-radius: var(--mavlers-radius);
+    padding: 16px;
+    margin-bottom: 12px;
+    transition: var(--mavlers-transition);
+    cursor: pointer;
+    position: relative;
+}
+
+.field-item:hover {
+    border-color: var(--mavlers-border-focus);
+    box-shadow: var(--mavlers-shadow);
+}
+
+.field-item.draggable:hover {
+    cursor: grab;
+}
+
+.field-item.draggable:active {
+    cursor: grabbing;
+}
+
+.field-item.droppable.drag-over {
+    border-color: var(--mavlers-primary);
+    background-color: #e7f3ff;
+}
+
+.field-item.mapped {
+    border-color: var(--mavlers-success);
+    background-color: #f0f9ff;
+}
+
+.field-item.mapped::before {
+    content: '';
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    width: 8px;
+    height: 8px;
+    background-color: var(--mavlers-success);
+    border-radius: 50%;
+}
+
+.field-info {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    margin-bottom: 12px;
+}
+
+.field-icon {
+    color: var(--mavlers-text-secondary);
+    font-size: 16px;
+    margin-top: 2px;
+}
+
+.field-details {
+    flex: 1;
+}
+
+.field-label {
+    display: block;
+    color: var(--mavlers-text-primary);
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 1.3;
+    margin-bottom: 4px;
+}
+
+.field-meta {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    color: var(--mavlers-text-secondary);
+}
+
+.field-type {
+    background-color: var(--mavlers-light-gray);
+    padding: 2px 6px;
+    border-radius: 2px;
+    font-weight: 500;
+}
+
+.required-indicator {
+    color: var(--mavlers-error);
+    font-weight: bold;
+}
+
+.field-description {
+    display: block;
+    margin-top: 4px;
+    font-size: 12px;
+    color: var(--mavlers-text-secondary);
+    line-height: 1.3;
+}
+
+.field-actions {
+    text-align: right;
+}
+
+.quick-map-btn {
+    background: none;
+    border: 1px solid var(--mavlers-border);
+    border-radius: var(--mavlers-radius);
+    padding: 6px 8px;
+    cursor: pointer;
+    color: var(--mavlers-text-secondary);
+    transition: var(--mavlers-transition);
+}
+
+.quick-map-btn:hover {
+    border-color: var(--mavlers-border-focus);
+    color: var(--mavlers-primary);
+    background-color: #e7f3ff;
+}
+
+/* Mapping Controls */
+.mapping-controls {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.form-field-selector {
+    flex: 1;
+    padding: 6px 8px;
+    border: 1px solid var(--mavlers-border);
+    border-radius: var(--mavlers-radius);
+    font-size: 13px;
+}
+
+.form-field-selector:focus {
+    border-color: var(--mavlers-border-focus);
+    outline: none;
+}
+
+.remove-mapping {
+    background: none;
+    border: 1px solid var(--mavlers-error);
+    border-radius: var(--mavlers-radius);
+    padding: 4px 6px;
+    color: var(--mavlers-error);
+    cursor: pointer;
+    transition: var(--mavlers-transition);
+}
+
+.remove-mapping:hover {
+    background-color: var(--mavlers-error);
+    color: var(--mavlers-white);
+}
+
+.mapped-field-info {
+    margin-top: 8px;
+    padding: 8px;
+    background-color: #f0f9ff;
+    border-radius: var(--mavlers-radius);
+    font-size: 12px;
+}
+
+.mapped-to {
+    color: var(--mavlers-text-secondary);
+}
+
+.mapped-to strong {
+    color: var(--mavlers-text-primary);
+}
+
+/* Mapping Indicators Column */
+.mapping-indicators {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    padding-top: 20px;
+    min-width: 120px;
+}
+
+.auto-map-section {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.auto-map-all {
+    white-space: nowrap;
+    margin-bottom: 12px;
+}
+
+.mapping-stats {
+    font-size: 12px;
+    color: var(--mavlers-text-secondary);
+    line-height: 1.3;
+}
+
+.connection-lines {
+    position: relative;
+    flex: 1;
+    width: 100%;
+}
+
+.connection-line {
+    position: absolute;
+    pointer-events: none;
+    z-index: 1;
+}
+
+/* Mapping Actions */
+.mapping-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 24px;
+    padding-top: 20px;
+    border-top: 1px solid var(--mavlers-border);
+}
+
+.actions-left {
+    display: flex;
+    gap: 12px;
+}
+
+.validation-status {
+    font-size: 13px;
+    font-weight: 500;
+}
+
+.validation-status.valid {
+    color: var(--mavlers-success);
+}
+
+.validation-status.invalid {
+    color: var(--mavlers-error);
+}
+
+/* ==========================================================================
+   Settings Page Styles
+   ========================================================================== */
+
+.mavlers-cf-integrations-page .wp-heading-inline {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.integration-stats-dashboard {
+    margin: 20px 0 30px 0;
+}
+
+.stats-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+}
+
+.stat-card {
+    background: var(--mavlers-white);
+    border: 1px solid var(--mavlers-border);
+    border-radius: var(--mavlers-radius);
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    transition: var(--mavlers-transition);
+}
+
+.stat-card:hover {
+    box-shadow: var(--mavlers-shadow);
+}
+
+.stat-icon {
+    width: 48px;
+    height: 48px;
+    background-color: var(--mavlers-primary);
+    border-radius: var(--mavlers-radius);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--mavlers-white);
+    font-size: 20px;
+    flex-shrink: 0;
+}
+
+.stat-content h3 {
+    margin: 0 0 4px 0;
+    color: var(--mavlers-text-primary);
+    font-size: 24px;
+    font-weight: 700;
+}
+
+.stat-content p {
+    margin: 0;
+    color: var(--mavlers-text-secondary);
+    font-size: 13px;
+    font-weight: 500;
+}
+
+/* Integrations Grid */
+.integrations-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.integration-item {
+    background: var(--mavlers-white);
+    border: 1px solid var(--mavlers-border);
+    border-radius: var(--mavlers-radius);
+    overflow: hidden;
+    transition: var(--mavlers-transition);
+}
+
+.integration-item:hover {
+    border-color: var(--mavlers-border-focus);
+    box-shadow: var(--mavlers-shadow-hover);
+}
+
+.integration-item-header {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.integration-icon-large {
+    width: 64px;
+    height: 64px;
+    border-radius: var(--mavlers-radius);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--mavlers-white);
+    font-size: 28px;
+    align-self: flex-start;
+}
+
+.integration-icon-large img {
+    width: 48px;
+    height: 48px;
+    border-radius: 4px;
+}
+
+.integration-item .integration-info h4 {
+    margin: 0 0 8px 0;
+    color: var(--mavlers-text-primary);
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.integration-item .integration-description {
+    margin: 0 0 8px 0;
+    color: var(--mavlers-text-secondary);
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.integration-version {
+    margin: 0;
+    color: var(--mavlers-text-secondary);
+    font-size: 12px;
+}
+
+.integration-item .integration-actions {
+    margin-top: 16px;
+    display: flex;
+    gap: 8px;
+}
+
+.integration-stats {
+    display: flex;
+    justify-content: space-between;
+    padding: 16px 20px;
+    background-color: var(--mavlers-light-gray);
+    border-top: 1px solid var(--mavlers-border);
+}
+
+.stat-item {
+    text-align: center;
+}
+
+.stat-label {
+    display: block;
+    font-size: 11px;
+    color: var(--mavlers-text-secondary);
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 4px;
+}
+
+.stat-value {
+    display: block;
+    font-size: 16px;
+    color: var(--mavlers-text-primary);
+    font-weight: 600;
+}
+
+.error-count {
+    color: var(--mavlers-error);
+}
+
+/* Tab Navigation */
+.integration-management-tabs {
+    background: var(--mavlers-white);
+    border: 1px solid var(--mavlers-border);
+    border-radius: var(--mavlers-radius);
+    margin-top: 20px;
+}
+
+.tab-content {
+    display: none;
+    padding: 24px;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+/* Empty State */
+.no-integrations-state {
+    text-align: center;
+    padding: 60px 20px;
+}
+
+.empty-state-icon .dashicons {
+    font-size: 80px;
+    color: var(--mavlers-text-secondary);
+    margin-bottom: 20px;
+}
+
+.no-integrations-state h3 {
+    margin: 0 0 12px 0;
+    color: var(--mavlers-text-primary);
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.no-integrations-state p {
+    margin: 0 0 24px 0;
+    color: var(--mavlers-text-secondary);
+    font-size: 14px;
+    line-height: 1.6;
+    max-width: 400px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.empty-state-actions {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+}
+
+/* Logs Section */
+.logs-section {
+    min-height: 400px;
+}
+
+.logs-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--mavlers-border);
+}
+
+.logs-header h3 {
+    margin: 0;
+    color: var(--mavlers-text-primary);
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.logs-actions {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+}
+
+.logs-actions select {
+    padding: 4px 8px;
+    border: 1px solid var(--mavlers-border);
+    border-radius: var(--mavlers-radius);
+}
+
+.logs-container {
+    position: relative;
+}
+
+.logs-loading {
+    text-align: center;
+    padding: 40px 20px;
+    color: var(--mavlers-text-secondary);
+}
+
+/* Settings Section */
+.settings-section .form-table th {
+    width: 200px;
+    padding-left: 0;
+}
+
+/* ==========================================================================
+   Responsive Design
+   ========================================================================== */
+
+@media (max-width: 1200px) {
+    .field-mapping-modal .modal-content {
+        width: 90vw;
+    }
+    
+    .mapping-container {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+    
+    .mapping-indicators {
+        order: -1;
+        flex-direction: row;
+        justify-content: center;
+        padding-top: 0;
+        padding-bottom: 16px;
+        border-bottom: 1px solid var(--mavlers-border);
+    }
+    
+    .connection-lines {
+        display: none;
+    }
+}
+
+@media (max-width: 768px) {
+    .modal-content {
+        width: 95vw;
+        height: 95vh;
+        margin: 2.5vh auto;
+    }
+    
+    .integration-card-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+    }
+    
+    .integration-actions {
+        align-self: stretch;
+        justify-content: space-between;
+    }
+    
+    .integration-actions-bar {
+        flex-direction: column;
+        gap: 12px;
+    }
+    
+    .stats-cards {
+        grid-template-columns: 1fr;
+    }
+    
+    .integrations-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .logs-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 16px;
+    }
+    
+    .logs-actions {
+        flex-wrap: wrap;
+    }
+}
+
+/* ==========================================================================
+   Utility Classes
+   ========================================================================== */
+
+.mavlers-hide {
+    display: none !important;
+}
+
+.mavlers-show {
+    display: block !important;
+}
+
+.mavlers-loading {
+    position: relative;
+    pointer-events: none;
+    opacity: 0.7;
+}
+
+.mavlers-loading::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 20px;
+    height: 20px;
+    margin: -10px 0 0 -10px;
+    border: 2px solid var(--mavlers-border);
+    border-top-color: var(--mavlers-primary);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+} 

@@ -1,0 +1,25 @@
+/* HubSpot Integration Admin Styles */
+.connect2form-hubspot-settings {
+  background: #fff7f2;
+  border: 1px solid #ff7a59;
+  padding: 24px;
+  border-radius: 6px;
+  margin-bottom: 24px;
+}
+.connect2form-hubspot-settings h2 {
+  color: #ff7a59;
+}
+.connect2form-hubspot-settings label {
+  font-weight: 500;
+  margin-right: 16px;
+}
+#connect2form-hubspot-field-mapping-section {
+  margin-top: 16px;
+}
+#connect2form-hubspot-field-mapping-table {
+  margin-bottom: 12px;
+}
+#connect2form-hubspot-save-status {
+  margin-left: 12px;
+  font-weight: bold;
+} 

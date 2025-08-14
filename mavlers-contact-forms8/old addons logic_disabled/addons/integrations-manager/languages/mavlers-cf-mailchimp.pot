@@ -1,0 +1,482 @@
+# MAVLERS CONTACT FORMS - MAILCHIMP INTEGRATION
+# Copyright (C) 2024 Mavlers
+# This file is distributed under the same license as the Mavlers Contact Forms package.
+msgid ""
+msgstr ""
+"Project-Id-Version: Mavlers Contact Forms - Mailchimp Integration 2.0.0\n"
+"Report-Msgid-Bugs-To: https://mavlers.com/support\n"
+"POT-Creation-Date: 2024-01-01 00:00+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+
+#. Context: error
+msgid "Connection to Mailchimp failed. Please check your API key."
+msgstr ""
+
+#. Context: error
+msgid "Invalid API key format. Please enter a valid Mailchimp API key."
+msgstr ""
+
+#. Context: error
+msgid "No audiences found in your Mailchimp account."
+msgstr ""
+
+#. Context: error
+msgid "Selected audience was not found."
+msgstr ""
+
+#. Context: error
+msgid "Email address is required for subscription."
+msgstr ""
+
+#. Context: error
+msgid "Please enter a valid email address."
+msgstr ""
+
+#. Context: error
+msgid "Failed to subscribe to Mailchimp. Please try again."
+msgstr ""
+
+#. Context: error
+msgid "Too many requests. Please wait before trying again."
+msgstr ""
+
+#. Context: error
+msgid "Server error occurred. Please contact support."
+msgstr ""
+
+#. Context: error
+msgid "Network connection error. Please check your internet connection."
+msgstr ""
+
+#. Context: error
+msgid "Form validation failed. Please check your input."
+msgstr ""
+
+#. Context: info
+msgid "This email address is already subscribed."
+msgstr ""
+
+#. Context: info
+msgid "Please check your email to confirm your subscription."
+msgstr ""
+
+#. Context: success
+msgid "Successfully connected to Mailchimp!"
+msgstr ""
+
+#. Context: success
+msgid "Settings saved successfully."
+msgstr ""
+
+#. Context: success
+msgid "Thank you for subscribing!"
+msgstr ""
+
+#. Context: success
+msgid "Please check your email to confirm your subscription."
+msgstr ""
+
+#. Context: success
+msgid "Test completed successfully."
+msgstr ""
+
+#. Context: success
+msgid "Form integration configured successfully."
+msgstr ""
+
+#. Context: success
+msgid "Field mapping saved successfully."
+msgstr ""
+
+#. Context: success
+msgid "Audience selected successfully."
+msgstr ""
+
+#. Context: admin
+msgid "Mailchimp Integration"
+msgstr ""
+
+#. Context: admin
+msgid "Global Settings"
+msgstr ""
+
+#. Context: admin
+msgid "Form Settings"
+msgstr ""
+
+#. Context: admin
+msgid "Field Mapping"
+msgstr ""
+
+#. Context: admin
+msgid "Analytics"
+msgstr ""
+
+#. Context: admin
+msgid "Custom Fields"
+msgstr ""
+
+#. Context: admin
+msgid "API Key"
+msgstr ""
+
+#. Context: admin
+msgid "Audience"
+msgstr ""
+
+#. Context: admin
+msgid "Double Opt-in"
+msgstr ""
+
+#. Context: admin
+msgid "Update Existing Subscribers"
+msgstr ""
+
+#. Context: admin
+msgid "Tags"
+msgstr ""
+
+#. Context: admin
+msgid "Enable Integration"
+msgstr ""
+
+#. Context: admin
+msgid "Save Settings"
+msgstr ""
+
+#. Context: admin
+msgid "Test Connection"
+msgstr ""
+
+#. Context: admin
+msgid "Load Audiences"
+msgstr ""
+
+#. Context: admin
+msgid "Auto Map Fields"
+msgstr ""
+
+#. Context: admin
+msgid "Clear Mapping"
+msgstr ""
+
+#. Context: admin
+msgid "Export Data"
+msgstr ""
+
+#. Context: admin
+msgid "Language:"
+msgstr ""
+
+#. Context: status
+msgid "Connected"
+msgstr ""
+
+#. Context: status
+msgid "Disconnected"
+msgstr ""
+
+#. Context: status
+msgid "Testing..."
+msgstr ""
+
+#. Context: status
+msgid "Loading..."
+msgstr ""
+
+#. Context: status
+msgid "Saving..."
+msgstr ""
+
+#. Context: status
+msgid "Enabled"
+msgstr ""
+
+#. Context: status
+msgid "Disabled"
+msgstr ""
+
+#. Context: help
+msgid "Enter your Mailchimp API key. You can find this in your Mailchimp account under Account → Extras → API keys."
+msgstr ""
+
+#. Context: help
+msgid "When enabled, subscribers will receive a confirmation email before being added to your audience."
+msgstr ""
+
+#. Context: help
+msgid "When enabled, existing subscribers will be updated instead of showing an error."
+msgstr ""
+
+#. Context: help
+msgid "Enter comma-separated tags to add to new subscribers."
+msgstr ""
+
+#. Context: help
+msgid "Map your form fields to Mailchimp merge fields. Drag and drop to create mappings."
+msgstr ""
+
+#. Context: analytics
+msgid "Total Subscribers"
+msgstr ""
+
+#. Context: analytics
+msgid "Successful Submissions"
+msgstr ""
+
+#. Context: analytics
+msgid "Failed Submissions"
+msgstr ""
+
+#. Context: analytics
+msgid "Success Rate"
+msgstr ""
+
+#. Context: analytics
+msgid "Average Response Time"
+msgstr ""
+
+#. Context: analytics
+msgid "Last Submission"
+msgstr ""
+
+#. Context: time
+msgid "Today"
+msgstr ""
+
+#. Context: time
+msgid "Yesterday"
+msgstr ""
+
+#. Context: time
+msgid "Last 7 Days"
+msgstr ""
+
+#. Context: time
+msgid "Last 30 Days"
+msgstr ""
+
+#. Context: time
+msgid "This Month"
+msgstr ""
+
+#. Context: time
+msgid "Last Month"
+msgstr ""
+
+#. Context: action
+msgid "Edit"
+msgstr ""
+
+#. Context: action
+msgid "Delete"
+msgstr ""
+
+#. Context: action
+msgid "View"
+msgstr ""
+
+#. Context: action
+msgid "Refresh"
+msgstr ""
+
+#. Context: action
+msgid "Cancel"
+msgstr ""
+
+#. Context: action
+msgid "Confirm"
+msgstr ""
+
+#. Context: action
+msgid "Yes"
+msgstr ""
+
+#. Context: action
+msgid "No"
+msgstr ""
+
+#. Context: validation
+msgid "Please enter a valid email address."
+msgstr ""
+
+#. Context: validation
+msgid "Email address is required."
+msgstr ""
+
+#. Context: validation
+msgid "Name is required."
+msgstr ""
+
+#. Context: validation
+msgid "Please enter a valid phone number."
+msgstr ""
+
+#. Context: validation
+msgid "Please enter a valid URL."
+msgstr ""
+
+#. Context: validation
+msgid "Please enter a valid date."
+msgstr ""
+
+#. Context: validation
+msgid "Please enter a valid number."
+msgstr ""
+
+#. Context: validation
+msgid "This field is too long."
+msgstr ""
+
+#. Context: validation
+msgid "This field is too short."
+msgstr ""
+
+#. Context: address
+msgid "State"
+msgstr ""
+
+#. Context: address
+msgid "ZIP Code"
+msgstr ""
+
+#. Context: address
+msgid "Province"
+msgstr ""
+
+#. Context: address
+msgid "Postal Code"
+msgstr ""
+
+#. Context: address
+msgid "County"
+msgstr ""
+
+#. Context: address
+msgid "Postcode"
+msgstr ""
+
+#. Context: address
+msgid "PLZ"
+msgstr ""
+
+#. Context: address
+msgid "Code Postal"
+msgstr ""
+
+#. Context: address
+msgid "Prefecture"
+msgstr ""
+
+#. Context: success
+msgid "Language changed successfully."
+msgstr ""
+
+#. Context: error
+msgid "Invalid language selection."
+msgstr ""
+
+# Plural forms
+msgid "1 subscriber"
+msgid_plural "%d subscribers"
+msgstr[0] ""
+msgstr[1] ""
+
+msgid "1 submission"
+msgid_plural "%d submissions"
+msgstr[0] ""
+msgstr[1] ""
+
+msgid "1 error"
+msgid_plural "%d errors"
+msgstr[0] ""
+msgstr[1] ""
+
+# Advanced features
+#. Context: admin
+msgid "Advanced Options"
+msgstr ""
+
+#. Context: admin
+msgid "Webhook Settings"
+msgstr ""
+
+#. Context: admin
+msgid "Custom Field Management"
+msgstr ""
+
+#. Context: admin
+msgid "Batch Processing"
+msgstr ""
+
+#. Context: admin
+msgid "Performance Analytics"
+msgstr ""
+
+#. Context: admin
+msgid "Error Log"
+msgstr ""
+
+#. Context: admin
+msgid "Integration Status"
+msgstr ""
+
+#. Context: admin
+msgid "Sync Settings"
+msgstr ""
+
+#. Context: admin
+msgid "Data Export"
+msgstr ""
+
+#. Context: admin
+msgid "Import Configuration"
+msgstr ""
+
+#. Context: status
+msgid "Syncing..."
+msgstr ""
+
+#. Context: status
+msgid "Queue Processing"
+msgstr ""
+
+#. Context: status
+msgid "Webhooks Active"
+msgstr ""
+
+#. Context: status
+msgid "Performance Monitoring"
+msgstr ""
+
+# Dashboard messages
+#. Context: dashboard
+msgid "Welcome to Mailchimp Integration"
+msgstr ""
+
+#. Context: dashboard
+msgid "Quick Setup Guide"
+msgstr ""
+
+#. Context: dashboard
+msgid "Recent Activity"
+msgstr ""
+
+#. Context: dashboard
+msgid "Integration Health"
+msgstr ""
+
+#. Context: dashboard
+msgid "Performance Metrics"
+msgstr ""
+
+#. Context: dashboard
+msgid "Quick Actions"
+msgstr "" 

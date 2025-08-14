@@ -1,0 +1,52 @@
+[
+  {
+    "id": "TC001",
+    "title": "create save and edit forms using drag and drop builder",
+    "description": "Verify that users can create, save, and edit forms successfully using the drag-and-drop form builder interface without encountering errors."
+  },
+  {
+    "id": "TC002",
+    "title": "render all supported field types correctly on frontend",
+    "description": "Ensure that all supported field types including text, email, file upload, and date picker render correctly on the frontend and accept valid input while enforcing validation rules."
+  },
+  {
+    "id": "TC003",
+    "title": "process form submissions securely with validation and sanitization",
+    "description": "Test that form submissions are processed securely with nonce validation, input sanitization, and protection against SQL injection and XSS attacks."
+  },
+  {
+    "id": "TC004",
+    "title": "perform real time crm synchronization with mailchimp and hubspot",
+    "description": "Validate that CRM integrations with Mailchimp and HubSpot perform real-time contact synchronization, handle field mapping correctly, and manage API errors gracefully."
+  },
+  {
+    "id": "TC005",
+    "title": "meet wcag 2 1 aa accessibility standards",
+    "description": "Verify that the plugin's accessibility features comply with WCAG 2.1 AA standards including screen reader support, keyboard navigation, ARIA labels, focus management, and high contrast mode."
+  },
+  {
+    "id": "TC006",
+    "title": "prevent spam submissions using recaptcha and honeypot",
+    "description": "Test that spam protection mechanisms such as reCAPTCHA v2/v3 and honeypot fields effectively prevent automated spam submissions."
+  },
+  {
+    "id": "TC007",
+    "title": "send email notifications with customizable templates and smtp",
+    "description": "Ensure that email notifications are sent correctly using customizable email templates and SMTP settings upon form submission."
+  },
+  {
+    "id": "TC008",
+    "title": "maintain plugin admin interface functionality and state",
+    "description": "Verify that the WordPress admin interface for managing forms, submissions, and plugin settings functions correctly and maintains state across user sessions."
+  },
+  {
+    "id": "TC009",
+    "title": "optimize performance for load times and memory usage",
+    "description": "Test that performance optimizations such as database query caching, asset optimization, lazy loading, and memory management improve load times and reduce memory usage compared to baseline."
+  },
+  {
+    "id": "TC010",
+    "title": "respond correctly to hooks and filters for customization",
+    "description": "Validate that the plugin's hooks and filters respond correctly to customizations and do not break core functionality or integrations."
+  }
+]
