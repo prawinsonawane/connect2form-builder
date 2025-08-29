@@ -1,0 +1,32 @@
+# WordPress
+wp-config.php
+wp-content/uploads/
+wp-content/cache/
+wp-content/backup-db/
+wp-content/advanced-cache.php
+wp-content/wp-cache-config.php
+
+# Plugin specific
+*.log
+*.tmp
+.DS_Store
+Thumbs.db
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Node modules (if any)
+node_modules/
+npm-debug.log
+
+# Composer
+vendor/
+composer.phar
+
+# Backup files
+*.bak
+*.backup
+*~
