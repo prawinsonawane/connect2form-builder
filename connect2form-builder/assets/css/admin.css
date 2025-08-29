@@ -1,0 +1,690 @@
+/* Forms List Table Styles */
+.wp-list-table .column-id {
+    width: 5%;
+}
+
+.wp-list-table .column-shortcode {
+    width: 20%;
+}
+
+.wp-list-table .column-status {
+    width: 10%;
+}
+
+.wp-list-table .column-date {
+    width: 15%;
+}
+
+/* Status indicators */
+.status-active,
+.status-inactive {
+    display: inline-block;
+    padding: 3px 8px;
+    border-radius: 3px;
+    font-size: 12px;
+    line-height: 1.4;
+}
+
+.status-active {
+    background-color: #dff0d8;
+    color: #3c763d;
+}
+
+.status-inactive {
+    background-color: #f2dede;
+    color: #a94442;
+}
+
+/* Row actions */
+.row-actions {
+    visibility: hidden;
+    margin-top: 5px;
+}
+
+tr:hover .row-actions {
+    visibility: visible;
+}
+
+.row-actions span {
+    padding: 0;
+}
+
+.row-actions span:first-child {
+    padding-left: 0;
+}
+
+/* Shortcode display */
+.wp-list-table code {
+    background: #f0f0f1;
+    padding: 3px 5px;
+    border-radius: 3px;
+    font-size: 12px;
+}
+
+/* Form actions */
+.page-title-action {
+    margin-left: 10px;
+}
+
+/* Delete form AJAX styling */
+.delete-form-ajax {
+    color: #a00;
+}
+
+.delete-form-ajax:hover {
+    color: #dc3232;
+}
+
+.delete-form-ajax.loading {
+    opacity: 0.5;
+    pointer-events: none;
+}
+
+/* Admin notices */
+.connect2form-notice {
+    margin: 15px 0;
+    padding: 10px 15px;
+    border-left: 4px solid #00a0d2;
+    background: #fff;
+    box-shadow: 0 1px 1px rgba(0,0,0,.04);
+}
+
+.connect2form-notice.success {
+    border-left-color: #46b450;
+}
+
+.connect2form-notice.error {
+    border-left-color: #dc3232;
+}
+
+/* Form builder interface */
+.connect2form-form-builder {
+    margin-top: 20px;
+    background: #fff;
+    padding: 20px;
+    border: 1px solid #ccd0d4;
+    box-shadow: 0 1px 1px rgba(0,0,0,.04);
+}
+
+/* Form Builder Header */
+.form-builder-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding: 15px;
+    background: #fff;
+    border: 1px solid #ccd0d4;
+    border-radius: 4px;
+}
+
+.form-title-section {
+    flex: 1;
+    margin-right: 20px;
+}
+
+.form-title-section input {
+    font-size: 18px;
+    font-weight: 600;
+    border: none;
+    border-bottom: 2px solid #ddd;
+    padding: 5px 0;
+    width: 100%;
+    max-width: 400px;
+}
+
+.form-title-section input:focus {
+    outline: none;
+    border-bottom-color: #2271b1;
+}
+
+.form-actions {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.form-actions .button {
+    margin: 0;
+}
+
+.form-actions .button-secondary {
+    background: #f6f7f7;
+    border-color: #2271b1;
+    color: #2271b1;
+}
+
+.form-actions .button-secondary:hover {
+    background: #f0f0f1;
+    border-color: #135e96;
+    color: #135e96;
+}
+
+.form-builder-content {
+    display: flex;
+    gap: 20px;
+    min-height: 500px;
+}
+
+.form-fields-container {
+    flex: 1;
+    background: #f9f9f9;
+    border: 1px solid #e5e5e5;
+    border-radius: 4px;
+    padding: 20px;
+}
+
+.form-fields {
+    min-height: 200px;
+}
+
+.form-fields-sidebar {
+    width: 300px;
+    background: #fff;
+    border: 1px solid #e5e5e5;
+    border-radius: 4px;
+    padding: 20px;
+}
+
+.field-types {
+    margin-bottom: 20px;
+}
+
+.field-types h3 {
+    margin-top: 0;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #eee;
+}
+
+.field-type-list {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+}
+
+.field-type {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    background: #f9f9f9;
+    border: 1px solid #e5e5e5;
+    border-radius: 4px;
+    cursor: move;
+    transition: all 0.2s ease;
+}
+
+.field-type:hover {
+    background: #f0f0f0;
+    border-color: #ccc;
+}
+
+.field-type .dashicons {
+    margin-right: 8px;
+    color: #666;
+}
+
+.field-type-label {
+    font-size: 13px;
+    color: #333;
+}
+
+/* Form Field Styles */
+.form-field {
+    background: #fff;
+    border: 1px solid #e5e5e5;
+    border-radius: 4px;
+    margin-bottom: 15px;
+    box-shadow: 0 1px 1px rgba(0,0,0,.04);
+}
+
+.field-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 15px;
+    background: #f9f9f9;
+    border-bottom: 1px solid #e5e5e5;
+}
+
+.field-label {
+    font-weight: 600;
+    color: #333;
+}
+
+.field-actions {
+    display: flex;
+    gap: 5px;
+}
+
+.field-preview {
+    padding: 15px;
+}
+
+.field-preview input[type="text"],
+.field-preview input[type="email"],
+.field-preview input[type="number"],
+.field-preview input[type="date"],
+.field-preview select,
+.field-preview textarea {
+    width: 100%;
+    max-width: 100%;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.field-preview label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.field-preview input[type="radio"],
+.field-preview input[type="checkbox"] {
+    margin-right: 5px;
+}
+
+/* Field Settings Panel */
+.field-settings-panel {
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid #eee;
+}
+
+.field-settings-panel h3 {
+    margin-top: 0;
+    margin-bottom: 15px;
+}
+
+.field-settings {
+    background: #f9f9f9;
+    border: 1px solid #e5e5e5;
+    border-radius: 4px;
+    padding: 15px;
+}
+
+.field-settings .form-table {
+    margin-top: 0;
+}
+
+.field-settings .form-table th {
+    width: 150px;
+    padding: 15px 10px 15px 0;
+}
+
+.field-settings .form-table td {
+    padding: 15px 10px;
+}
+
+.no-field-selected {
+    color: #666;
+    font-style: italic;
+    text-align: center;
+    padding: 20px;
+}
+
+/* Responsive Design */
+@media screen and (max-width: 782px) {
+    .form-builder-content {
+        flex-direction: column;
+    }
+
+    .form-fields-sidebar {
+        width: 100%;
+    }
+
+    .field-type-list {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Settings page */
+.connect2form-settings-form {
+    max-width: 800px;
+    margin-top: 20px;
+}
+
+.connect2form-settings-form .form-table th {
+    width: 200px;
+}
+
+/* Submissions page */
+.connect2form-submissions-filters {
+    margin: 15px 0;
+    padding: 10px;
+    background: #fff;
+    border: 1px solid #ccd0d4;
+}
+
+.connect2form-submissions-filters select {
+    margin-right: 15px;
+}
+
+/* Submissions Table Styles */
+.wp-list-table .column-id {
+    width: 80px;
+}
+
+.wp-list-table .column-date {
+    width: 150px;
+}
+
+.wp-list-table .column-actions {
+    width: 120px;
+}
+
+.wp-list-table .column-cb {
+    width: 30px;
+}
+
+/* Force all columns to be visible */
+.wp-list-table th,
+.wp-list-table td {
+    display: table-cell !important;
+}
+
+/* Ensure table doesn't hide columns */
+.wp-list-table {
+    table-layout: auto;
+    width: 100%;
+}
+
+/* Make table scrollable horizontally if needed */
+.wp-list-table-wrapper {
+    overflow-x: auto;
+    margin-bottom: 20px;
+}
+
+/* Submissions table cell content */
+.wp-list-table td {
+    vertical-align: top;
+    padding: 8px 10px;
+    white-space: normal;
+    word-wrap: break-word;
+}
+
+.wp-list-table td em {
+    color: #666;
+    font-style: italic;
+}
+
+/* File links in submissions */
+.wp-list-table a[target="_blank"] {
+    color: #0073aa;
+    text-decoration: none;
+}
+
+.wp-list-table a[target="_blank"]:hover {
+    color: #005a87;
+    text-decoration: underline;
+}
+
+/* UTM data display */
+.wp-list-table .utm-data {
+    font-size: 12px;
+    line-height: 1.4;
+}
+
+/* Textarea content in submissions */
+.wp-list-table .textarea-content {
+    max-height: 100px;
+    overflow-y: auto;
+    border: 1px solid #ddd;
+    padding: 5px;
+    background: #f9f9f9;
+    border-radius: 3px;
+}
+
+/* Form filter notice */
+.notice-info {
+    margin: 15px 0;
+}
+
+/* Responsive table */
+@media screen and (max-width: 782px) {
+    .wp-list-table .column-date,
+    .wp-list-table .column-id {
+        display: none;
+    }
+    
+    .wp-list-table .column-actions {
+        width: auto;
+    }
+}
+
+/* Settings Page Styles */
+.connect2form-settings-section {
+    background: #fff;
+    border: 1px solid #ccd0d4;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.04);
+    margin: 20px 0;
+    padding: 20px;
+}
+
+.connect2form-settings-section h2 {
+    margin-top: 0;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #eee;
+}
+
+.connect2form-settings-section p.description {
+    color: #666;
+    font-style: italic;
+    margin: 8px 0;
+}
+
+.connect2form-settings-field {
+    margin: 15px 0;
+}
+
+.connect2form-settings-field label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 600;
+}
+
+.connect2form-settings-field select {
+    min-width: 200px;
+}
+
+.connect2form-settings-field input[type="text"],
+.connect2form-settings-field input[type="password"] {
+    width: 100%;
+    max-width: 400px;
+}
+
+.connect2form-settings-field .description {
+    margin-top: 5px;
+    color: #666;
+}
+
+/* reCAPTCHA Section */
+.recaptcha-preview {
+    margin: 15px 0;
+    padding: 15px;
+    background: #f9f9f9;
+    border: 1px solid #e5e5e5;
+    border-radius: 3px;
+}
+
+.recaptcha-preview img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: 10px 0;
+}
+
+/* Honeypot Section */
+.honeypot-settings {
+    margin-top: 15px;
+    padding-left: 25px;
+}
+
+.honeypot-settings.disabled {
+    opacity: 0.5;
+    pointer-events: none;
+}
+
+/* Submit Button */
+.connect2form-settings-submit {
+    margin-top: 20px;
+    padding-top: 15px;
+    border-top: 1px solid #eee;
+}
+
+/* Settings Notice */
+.connect2form-settings-notice {
+    margin: 15px 0;
+    padding: 10px 15px;
+    border-left: 4px solid #46b450;
+    background: #fff;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.04);
+}
+
+.connect2form-settings-notice.error {
+    border-left-color: #dc3232;
+}
+
+/* Responsive Design */
+@media screen and (max-width: 782px) {
+    .connect2form-settings-field input[type="text"],
+    .connect2form-settings-field input[type="password"],
+    .connect2form-settings-field select {
+        width: 100%;
+    }
+    
+    .connect2form-settings-section {
+        padding: 15px;
+    }
+}
+
+/* Submission View Styles */
+.submission-details {
+    max-width: 800px;
+    padding: 10px;
+}
+
+.submission-meta,
+.submission-fields,
+.submission-actions {
+    background: #fff;
+    border: 1px solid #ccd0d4;
+    border-radius: 4px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 1px 1px rgba(0,0,0,.04);
+}
+
+.submission-meta h2,
+.submission-fields h2,
+.submission-actions h2 {
+    margin-top: 0;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #eee;
+    color: #23282d;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.submission-fields .form-table th {
+    width: 200px;
+    font-weight: 600;
+    color: #23282d;
+}
+
+.submission-fields .form-table td {
+    padding: 12px 10px;
+    vertical-align: top;
+}
+
+.submission-fields .form-table td pre {
+    background: #f9f9f9;
+    border: 1px solid #e5e5e5;
+    border-radius: 3px;
+    padding: 10px;
+    margin: 0;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    max-width: 100%;
+    overflow-x: auto;
+}
+
+.submission-actions p {
+    margin: 0;
+}
+
+.submission-actions .button {
+    margin-right: 10px;
+}
+
+.submission-actions .button-link-delete {
+    color: #dc3232;
+    border-color: #dc3232;
+}
+
+.submission-actions .button-link-delete:hover {
+    background: #dc3232;
+    color: #fff;
+}
+
+/* Responsive design for submission view */
+@media screen and (max-width: 782px) {
+    .submission-fields .form-table th {
+        width: 100%;
+        display: block;
+        padding-bottom: 5px;
+    }
+    
+    .submission-fields .form-table td {
+        display: block;
+        padding-left: 0;
+    }
+    
+    .submission-details {
+        max-width: 100%;
+    }
+}
+
+/* Duplicate button states */
+.duplicate-form {
+    transition: all 0.3s ease;
+}
+
+.duplicate-form.success {
+    color: #46b450 !important;
+    font-weight: bold;
+}
+
+.duplicate-form.error {
+    color: #dc3232 !important;
+    font-weight: bold;
+}
+
+.duplicate-form:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* Row actions improvements */
+.row-actions .duplicate-form,
+.row-actions .preview-form {
+    color: #0073aa;
+    text-decoration: none;
+}
+
+.row-actions .duplicate-form:hover,
+.row-actions .preview-form:hover {
+    color: #005a87;
+    text-decoration: underline;
+} 
+.row-actions a:hover{
+    color: #005a87;
+    text-decoration: underline;
+}
+.preview{float:none;}
+.wp-core-ui .button, .wp-core-ui .button-secondary{
+    width: auto;
+    vertical-align: middle;
+}
+.dashicons, .dashicons-before:before{
+    vertical-align: middle;
+}
