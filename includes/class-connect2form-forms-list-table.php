@@ -108,14 +108,21 @@ class Connect2Form_Forms_List_Table extends WP_List_Table {
             $safe_direction = strtoupper($order) === 'ASC' ? 'ASC' : 'DESC';
             $like = '%' . $wpdb->esc_like($search) . '%';
             
-            // Build complete SQL query with proper escaping
+            // Build SQL with sprintf to avoid interpolation warnings in wpdb->prepare()
             $table_name = $wpdb->prefix . 'connect2form_forms';
-            $sql = $wpdb->prepare(
-                "SELECT * FROM `{$table_name}` WHERE (%s = '' OR form_title LIKE %s) ORDER BY `{$safe_orderby}` {$safe_direction} LIMIT %d OFFSET %d",
-                $search,
-                $like,
-                $limit,
-                $offset
+            
+            // First prepare the parametrized parts
+            $prepared_where = $wpdb->prepare("WHERE (%s = '' OR form_title LIKE %s)", $search, $like);
+            $prepared_limit = $wpdb->prepare("LIMIT %d OFFSET %d", $limit, $offset);
+            
+            // Build final query with safe interpolation (ORDER BY values are whitelisted)
+            $sql = sprintf(
+                "SELECT * FROM `%s` %s ORDER BY `%s` %s %s",
+                $table_name,
+                $prepared_where,
+                $safe_orderby,
+                $safe_direction,
+                $prepared_limit
             );
             
 			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- admin list table query; ORDER BY uses strict whitelist validation

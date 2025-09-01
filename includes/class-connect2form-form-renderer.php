@@ -500,7 +500,9 @@ class Connect2Form_Form_Renderer {
                         // These are standard marketing analytics parameters (utm_source, utm_medium, etc.)
                         // passed in URLs for campaign tracking - they pose no security risk
                         $param_value = '';
+                        // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- UTM parameters are read-only tracking data
                         if (isset($_GET[$param])) {
+                            // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- UTM parameters are read-only tracking data
                             $raw_value = sanitize_text_field(wp_unslash($_GET[$param]));
                             // Additional validation for UTM parameters
                             if (is_string($raw_value) && strlen($raw_value) <= 255) {
