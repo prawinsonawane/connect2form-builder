@@ -42,8 +42,11 @@ class Connect2Form_Forms_List_Table extends WP_List_Table {
             $orderby_raw = filter_input(INPUT_GET, 'orderby', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
             // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- reading non-sensitive ordering params
             $order_raw   = filter_input(INPUT_GET, 'order', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-            $orderby     = $orderby_raw ? sanitize_sql_orderby((string) $orderby_raw) : 'id';
-            $order       = $order_raw ? sanitize_sql_orderby((string) $order_raw) : 'DESC';
+            
+            // Validate orderby/direction using strict whitelist approach
+            $allowed_cols = array('id', 'form_title', 'status', 'created_at', 'updated_at');
+            $orderby = $orderby_raw && in_array($orderby_raw, $allowed_cols, true) ? $orderby_raw : 'id';
+            $order = strtoupper($order_raw) === 'ASC' ? 'ASC' : 'DESC';
 
             // Set up search
             // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- reading search term only
@@ -83,9 +86,7 @@ class Connect2Form_Forms_List_Table extends WP_List_Table {
             $orderby_raw = filter_input(INPUT_GET, 'orderby', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
             // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- reading non-sensitive ordering params
             $order_raw   = filter_input(INPUT_GET, 'order', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-            $orderby     = $orderby_raw ? sanitize_sql_orderby((string) $orderby_raw) : 'id';
-            $order       = $order_raw ? sanitize_sql_orderby((string) $order_raw) : 'DESC';
-
+            
             // Set up search
             // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- reading search term only
             $search_raw = filter_input(INPUT_GET, 's', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
@@ -107,20 +108,21 @@ class Connect2Form_Forms_List_Table extends WP_List_Table {
             $safe_direction = strtoupper($order) === 'ASC' ? 'ASC' : 'DESC';
             $like = '%' . $wpdb->esc_like($search) . '%';
             
-            // Build safe ORDER BY clause using validated components
-            $order_clause = "`{$safe_orderby}` {$safe_direction}";
+            // Build SQL query with safe, whitelisted ORDER BY clause
+            // Note: ORDER BY cannot use wpdb::prepare() placeholders, so we use strict validation instead
+            $sql = $wpdb->prepare(
+                "SELECT * FROM `{$table_name}` WHERE (%s = '' OR form_title LIKE %s) LIMIT %d OFFSET %d",
+                $search,
+                $like,
+                $limit,
+                $offset
+            );
             
-			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- admin list table query; ORDER BY uses whitelisted safe values
-			$this->items = $wpdb->get_results(
-				$wpdb->prepare(
-					"SELECT * FROM `{$table_name}` WHERE (%s = '' OR form_title LIKE %s) ORDER BY {$order_clause} LIMIT %d OFFSET %d",
-					$search,
-					$like,
-					$limit,
-					$offset
-				),
-				ARRAY_A
-			);
+            // Append safe ORDER BY clause (validated against whitelist)
+            $sql .= " ORDER BY `{$safe_orderby}` {$safe_direction}";
+            
+			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- admin list table query; ORDER BY uses strict whitelist validation
+			$this->items = $wpdb->get_results($sql, ARRAY_A);
 
             // Set up pagination args
             $this->set_pagination_args(array(
