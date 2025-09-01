@@ -1490,8 +1490,31 @@ do_action('connect2form_render_additional_integrations', $form_id, $form);
             // Get and validate form data.
             $form_id = isset( $_POST['form_id'] ) ? absint( wp_unslash( $_POST['form_id'] ) ) : 0;
             $title = isset( $_POST['title'] ) ? sanitize_text_field( wp_unslash( $_POST['title'] ) ) : '';
-            $fields = isset( $_POST['fields'] ) ? wp_unslash( $_POST['fields'] ) : ''; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- JSON string decoded and validated below
-            $settings = isset( $_POST['settings'] ) ? wp_unslash( $_POST['settings'] ) : ''; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- JSON string decoded and validated below
+            
+            // Sanitize and validate JSON fields
+            $fields = '';
+            if ( isset( $_POST['fields'] ) ) {
+                $fields_raw = wp_unslash( $_POST['fields'] );
+                if ( is_string( $fields_raw ) ) {
+                    // Validate JSON structure
+                    $decoded_fields = json_decode( $fields_raw, true );
+                    if ( json_last_error() === JSON_ERROR_NONE && is_array( $decoded_fields ) ) {
+                        $fields = sanitize_textarea_field( $fields_raw );
+                    }
+                }
+            }
+            
+            $settings = '';
+            if ( isset( $_POST['settings'] ) ) {
+                $settings_raw = wp_unslash( $_POST['settings'] );
+                if ( is_string( $settings_raw ) ) {
+                    // Validate JSON structure
+                    $decoded_settings = json_decode( $settings_raw, true );
+                    if ( json_last_error() === JSON_ERROR_NONE && is_array( $decoded_settings ) ) {
+                        $settings = sanitize_textarea_field( $settings_raw );
+                    }
+                }
+            }
 
             // Filter form data before validation.
             $form_data = apply_filters( 'connect2form_form_data_before_save', array(

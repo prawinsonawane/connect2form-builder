@@ -977,9 +977,9 @@ class Connect2Form_Submission_Handler {
         foreach ($ip_keys as $key) {
             // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- $_SERVER values are unslashed and sanitized below; validated with filter_var
             if (isset($_SERVER[$key]) && !empty($_SERVER[$key])) {
-                // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- $_SERVER value is unslashed and sanitized below; validated with filter_var
-                $raw  = wp_unslash((string) $_SERVER[$key]);
-                $ips  = explode(',', $raw);
+                // Properly sanitize $_SERVER value
+                $raw = sanitize_text_field(wp_unslash((string) $_SERVER[$key]));
+                $ips = explode(',', $raw);
                 $ip = trim($ips[0]);
 
                 if (filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE)) {
@@ -988,9 +988,16 @@ class Connect2Form_Submission_Handler {
             }
         }
 
-        // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- $_SERVER value is unslashed and sanitized below; validated with filter_var
-        $fallback = isset($_SERVER['REMOTE_ADDR']) ? wp_unslash((string) $_SERVER['REMOTE_ADDR']) : '127.0.0.1';
-        return sanitize_text_field($fallback);
+        // Sanitize $_SERVER value with proper validation
+        $fallback = '127.0.0.1';
+        if (isset($_SERVER['REMOTE_ADDR'])) {
+            $remote_addr = sanitize_text_field(wp_unslash((string) $_SERVER['REMOTE_ADDR']));
+            // Validate IP address before using
+            if (filter_var($remote_addr, FILTER_VALIDATE_IP)) {
+                $fallback = $remote_addr;
+            }
+        }
+        return $fallback;
     }
 
     /**
