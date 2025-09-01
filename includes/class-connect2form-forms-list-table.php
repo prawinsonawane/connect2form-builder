@@ -94,15 +94,26 @@ class Connect2Form_Forms_List_Table extends WP_List_Table {
             // Get items
             $limit  = absint($per_page);
             $offset = absint(($current_page - 1) * $per_page);
-            // Validate orderby/direction; fallback to safe defaults
-            $allowed_cols = array('id','form_title','status','created_at','updated_at');
-            if (!in_array($orderby, $allowed_cols, true)) { $orderby = 'id'; }
-            $direction = strtoupper($order) === 'ASC' ? 'ASC' : 'DESC';
+            // Validate orderby/direction using strict whitelist approach
+            $allowed_cols = array(
+                'id' => 'id',
+                'form_title' => 'form_title',
+                'status' => 'status',
+                'created_at' => 'created_at',
+                'updated_at' => 'updated_at'
+            );
+            
+            $safe_orderby = isset($allowed_cols[$orderby]) ? $allowed_cols[$orderby] : 'id';
+            $safe_direction = strtoupper($order) === 'ASC' ? 'ASC' : 'DESC';
             $like = '%' . $wpdb->esc_like($search) . '%';
-			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- admin list table query; ORDER BY and identifier validated
+            
+            // Build safe ORDER BY clause using validated components
+            $order_clause = "`{$safe_orderby}` {$safe_direction}";
+            
+			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- admin list table query; ORDER BY uses whitelisted safe values
 			$this->items = $wpdb->get_results(
 				$wpdb->prepare(
-					"SELECT * FROM `{$table_name}` WHERE (%s = '' OR form_title LIKE %s) ORDER BY $orderby $direction LIMIT %d OFFSET %d", // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- validated identifier and ORDER BY components
+					"SELECT * FROM `{$table_name}` WHERE (%s = '' OR form_title LIKE %s) ORDER BY {$order_clause} LIMIT %d OFFSET %d",
 					$search,
 					$like,
 					$limit,

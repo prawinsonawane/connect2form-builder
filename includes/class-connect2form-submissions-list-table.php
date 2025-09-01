@@ -28,10 +28,13 @@ class Connect2Form_Submissions_List_Table extends WP_List_Table {
         ));
 
         // Get form_id from URL if not provided (read-only filter UI)
-        // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- form_id is read-only filter parameter for admin list table
         if ( ! $form_id && isset( $_GET['form_id'] ) ) {
-            // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- form_id is read-only filter parameter for admin list table
-            $form_id = absint( wp_unslash( $_GET['form_id'] ) );
+            // Verify admin context and permissions for security
+            if ( ! is_admin() || ! current_user_can( 'manage_options' ) ) {
+                $form_id = 0;
+            } else {
+                $form_id = absint( wp_unslash( $_GET['form_id'] ) );
+            }
         }
         
         $this->form_id = $form_id;

@@ -221,8 +221,7 @@ class Connect2Form_Form_Renderer {
                 $field = apply_filters('connect2form_field_before_render', $field, $form);
                 
                 // Skip certain field types in preview mode
-                // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- preview parameter is unslashed and verified with nonce below
-                if (isset($_GET['preview']) && current_user_can('manage_options') && wp_verify_nonce(wp_unslash($_GET['preview']), 'connect2form_preview')) {
+                if (isset($_GET['preview']) && current_user_can('manage_options') && wp_verify_nonce(sanitize_text_field(wp_unslash($_GET['preview'])), 'connect2form_preview')) {
                     
                 }
 
@@ -497,8 +496,15 @@ class Connect2Form_Form_Renderer {
                     if (!empty($field['utm_content'])) $utm_params[] = 'utm_content';
                     
                     foreach ($utm_params as $param) {
-                        // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- UTM parameters are read-only tracking parameters that don't require nonce verification
-                        $param_value = isset($_GET[$param]) ? sanitize_text_field(wp_unslash($_GET[$param])) : '';
+                        // UTM parameters are read-only tracking parameters - additional validation for security
+                        $param_value = '';
+                        if (isset($_GET[$param])) {
+                            $raw_value = wp_unslash($_GET[$param]);
+                            // Additional validation for UTM parameters
+                            if (is_string($raw_value) && strlen($raw_value) <= 255) {
+                                $param_value = sanitize_text_field($raw_value);
+                            }
+                        }
                         ?>
                         <input type="hidden" 
                                id="<?php echo esc_attr($field_id . '_' . $param); ?>"

@@ -460,7 +460,10 @@ class Connect2Form_Admin {
         wp_enqueue_script( 'connect2form-form-builder' );
 
         // Localize form builder script.
-        $form_id = isset( $_GET['id'] ) ? intval( $_GET['id'] ) : 0;
+        $form_id = 0;
+        if ( isset( $_GET['id'] ) && is_admin() && current_user_can( 'manage_options' ) ) {
+            $form_id = intval( $_GET['id'] );
+        }
         $form = null;
         if ( $form_id ) {
             // Use service class instead of direct database call.
@@ -625,8 +628,8 @@ class Connect2Form_Admin {
      * Render the form builder page
      */
     public function render_form_builder($form_id = null) {
-        // If no form_id passed, check URL parameters
-        if (!$form_id && isset($_GET['id'])) { // phpcs:ignore WordPress.Security.NonceVerification.Missing -- read-only routing
+        // If no form_id passed, check URL parameters (admin context with permission check)
+        if (!$form_id && isset($_GET['id']) && is_admin() && current_user_can( 'manage_options' )) {
             $form_id = absint( wp_unslash( $_GET['id'] ) );
         }
         
@@ -1131,8 +1134,11 @@ do_action('connect2form_render_additional_integrations', $form_id, $form);
         // Include the list table class
         require_once plugin_dir_path(dirname(__FILE__)) . 'includes/class-connect2form-submissions-list-table.php';
 
-        // Get form ID from URL if specified
-        $form_id = isset($_GET['form_id']) && !empty($_GET['form_id']) ? absint( wp_unslash( $_GET['form_id'] ) ) : 0; // phpcs:ignore WordPress.Security.NonceVerification.Missing
+        // Get form ID from URL if specified (admin context with permission check)
+        $form_id = 0;
+        if ( isset($_GET['form_id']) && !empty($_GET['form_id']) && is_admin() && current_user_can( 'manage_options' ) ) {
+            $form_id = absint( wp_unslash( $_GET['form_id'] ) );
+        }
         
 
 

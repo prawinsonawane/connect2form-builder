@@ -75,11 +75,15 @@ class Connect2Form_Submission_Handler {
             $form->fields = '';
         }
 
+        // Extract only form-specific data instead of whole $_POST array
+        $form_data = $this->extract_form_data($form, $_POST);
+        $form_files = $this->extract_form_files($form, $_FILES);
+        
         // Action hook before validation
-        do_action('connect2form_before_validation', $form, $_POST, $_FILES);
+        do_action('connect2form_before_validation', $form, $form_data, $form_files);
 
         // Validate submission
-        $validation = $this->validate_submission($form, $_POST);
+        $validation = $this->validate_submission($form, $form_data);
         if (is_wp_error($validation)) {
             // Filter validation error message
             $error_message = apply_filters('connect2form_validation_error_message', $validation->get_error_message(), $validation, $form);
@@ -87,16 +91,16 @@ class Connect2Form_Submission_Handler {
         }
 
         // Action hook after validation
-        do_action('connect2form_after_validation', $form, $_POST, $_FILES);
+        do_action('connect2form_after_validation', $form, $form_data, $form_files);
 
         // Process file uploads
-        $files = $this->handle_file_uploads($form, $_FILES);
+        $files = $this->handle_file_uploads($form, $form_files);
         if (is_wp_error($files)) {
             wp_send_json_error($files->get_error_message());
         }
 
         // Filter submission data before saving
-        $submission_data = array_merge($_POST, $files);
+        $submission_data = array_merge($form_data, $files);
         $submission_data = apply_filters('connect2form_submission_data', $submission_data, $form);
 
         // Prepare submission data for database
@@ -1032,6 +1036,62 @@ class Connect2Form_Submission_Handler {
         
         // Return translated message if it exists, otherwise return the original message
         return isset($messages[$message]) ? $messages[$message] : $message;
+    }
+    
+    /**
+     * Extract only form-specific data from $_POST instead of processing entire array
+     */
+    private function extract_form_data($form, $post_data) {
+        $form_data = array();
+        
+        // Always include these required fields
+        $required_fields = array('form_id', 'action', 'nonce', 'timestamp', 'website');
+        foreach ($required_fields as $field) {
+            if (isset($post_data[$field])) {
+                $form_data[$field] = wp_unslash($post_data[$field]);
+            }
+        }
+        
+        // Extract form fields based on form definition
+        $form_fields = !empty($form->fields) ? 
+            (is_string($form->fields) ? json_decode($form->fields, true) : $form->fields) : 
+            array();
+            
+        if (is_array($form_fields)) {
+            foreach ($form_fields as $field) {
+                $field_name = !empty($field['name']) ? $field['name'] : '';
+                if ($field_name && isset($post_data[$field_name])) {
+                    $form_data[$field_name] = wp_unslash($post_data[$field_name]);
+                }
+            }
+        }
+        
+        return $form_data;
+    }
+    
+    /**
+     * Extract only form-specific files from $_FILES instead of processing entire array
+     */
+    private function extract_form_files($form, $files_data) {
+        $form_files = array();
+        
+        // Extract file fields based on form definition
+        $form_fields = !empty($form->fields) ? 
+            (is_string($form->fields) ? json_decode($form->fields, true) : $form->fields) : 
+            array();
+            
+        if (is_array($form_fields)) {
+            foreach ($form_fields as $field) {
+                if (!empty($field['type']) && $field['type'] === 'file') {
+                    $field_name = !empty($field['name']) ? $field['name'] : '';
+                    if ($field_name && isset($files_data[$field_name])) {
+                        $form_files[$field_name] = $files_data[$field_name];
+                    }
+                }
+            }
+        }
+        
+        return $form_files;
     }
 }
 
