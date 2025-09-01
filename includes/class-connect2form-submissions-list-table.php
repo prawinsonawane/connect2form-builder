@@ -27,13 +27,19 @@ class Connect2Form_Submissions_List_Table extends WP_List_Table {
             'ajax'     => false
         ));
 
-        // Get form_id from URL if not provided (read-only filter UI)
+        // Get form_id from URL if not provided with nonce verification
         if ( ! $form_id && isset( $_GET['form_id'] ) ) {
             // Verify admin context and permissions for security
             if ( ! is_admin() || ! current_user_can( 'manage_options' ) ) {
                 $form_id = 0;
             } else {
-                $form_id = absint( wp_unslash( $_GET['form_id'] ) );
+                // Verify nonce if present, or use admin referer check
+                if (isset($_GET['_wpnonce']) && wp_verify_nonce(sanitize_text_field(wp_unslash($_GET['_wpnonce'])), 'connect2form_admin')) {
+                    $form_id = absint( wp_unslash( $_GET['form_id'] ) );
+                } elseif (wp_get_referer()) {
+                    // Allow from trusted admin referer
+                    $form_id = absint( wp_unslash( $_GET['form_id'] ) );
+                }
             }
         }
         

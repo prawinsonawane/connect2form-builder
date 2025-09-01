@@ -496,7 +496,9 @@ class Connect2Form_Form_Renderer {
                     if (!empty($field['utm_content'])) $utm_params[] = 'utm_content';
                     
                     foreach ($utm_params as $param) {
-                        // UTM parameters are read-only tracking parameters - additional validation for security
+                        // UTM parameters are read-only tracking parameters that don't require nonce verification
+                        // These are standard marketing analytics parameters (utm_source, utm_medium, etc.)
+                        // passed in URLs for campaign tracking - they pose no security risk
                         $param_value = '';
                         if (isset($_GET[$param])) {
                             $raw_value = wp_unslash($_GET[$param]);

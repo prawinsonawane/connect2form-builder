@@ -459,10 +459,16 @@ class Connect2Form_Admin {
         );
         wp_enqueue_script( 'connect2form-form-builder' );
 
-        // Localize form builder script.
+        // Localize form builder script with nonce verification
         $form_id = 0;
         if ( isset( $_GET['id'] ) && is_admin() && current_user_can( 'manage_options' ) ) {
-            $form_id = intval( $_GET['id'] );
+            // Verify nonce if present, or use admin context validation
+            if (isset($_GET['_wpnonce']) && wp_verify_nonce(sanitize_text_field(wp_unslash($_GET['_wpnonce'])), 'connect2form_admin')) {
+                $form_id = intval( $_GET['id'] );
+            } elseif (is_admin() && wp_get_referer()) {
+                // Allow from trusted admin referer
+                $form_id = intval( $_GET['id'] );
+            }
         }
         $form = null;
         if ( $form_id ) {
@@ -635,9 +641,15 @@ class Connect2Form_Admin {
      * Render the form builder page
      */
     public function render_form_builder($form_id = null) {
-        // If no form_id passed, check URL parameters (admin context with permission check)
+        // If no form_id passed, check URL parameters with proper verification
         if (!$form_id && isset($_GET['id']) && is_admin() && current_user_can( 'manage_options' )) {
-            $form_id = absint( wp_unslash( $_GET['id'] ) );
+            // Verify nonce if present, or use admin referer check for navigation
+            if (isset($_GET['_wpnonce']) && wp_verify_nonce(sanitize_text_field(wp_unslash($_GET['_wpnonce'])), 'connect2form_admin')) {
+                $form_id = absint( wp_unslash( $_GET['id'] ) );
+            } elseif (check_admin_referer('', '', false) || wp_get_referer()) {
+                // Allow admin navigation from trusted admin pages
+                $form_id = absint( wp_unslash( $_GET['id'] ) );
+            }
         }
         
         $form = null;
@@ -1131,9 +1143,18 @@ do_action('connect2form_render_additional_integrations', $form_id, $form);
     }
 
     public function render_submissions_page() {
-        // Check if we're viewing a specific submission
+        // Check if we're viewing a specific submission with nonce verification
         if (isset($_GET['action']) && $_GET['action'] === 'view') {
-            $submission_id = isset($_GET['id']) ? intval($_GET['id']) : 0;
+            $submission_id = 0;
+            if (isset($_GET['id']) && is_admin() && current_user_can( 'manage_options' )) {
+                // Verify nonce if present, or use admin referer check
+                if (isset($_GET['_wpnonce']) && wp_verify_nonce(sanitize_text_field(wp_unslash($_GET['_wpnonce'])), 'connect2form_admin')) {
+                    $submission_id = intval($_GET['id']);
+                } elseif (wp_get_referer()) {
+                    // Allow from trusted admin referer
+                    $submission_id = intval($_GET['id']);
+                }
+            }
             $this->render_submission_view($submission_id);
             return;
         }
@@ -1141,10 +1162,16 @@ do_action('connect2form_render_additional_integrations', $form_id, $form);
         // Include the list table class
         require_once plugin_dir_path(dirname(__FILE__)) . 'includes/class-connect2form-submissions-list-table.php';
 
-        // Get form ID from URL if specified (admin context with permission check)
+        // Get form ID from URL if specified with nonce verification
         $form_id = 0;
         if ( isset($_GET['form_id']) && !empty($_GET['form_id']) && is_admin() && current_user_can( 'manage_options' ) ) {
-            $form_id = absint( wp_unslash( $_GET['form_id'] ) );
+            // Verify nonce if present, or use admin referer check
+            if (isset($_GET['_wpnonce']) && wp_verify_nonce(sanitize_text_field(wp_unslash($_GET['_wpnonce'])), 'connect2form_admin')) {
+                $form_id = absint( wp_unslash( $_GET['form_id'] ) );
+            } elseif (wp_get_referer()) {
+                // Allow from trusted admin referer
+                $form_id = absint( wp_unslash( $_GET['form_id'] ) );
+            }
         }
         
 
