@@ -2,6 +2,20 @@
 {
     box-sizing: border-box;
 }
+
+/* Honeypot field - must be hidden for spam protection */
+.connect2form-honeypot {
+    position: absolute !important;
+    left: -9999px !important;
+    top: -9999px !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+}
+
+/* Hidden message container - will be shown via JavaScript */
+.connect2form-message[style*="display: none"] {
+    display: none !important;
+}
 /* Form Wrapper */
 .connect2form-form-wrapper {
     max-width: 800px;

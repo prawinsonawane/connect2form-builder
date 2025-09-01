@@ -195,10 +195,10 @@ Connect2Form uses the following third-party libraries and resources to provide e
 All JavaScript and CSS files in this plugin are human-readable and unminified except where noted. The plugin does not use build tools like webpack, gulp, or npm for distribution.
 
 **Source Code Availability:**
-* **Plugin Source:** https://github.com/username/connect2form-builder
-* **Documentation:** https://connect2form.com/docs
-* **Issue Tracker:** https://github.com/username/connect2form-builder/issues
-* **Contribution Guide:** https://github.com/username/connect2form-builder/blob/main/CONTRIBUTING.md
+* **Plugin Source:** https://github.com/prawinsonawane/connect2form-builder
+* **Documentation:** https://connect2form.com/
+* **Issue Tracker:** https://github.com/prawinsonawane/connect2form-builder/issues
+* **Contribution Guide:** https://github.com/prawinsonawane/connect2form-builder/blob/main/CONTRIBUTING.md
 
 **Minified Files:**
 * `assets/js/datepicker.min.js` - Third-party library (source link provided above)
@@ -407,7 +407,7 @@ Connect2Form takes privacy seriously and follows WordPress privacy best practice
 * User Facebook group: https://facebook.com/groups/connect2form
 
 **🐛 Bug Reports & Feature Requests:**
-* GitHub Issues: https://github.com/username/connect2form-builder/issues
+* GitHub Issues: https://github.com/prawinsonawane/connect2form-builder/issues
 * Feature voting: https://connect2form.com/feature-requests
 * Security issues: security@connect2form.com
 
@@ -418,7 +418,7 @@ Connect2Form takes privacy seriously and follows WordPress privacy best practice
 
 **🌐 Official Links:**
 * Official Website: https://connect2form.com
-* Plugin Repository: https://github.com/username/connect2form-builder
+* Plugin Repository: https://github.com/prawinsonawane/connect2form-builder
 * Social Media: @connect2form
 * Newsletter: https://connect2form.com/newsletter
 
@@ -427,8 +427,8 @@ Connect2Form takes privacy seriously and follows WordPress privacy best practice
 We welcome contributions from the WordPress community! Here's how you can help:
 
 **🔧 Code Contributions:**
-* Fork the repository: https://github.com/username/connect2form-builder
-* Read our contribution guidelines: https://github.com/username/connect2form-builder/blob/main/CONTRIBUTING.md
+* Fork the repository: https://github.com/prawinsonawane/connect2form-builder
+* Read our contribution guidelines: https://github.com/prawinsonawane/connect2form-builder/blob/main/CONTRIBUTING.md
 * Submit pull requests for bug fixes and features
 * Follow WordPress coding standards
 
@@ -459,8 +459,7 @@ Connect2Form is developed with ❤️ for the WordPress community.
 **Core Team:**
 * Lead Developer: pravinsonawane71
 * Co-Developer: sonymerlinn
-* UI/UX Design: [Designer Name]
-* Security Consultant: [Security Expert]
+
 
 **Special Thanks:**
 * WordPress core team for the amazing platform

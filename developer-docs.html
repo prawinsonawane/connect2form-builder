@@ -1142,6 +1142,51 @@ function custom_spam_detection($is_spam, $data, $form) {
             <h3>🏗️ Addon Architecture</h3>
             <p>Connect2Form uses a modular addon system that allows extending functionality without modifying core files.</p>
 
+            <h3>✅ Dependency Checking</h3>
+            <p>Addon plugins must properly check if Connect2Form Builder is installed and activated. Here are the recommended methods:</p>
+
+            <div class="grid">
+                <div class="card">
+                    <h4>🎯 Plugin Header (WordPress 6.5+)</h4>
+                    <div class="code-block">
+/**
+ * Plugin Name: Your Addon
+ * Requires Plugins: connect2form-builder
+ */
+                    </div>
+                </div>
+                <div class="card">
+                    <h4>🔍 Class Detection</h4>
+                    <div class="code-block">
+class_exists('Connect2Form_Admin')
+                    </div>
+                </div>
+                <div class="card">
+                    <h4>📁 Plugin Active Check</h4>
+                    <div class="code-block">
+is_plugin_active('connect2form-builder/connect2form.php')
+                    </div>
+                </div>
+                <div class="card">
+                    <h4>⚙️ Function Detection</h4>
+                    <div class="code-block">
+function_exists('run_connect2form')
+                    </div>
+                </div>
+            </div>
+
+            <div class="info">
+                <h4>📋 Key Information for Addon Developers:</h4>
+                <ul>
+                    <li><strong>Plugin Folder:</strong> <code>connect2form-builder</code></li>
+                    <li><strong>Main File:</strong> <code>connect2form.php</code></li>
+                    <li><strong>Text Domain:</strong> <code>connect2form-builder</code></li>
+                    <li><strong>Core Classes:</strong> <code>Connect2Form_Admin</code>, <code>Connect2Form_Form_Builder</code>, etc.</li>
+                    <li><strong>Core Functions:</strong> <code>run_connect2form()</code>, <code>activate_connect2form()</code></li>
+                    <li><strong>Constants:</strong> <code>CONNECT2FORM_VERSION</code>, <code>CONNECT2FORM_PLUGIN_DIR</code></li>
+                </ul>
+            </div>
+
             <h4>Creating an Addon Plugin</h4>
             <div class="code-block">
 &lt;?php
@@ -1157,14 +1202,37 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-// Check if Connect2Form is active
-if (!function_exists('run_connect2form')) {
+// Check if Connect2Form is active - Multiple methods for reliability
+if (!is_connect2form_active()) {
     add_action('admin_notices', function() {
         echo '&lt;div class="notice notice-error"&gt;&lt;p&gt;';
-        echo 'Connect2Form Custom Integration requires Connect2Form Builder plugin to be active.';
+        echo '&lt;strong&gt;Connect2Form Integrations Error:&lt;/strong&gt; ';
+        echo 'Connect2Form Builder plugin is required and must be activated. ';
+        echo '&lt;a href="' . esc_url(admin_url('plugin-install.php?s=connect2form&amp;tab=search&amp;type=term')) . '"&gt;';
+        echo 'Install Connect2Form Builder&lt;/a&gt;';
         echo '&lt;/p&gt;&lt;/div&gt;';
     });
     return;
+}
+
+/**
+ * Check if Connect2Form is active using multiple methods
+ */
+function is_connect2form_active() {
+    // Method 1: Check if plugin is active (most reliable)
+    if (function_exists('is_plugin_active')) {
+        if (is_plugin_active('connect2form-builder/connect2form.php')) {
+            return true;
+        }
+    }
+    
+    // Method 2: Check for core classes
+    if (class_exists('Connect2Form_Admin')) {
+        return true;
+    }
+    
+    // Method 3: Check for core functions
+    return function_exists('run_connect2form');
 }
 
 class Connect2Form_Custom_Integration {

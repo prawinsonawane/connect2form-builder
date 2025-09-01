@@ -368,19 +368,7 @@ class Connect2Form_Admin {
             <div class="debug-section">
                 <h2><?php echo esc_html__('8. JavaScript Console Test', 'connect2form-builder'); ?></h2>
                 <p><?php echo esc_html__('Check the browser console (F12) for JavaScript debug information.', 'connect2form-builder'); ?></p>
-                <script>
 
-
-
-
-                
-                // Test if we can detect the integration
-                jQuery(document).ready(function($) {
-
-
-
-                });
-                </script>
             </div>
         </div>
         <?php
@@ -1328,8 +1316,8 @@ do_action('connect2form_render_additional_integrations', $form_id, $form);
                             <?php esc_html_e('← Back to Submissions', 'connect2form-builder'); ?>
                         </a>
                         <a href="<?php echo esc_url(admin_url('admin.php?page=connect2form-submissions&action=delete&id=' . $submission_id)); ?>" 
-                           class="button button-link-delete" 
-                           onclick="return confirm('<?php echo esc_js(__('Are you sure you want to delete this submission?', 'connect2form-builder')); ?>');">
+                           class="button button-link-delete delete-submission-btn" 
+                           data-confirm-message="<?php echo esc_attr(__('Are you sure you want to delete this submission?', 'connect2form-builder')); ?>">
                             <?php esc_html_e('Delete Submission', 'connect2form-builder'); ?>
                         </a>
                     </p>
@@ -2128,22 +2116,20 @@ do_action('connect2form_render_additional_integrations', $form_id, $form);
             wp_enqueue_style('dashicons');
             wp_enqueue_style('buttons');
             wp_enqueue_script('jquery');
+            
+            // Enqueue preview styles
+            wp_enqueue_style(
+                'connect2form-preview',
+                plugin_dir_url(dirname(__FILE__)) . 'assets/css/preview.css',
+                array(),
+                CONNECT2FORM_VERSION
+            );
+            
             wp_head(); 
             ?>
-            <style>
-                * {
-                    box-sizing: border-box;
-                }
-                body {
-                    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
-                    line-height: 1.6;
-                    color: #333;
-                    margin: 0;
-                    padding: 0;
-                    background: #f5f5f5;
-                    min-height: 100vh;
-                }
-                .preview-header {
+        </head>
+        <body>
+            <div class="preview-header">
                     background: #fff;
                     padding: 30px 20px;
                     margin: 0;
@@ -2278,20 +2264,7 @@ do_action('connect2form_render_additional_integrations', $form_id, $form);
                     color: #155724;
                     border: 1px solid #c3e6cb;
                 }
-                .connect2form-message.error {
-                    background: #f8d7da;
-                    color: #721c24;
-                    border: 1px solid #f5c6cb;
-                }
-                .required {
-                    color: #dc3545;
-                }
-                .connect2form-field .description {
-                    font-size: 12px;
-                    color: #666;
-                    margin-top: 5px;
-                }
-            </style>
+
         </head>
         <body>
             <div class="preview-header">
@@ -2314,7 +2287,7 @@ do_action('connect2form_render_additional_integrations', $form_id, $form);
                 <a href="<?php echo esc_url( add_query_arg( 'preview', '1', esc_url_raw( wp_unslash( $_SERVER['REQUEST_URI'] ?? '' ) ) ) ); ?>" class="button">
                     <?php esc_html_e('Preview', 'connect2form-builder'); ?>
                 </a>
-                <button type="button" class="button" onclick="window.close();">
+                <button type="button" class="button close-preview-btn">
                     <?php esc_html_e('Close Preview', 'connect2form-builder'); ?>
                 </button>
             </div>

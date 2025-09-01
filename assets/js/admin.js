@@ -8,7 +8,20 @@ jQuery(document).ready(function($) {
         $('#debug-ajaxurl').text('ajaxurl: ' + (typeof ajaxurl !== 'undefined' ? ajaxurl : 'undefined'));
     }
 
+    // Handle delete submission confirmation
+    $('.delete-submission-btn').on('click', function(e) {
+        var confirmMessage = $(this).data('confirm-message');
+        if (!confirm(confirmMessage)) {
+            e.preventDefault();
+            return false;
+        }
+    });
 
+    // Handle close preview window
+    $('.close-preview-btn').on('click', function(e) {
+        e.preventDefault();
+        window.close();
+    });
 
     // Test duplicate button
     $('#test-duplicate').on('click', function(e) {

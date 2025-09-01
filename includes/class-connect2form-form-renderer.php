@@ -190,7 +190,7 @@ class Connect2Form_Form_Renderer {
         $form_html .= wp_nonce_field('connect2form_submit', 'nonce', true, false);
         
         // Add honeypot protection
-        $form_html .= '<div class="connect2form-honeypot" style="position: absolute; left: -9999px; top: -9999px;">';
+        $form_html .= '<div class="connect2form-honeypot">';
         $form_html .= '<input type="text" name="website" value="" tabindex="-1" autocomplete="off">';
         $form_html .= '</div>';
         
