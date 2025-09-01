@@ -344,105 +344,14 @@ class Connect2Form_Accessibility {
 		if ( ! $this->should_load_accessibility_assets() ) {
 			return;
 		}
-		?>
-		<style>
-		/* Connect2Form Accessibility Styles */
-		.connect2form-form-wrapper {
-			/* High contrast mode support */
-			--primary-color: #0073aa;
-			--error-color: #d63638;
-			--success-color: #00a32a;
-			--focus-color: #005a87;
-		}
-
-		/* Screen reader only text */
-		.connect2form-sr-only,
-		.sr-only {
-			position: absolute !important;
-			width: 1px !important;
-			height: 1px !important;
-			padding: 0 !important;
-			margin: -1px !important;
-			overflow: hidden !important;
-			clip: rect(0, 0, 0, 0) !important;
-			white-space: nowrap !important;
-			border: 0 !important;
-		}
-
-		/* Skip links */
-		.screen-reader-shortcut {
-			position: absolute !important;
-			top: -40px;
-			left: 6px;
-			z-index: 999999;
-			color: var(--focus-color);
-			background: #fff;
-			text-decoration: none;
-			padding: 8px 16px;
-			border: 2px solid var(--focus-color);
-		}
-
-		.screen-reader-shortcut:focus {
-			top: 6px;
-		}
-
-		/* Focus indicators */
-		.connect2form-form-wrapper input:focus,
-		.connect2form-form-wrapper select:focus,
-		.connect2form-form-wrapper textarea:focus,
-		.connect2form-form-wrapper button:focus {
-			outline: 2px solid var(--focus-color);
-			outline-offset: 2px;
-		}
-
-		/* Error states */
-		.connect2form-field[aria-invalid="true"] input,
-		.connect2form-field[aria-invalid="true"] select,
-		.connect2form-field[aria-invalid="true"] textarea {
-			border-color: var(--error-color);
-			border-width: 2px;
-		}
-
-		/* Required field indicators */
-		.connect2form-required::after {
-			content: " *";
-			color: var(--error-color);
-			font-weight: bold;
-		}
-
-		/* High contrast mode support */
-		@media (prefers-contrast: high) {
-			.connect2form-form-wrapper {
-				--primary-color: #000;
-				--error-color: #ff0000;
-				--success-color: #008000;
-				--focus-color: #0000ff;
-			}
-		}
-
-		/* Reduced motion support */
-		@media (prefers-reduced-motion: reduce) {
-			.connect2form-form-wrapper * {
-				animation-duration: 0.01ms !important;
-				animation-iteration-count: 1 !important;
-				transition-duration: 0.01ms !important;
-			}
-		}
-
-		/* Font size respect */
-		.connect2form-form-wrapper {
-			font-size: 1rem; /* Respects user's base font size */
-		}
-
-		/* Minimum touch target size */
-		.connect2form-form-wrapper button,
-		.connect2form-form-wrapper input[type="checkbox"],
-		.connect2form-form-wrapper input[type="radio"] {
-			min-height: 44px;
-			min-width: 44px;
-		}
-		</style>
-		<?php
+		
+		// Enqueue frontend accessibility CSS
+		wp_enqueue_style(
+			'connect2form-frontend-accessibility',
+			plugin_dir_url( dirname( __FILE__ ) ) . 'assets/css/accessibility.css',
+			array(),
+			CONNECT2FORM_VERSION
+		);
 	}
 
 	/**
