@@ -442,20 +442,7 @@ class Connect2Form_Submissions_List_Table extends WP_List_Table {
             </form>
         </div>
     
-        <script type="text/javascript">
-        jQuery(function($){
-            var $filterForm = $('#form-filter').closest('form');
-            if ($filterForm.length) {
-                if (!$filterForm.attr('action')) { $filterForm.attr('action', <?php echo wp_json_encode( $action_url ); ?>); }
-                if ($filterForm.attr('method') !== 'get') { $filterForm.attr('method', 'get'); }
-                if (!$filterForm.attr('id')) { $filterForm.attr('id', 'connect2form-filter-form'); }
-    
-                $filterForm.on('submit', function(){
-                    $('<div id="form-submitting" style="position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:#fff;border:2px solid #0073aa;padding:20px;border-radius:5px;z-index:9999;box-shadow:0 0 10px rgba(0,0,0,.3);"><?php echo esc_js( __( 'Form is being submitted...', 'connect2form-builder') ); ?></div>').appendTo('body');
-                });
-            }
-        });
-        </script>
+
         <?php
     }
     

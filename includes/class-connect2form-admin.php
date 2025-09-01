@@ -190,14 +190,7 @@ class Connect2Form_Admin {
                 <p><?php echo esc_html__('This debug page helps diagnose issues with the Connect2Form plugin and its integrations.', 'connect2form-builder'); ?></p>
             </div>
 
-            <style>
-                .debug-section { border: 1px solid #ccc; margin: 15px 0; padding: 15px; background: #fff; }
-                .debug-success { background: #d4edda; border-color: #c3e6cb; color: #155724; }
-                .debug-error { background: #f8d7da; border-color: #f5c6cb; color: #721c24; }
-                .debug-warning { background: #fff3cd; border-color: #ffeaa7; color: #856404; }
-                .debug-pre { background: #f8f9fa; padding: 10px; overflow-x: auto; font-family: monospace; border: 1px solid #dee2e6; }
-                .debug-status { font-weight: bold; }
-            </style>
+
             
             <div class="debug-section">
                 <h2><?php echo esc_html__('1. Plugin Status', 'connect2form-builder'); ?></h2>
@@ -1738,8 +1731,7 @@ do_action('connect2form_render_additional_integrations', $form_id, $form);
             wp_send_json_error( 'Permission denied' );
         }
 
-      //  $form_id = isset( $_POST['form_id'] ) ? (int) wp_unslash( $_POST['form_id'] ) : 0;
-      $form_id = isset( $_POST['form_id'] ) ? absint( $_POST['form_id'] ) : 0;
+      $form_id = isset( $_POST['form_id'] ) ? absint( wp_unslash( $_POST['form_id'] ) ) : 0;
 
         if ( ! $form_id ) {
             wp_send_json_error( 'Invalid form ID' );
