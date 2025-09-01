@@ -23,6 +23,34 @@ jQuery(document).ready(function($) {
         window.close();
     });
 
+    // Enhanced keyboard navigation for admin interface (accessibility)
+    var formBuilder = document.getElementById('form-builder');
+    if (formBuilder) {
+        // Allow keyboard interaction with drag-drop interface
+        var draggableItems = formBuilder.querySelectorAll('.draggable');
+        draggableItems.forEach(function(item) {
+            if (!item.hasAttribute('tabindex')) {
+                item.setAttribute('tabindex', '0');
+            }
+
+            item.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    item.click();
+                }
+            });
+        });
+    }
+
+    // Skip links for admin interface
+    if (typeof connect2formAdmin !== 'undefined' && connect2formAdmin.messages) {
+        var skipLink = document.createElement('a');
+        skipLink.href = '#main-content';
+        skipLink.className = 'screen-reader-shortcut';
+        skipLink.textContent = connect2formAdmin.messages.skipToContent;
+        document.body.insertBefore(skipLink, document.body.firstChild);
+    }
+
     // Test duplicate button
     $('#test-duplicate').on('click', function(e) {
         e.preventDefault();

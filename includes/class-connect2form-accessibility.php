@@ -276,41 +276,13 @@ class Connect2Form_Accessibility {
 		if ( ! $screen || strpos( $screen->id, 'connect2form' ) === false ) {
 			return;
 		}
-		?>
-		<script>
-		(function() {
-			'use strict';
-
-			document.addEventListener('DOMContentLoaded', function() {
-				// Enhanced keyboard navigation for admin interface.
-				var formBuilder = document.getElementById('form-builder');
-				if (formBuilder) {
-					// Allow keyboard interaction with drag-drop interface.
-					var draggableItems = formBuilder.querySelectorAll('.draggable');
-					draggableItems.forEach(function(item) {
-						if (!item.hasAttribute('tabindex')) {
-							item.setAttribute('tabindex', '0');
-						}
-
-						item.addEventListener('keydown', function(e) {
-							if (e.key === 'Enter' || e.key === ' ') {
-								e.preventDefault();
-								item.click();
-							}
-						});
-					});
-				}
-
-				// Skip links for admin interface.
-				var skipLink = document.createElement('a');
-				skipLink.href = '#main-content';
-				skipLink.className = 'screen-reader-shortcut';
-				skipLink.textContent = '<?php echo esc_js( __( 'Skip to main content', 'connect2form-builder') ); ?>';
-				document.body.insertBefore(skipLink, document.body.firstChild);
-			});
-		})();
-		</script>
-		<?php
+		
+		// Admin keyboard navigation is now handled by the main admin.js file
+		// This ensures proper enqueueing and avoids inline scripts
+		// The functionality includes:
+		// - Enhanced keyboard navigation for form builder drag-drop interface
+		// - Skip links for admin interface accessibility
+		// - Proper tabindex management for interactive elements
 	}
 
 	/**

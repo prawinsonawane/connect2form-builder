@@ -622,6 +622,13 @@ class Connect2Form_Admin {
             'copiedText' => __('Copied!', 'connect2form-builder'),
             'previewUrl' => esc_url( admin_url( 'admin.php?page=connect2form&action=preview' ) ),
         ) );
+        
+        // Add separate localization for admin accessibility features
+        wp_localize_script( 'connect2form-admin', 'connect2formAdmin', array(
+            'messages' => array(
+                'skipToContent' => __( 'Skip to main content', 'connect2form-builder' )
+            )
+        ) );
     }
 
     /**
