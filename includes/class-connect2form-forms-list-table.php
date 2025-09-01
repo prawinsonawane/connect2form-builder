@@ -46,7 +46,7 @@ class Connect2Form_Forms_List_Table extends WP_List_Table {
             // Validate orderby/direction using strict whitelist approach
             $allowed_cols = array('id', 'form_title', 'status', 'created_at', 'updated_at');
             $orderby = $orderby_raw && in_array($orderby_raw, $allowed_cols, true) ? $orderby_raw : 'id';
-            $order = strtoupper($order_raw) === 'ASC' ? 'ASC' : 'DESC';
+            $order = $order_raw && strtoupper($order_raw) === 'ASC' ? 'ASC' : 'DESC';
 
             // Set up search
             // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- reading search term only
@@ -92,6 +92,10 @@ class Connect2Form_Forms_List_Table extends WP_List_Table {
             $search_raw = filter_input(INPUT_GET, 's', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
             $search     = $search_raw !== null ? sanitize_text_field((string) $search_raw) : '';
 
+            // Extract and validate orderby and order values
+            $orderby = $orderby_raw !== null ? sanitize_text_field((string) $orderby_raw) : 'id';
+            $order   = $order_raw !== null ? sanitize_text_field((string) $order_raw) : 'desc';
+
             // Get items
             $limit  = absint($per_page);
             $offset = absint(($current_page - 1) * $per_page);
@@ -105,7 +109,7 @@ class Connect2Form_Forms_List_Table extends WP_List_Table {
             );
             
             $safe_orderby = isset($allowed_cols[$orderby]) ? $allowed_cols[$orderby] : 'id';
-            $safe_direction = strtoupper($order) === 'ASC' ? 'ASC' : 'DESC';
+            $safe_direction = $order && strtoupper($order) === 'ASC' ? 'ASC' : 'DESC';
             $like = '%' . $wpdb->esc_like($search) . '%';
             
             // Build SQL with sprintf to avoid interpolation warnings in wpdb->prepare()
