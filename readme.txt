@@ -207,25 +207,27 @@ All other JavaScript and CSS files are unminified and human-readable for easy in
 
 == External Services ==
 
-This plugin connects to external third-party services to provide optional integration functionality. These connections are only established when specifically configured by the user through the Connect2Form Integrations addon plugin.
+This plugin connects to external third-party services to provide optional integration functionality. These connections are only established when specifically configured by the user and are completely optional.
 
-**MailChimp API Integration (Optional)**
+**MailChimp API Integration (Optional - Built-in)**
 
 * **Service**: MailChimp email marketing platform (mailchimp.com)
 * **Purpose**: To automatically add form submissions to your MailChimp email lists for newsletter and marketing purposes
 * **Data Sent**: Email addresses and any other form fields you choose to map (name, phone, etc.)
-* **When**: Only when a form is submitted AND MailChimp integration is configured in the Connect2Form Integrations addon
-* **Data Location**: Data is sent to MailChimp servers based on your account region (e.g., us1.api.mailchimp.com)
+* **When**: Only when a form is submitted AND MailChimp integration is configured in form settings
+* **Data Location**: Data is sent to MailChimp servers based on your account region (e.g., us1.api.mailchimp.com/3.0/lists/{list_id}/members)
+* **API Endpoint**: https://{datacenter}.api.mailchimp.com/3.0/lists/{list_id}/members
 * **Privacy Policy**: https://mailchimp.com/legal/privacy/
 * **Terms of Service**: https://mailchimp.com/legal/terms/
 
-**HubSpot CRM Integration (Optional)**
+**HubSpot CRM Integration (Optional - Built-in)**
 
 * **Service**: HubSpot CRM platform (hubspot.com)  
 * **Purpose**: To create or update contact records in your HubSpot CRM from form submissions
 * **Data Sent**: Contact information from form fields including email, name, phone, company details, and custom fields
-* **When**: Only when a form is submitted AND HubSpot integration is configured in the Connect2Form Integrations addon
-* **Data Location**: Data is sent to HubSpot API servers (api.hubapi.com)
+* **When**: Only when a form is submitted AND HubSpot integration is configured in form settings
+* **Data Location**: Data is sent to HubSpot API servers (api.hubapi.com/crm/v3/objects/contacts)
+* **API Endpoint**: https://api.hubapi.com/crm/v3/objects/contacts
 * **Privacy Policy**: https://legal.hubspot.com/privacy-policy
 * **Terms of Service**: https://legal.hubspot.com/terms-of-service
 
@@ -239,13 +241,23 @@ This plugin connects to external third-party services to provide optional integr
 * **Privacy Policy**: https://policies.google.com/privacy
 * **Terms of Service**: https://policies.google.com/terms
 
-**Important Notes:**
+**Technical Implementation Details:**
+
+- **MailChimp Integration**: Uses wp_remote_request() to POST data to MailChimp API v3.0 endpoints
+- **HubSpot Integration**: Uses wp_remote_request() to POST contact data to HubSpot CRM API v3
+- **Data Format**: All API calls send data in JSON format with proper authentication headers
+- **Error Handling**: Failed API calls are logged but do not prevent form submission completion
+- **Timeout**: All external API calls have a 30-second timeout limit
+
+**Important Privacy & Legal Notes:**
 
 - All external service integrations are completely optional and disabled by default
 - No data is sent to external services unless you explicitly configure and enable the specific integration
 - You maintain full control over what data is shared and with which services
 - Each integration can be independently enabled, disabled, or configured according to your privacy requirements
+- API calls are made server-side after form submission, not from user browsers
 - For legal compliance, ensure your website's privacy policy discloses any external service usage to your users
+- Users should be informed about data transmission through your privacy policy and opt-in mechanisms
 
 == Developer Hooks & Filters ==
 
