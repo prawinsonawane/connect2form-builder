@@ -125,7 +125,7 @@ class Connect2Form_Forms_List_Table extends WP_List_Table {
                 $prepared_limit
             );
             
-			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- admin list table query; ORDER BY uses strict whitelist validation
+			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared -- admin list table query; SQL is prepared above using wpdb->prepare() and sprintf for ORDER BY; ORDER BY uses strict whitelist validation
 			$this->items = $wpdb->get_results($sql, ARRAY_A);
 
             // Set up pagination args
