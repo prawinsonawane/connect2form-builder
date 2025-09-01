@@ -2208,8 +2208,7 @@ do_action('connect2form_render_additional_integrations', $form_id, $form);
                 <a href="<?php echo esc_url(admin_url('admin.php?page=connect2form')); ?>" class="button">
                     <?php esc_html_e('Back to Forms', 'connect2form-builder'); ?>
                 </a>
-                <?php // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- request URI is escaped below ?>
-                <a href="<?php echo esc_url( add_query_arg( 'preview', '1', esc_url_raw( wp_unslash( $_SERVER['REQUEST_URI'] ?? '' ) ) ) ); ?>" class="button">
+                <a href="<?php echo esc_url( add_query_arg( 'preview', '1', esc_url_raw( sanitize_text_field( wp_unslash( $_SERVER['REQUEST_URI'] ?? '' ) ) ) ) ); ?>" class="button">
                     <?php esc_html_e('Preview', 'connect2form-builder'); ?>
                 </a>
                 <button type="button" class="button close-preview-btn">

@@ -160,10 +160,9 @@ class Connect2Form_Security {
         );
         
         foreach ($ip_keys as $key) {
-            // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- server values are unslashed and sanitized below
             if (isset($_SERVER[$key]) && !empty($_SERVER[$key])) {
-                // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- server values are unslashed and sanitized below
-                $server_value = wp_unslash($_SERVER[$key]);
+                // Properly sanitize $_SERVER value
+                $server_value = sanitize_text_field(wp_unslash((string) $_SERVER[$key]));
                 $ips = explode(',', $server_value);
                 $ip = trim($ips[0]);
                 
@@ -173,9 +172,15 @@ class Connect2Form_Security {
             }
         }
         
-        // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- server values are unslashed and sanitized below
-        $remote_addr = isset($_SERVER['REMOTE_ADDR']) ? wp_unslash($_SERVER['REMOTE_ADDR']) : '0.0.0.0';
-        return sanitize_text_field($remote_addr);
+        // Sanitize $_SERVER value with proper validation
+        $fallback = '0.0.0.0';
+        if (isset($_SERVER['REMOTE_ADDR'])) {
+            $remote_addr = sanitize_text_field(wp_unslash((string) $_SERVER['REMOTE_ADDR']));
+            if (filter_var($remote_addr, FILTER_VALIDATE_IP)) {
+                $fallback = $remote_addr;
+            }
+        }
+        return $fallback;
     }
     
     /**
