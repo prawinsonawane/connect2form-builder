@@ -1,0 +1,67 @@
+/* Connect2Form Admin Accessibility */
+.connect2form-admin-wrapper {
+	/* Ensure proper color contrast */
+	--admin-primary: #0073aa;
+	--admin-focus: #005a87;
+	--admin-error: #d63638;
+}
+
+/* Focus management for admin interface */
+.connect2form-admin-wrapper button:focus,
+.connect2form-admin-wrapper .button:focus,
+.connect2form-admin-wrapper input:focus,
+.connect2form-admin-wrapper select:focus {
+	box-shadow: 0 0 0 2px var(--admin-focus);
+	outline: none;
+}
+
+/* Improved contrast for form builder */
+.form-builder-field {
+	border: 2px solid #ddd;
+}
+
+.form-builder-field.selected {
+	border-color: var(--admin-primary);
+	background: rgba(0, 115, 170, 0.05);
+}
+
+/* Screen reader text for admin */
+.connect2form-admin-sr-only {
+	position: absolute !important;
+	width: 1px !important;
+	height: 1px !important;
+	overflow: hidden !important;
+	clip: rect(1px, 1px, 1px, 1px) !important;
+}
+
+/* Frontend accessibility improvements */
+.connect2form-form-wrapper {
+	/* Ensure readable font sizes */
+	font-size: 16px;
+	line-height: 1.5;
+}
+
+/* Focus styles for form elements */
+.connect2form-field input:focus,
+.connect2form-field textarea:focus,
+.connect2form-field select:focus {
+	outline: 2px solid #005a87;
+	outline-offset: 2px;
+}
+
+/* Error message styling */
+.connect2form-error {
+	color: #d63638;
+	font-weight: 600;
+	margin-top: 5px;
+}
+
+/* Screen reader announcements */
+.connect2form-sr-only {
+	position: absolute !important;
+	width: 1px !important;
+	height: 1px !important;
+	overflow: hidden !important;
+	clip: rect(1px, 1px, 1px, 1px) !important;
+	white-space: nowrap !important;
+}

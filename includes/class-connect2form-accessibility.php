@@ -244,57 +244,26 @@ class Connect2Form_Accessibility {
 		if ( ! $this->should_load_accessibility_assets() ) {
 			return;
 		}
-		?>
-		<script>
-		(function() {
-			'use strict';
-
-			// Enhance keyboard navigation for Connect2Form.
-			document.addEventListener('DOMContentLoaded', function() {
-				var forms = document.querySelectorAll('.connect2form-form-wrapper');
-
-				forms.forEach(function(form) {
-					// Handle Enter key on buttons.
-					form.addEventListener('keydown', function(e) {
-						if (e.key === 'Enter' && e.target.type === 'button') {
-							e.preventDefault();
-							e.target.click();
-						}
-					});
-
-					// Manage focus for dynamic content.
-					form.addEventListener('connect2form:error', function(e) {
-						var firstError = form.querySelector('.connect2form-error');
-						if (firstError) {
-							firstError.focus();
-							firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
-						}
-					});
-
-					// Announce form submission status.
-					form.addEventListener('connect2form:success', function(e) {
-						var announcement = document.getElementById('connect2form-announcements');
-						if (announcement) {
-							announcement.textContent = '<?php echo esc_js( __( 'Form submitted successfully', 'connect2form-builder') ); ?>';
-						}
-					});
-				});
-
-				// Enhance select dropdowns.
-				var selects = document.querySelectorAll('.connect2form-form-wrapper select');
-				selects.forEach(function(select) {
-					select.addEventListener('focus', function() {
-						this.setAttribute('aria-expanded', 'true');
-					});
-
-					select.addEventListener('blur', function() {
-						this.setAttribute('aria-expanded', 'false');
-					});
-				});
-			});
-		})();
-		</script>
-		<?php
+		
+		// Enqueue accessibility JavaScript
+		wp_enqueue_script(
+			'connect2form-accessibility',
+			plugin_dir_url( dirname( __FILE__ ) ) . 'assets/js/accessibility.js',
+			array(),
+			CONNECT2FORM_VERSION,
+			true
+		);
+		
+		// Localize script for translations
+		wp_localize_script(
+			'connect2form-accessibility',
+			'connect2formAccessibility',
+			array(
+				'messages' => array(
+					'formSubmitted' => __( 'Form submitted successfully', 'connect2form-builder' )
+				)
+			)
+		);
 	}
 
 	/**
@@ -486,45 +455,14 @@ class Connect2Form_Accessibility {
 		if ( ! $screen || strpos( $screen->id, 'connect2form' ) === false ) {
 			return;
 		}
-		?>
-		<style>
-		/* Connect2Form Admin Accessibility */
-		.connect2form-admin-wrapper {
-			/* Ensure proper color contrast */
-			--admin-primary: #0073aa;
-			--admin-focus: #005a87;
-			--admin-error: #d63638;
-		}
-
-		/* Focus management for admin interface */
-		.connect2form-admin-wrapper button:focus,
-		.connect2form-admin-wrapper .button:focus,
-		.connect2form-admin-wrapper input:focus,
-		.connect2form-admin-wrapper select:focus {
-			box-shadow: 0 0 0 2px var(--admin-focus);
-			outline: none;
-		}
-
-		/* Improved contrast for form builder */
-		.form-builder-field {
-			border: 2px solid #ddd;
-		}
-
-		.form-builder-field.selected {
-			border-color: var(--admin-primary);
-			background: rgba(0, 115, 170, 0.05);
-		}
-
-		/* Screen reader text for admin */
-		.connect2form-admin-sr-only {
-			position: absolute !important;
-			width: 1px !important;
-			height: 1px !important;
-			overflow: hidden !important;
-			clip: rect(1px, 1px, 1px, 1px) !important;
-		}
-		</style>
-		<?php
+		
+		// Enqueue admin accessibility CSS
+		wp_enqueue_style(
+			'connect2form-admin-accessibility',
+			plugin_dir_url( dirname( __FILE__ ) ) . 'assets/css/accessibility.css',
+			array(),
+			CONNECT2FORM_VERSION
+		);
 	}
 
 	/**
