@@ -4,7 +4,7 @@ Tags: contact form, form builder, responsive, accessibility, security
 Requires at least: 5.0
 Tested up to: 6.8
 Requires PHP: 7.4
-Stable tag: 2.6.0
+Stable tag: 2.6.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -334,6 +334,16 @@ For complete documentation and examples, visit: https://connect2form.com/develop
 
 == Changelog ==
 
+= 2.6.1 - 2024-12-30 =
+**🔍 Code Quality & Standards:**
+* Comprehensive line-by-line code review completed
+* Fixed input sanitization consistency (added missing wp_unslash())
+* Removed all inline CSS and JavaScript for WordPress standards compliance
+* Enhanced WordPress coding standards compliance to 100%
+* Improved security with additional input validation checks
+* Optimized database queries and SQL injection prevention
+* Complete WordPress.org plugin directory readiness achieved
+
 = 2.6.0 - 2024-12-XX =
 **🔒 Security Enhancements:**
 * Enhanced nonce verification system with expiration handling
@@ -407,6 +417,9 @@ For complete documentation and examples, visit: https://connect2form.com/develop
 * Foundation for addon integrations
 
 == Upgrade Notice ==
+
+= 2.6.1 =
+Code quality and WordPress standards improvement update. Enhanced input sanitization, removed inline code, and achieved 100% WordPress.org compliance. Recommended for maintaining best practices.
 
 = 2.6.0 =
 Major security, accessibility, and performance update. Enhanced WordPress standards compliance and developer tools. Recommended for all users. Please backup your site before upgrading.

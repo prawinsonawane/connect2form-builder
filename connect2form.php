@@ -3,7 +3,7 @@
  * Plugin Name: Connect2Form – Advanced Contact Form Builder 
  * Plugin URI: https://connect2form.com
  * Description: A comprehensive contact form builder for WordPress with advanced features including email notifications, file uploads, reCAPTCHA integration, and third-party service integrations.
- * Version: 2.6.0
+ * Version: 2.6.1
  * Requires at least: 5.0
  * Tested up to: 6.8
  * Requires PHP: 7.4
@@ -13,7 +13,7 @@
  * License: GPL v2 or later
  * License URI: http://www.gnu.org/licenses/gpl-2.0.txt
  * @package connect2form
- * @version 2.6.0
+ * @version 2.6.1
  * @author pravinsonawane71
  * @license GPL-2.0+
  */
@@ -29,7 +29,7 @@ if (!defined('WPINC')) {
 }
 
 // Define plugin constants first
-define('CONNECT2FORM_VERSION', '2.6.0');
+define('CONNECT2FORM_VERSION', '2.6.1');
 define('CONNECT2FORM_PLUGIN_DIR', plugin_dir_path(__FILE__));
 define('CONNECT2FORM_PLUGIN_URL', plugin_dir_url(__FILE__));
 define('CONNECT2FORM_PLUGIN_BASENAME', plugin_basename(__FILE__));
