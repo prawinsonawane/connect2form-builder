@@ -205,6 +205,48 @@ All JavaScript and CSS files in this plugin are human-readable and unminified ex
 
 All other JavaScript and CSS files are unminified and human-readable for easy inspection and modification.
 
+== External Services ==
+
+This plugin connects to external third-party services to provide optional integration functionality. These connections are only established when specifically configured by the user through the Connect2Form Integrations addon plugin.
+
+**MailChimp API Integration (Optional)**
+
+* **Service**: MailChimp email marketing platform (mailchimp.com)
+* **Purpose**: To automatically add form submissions to your MailChimp email lists for newsletter and marketing purposes
+* **Data Sent**: Email addresses and any other form fields you choose to map (name, phone, etc.)
+* **When**: Only when a form is submitted AND MailChimp integration is configured in the Connect2Form Integrations addon
+* **Data Location**: Data is sent to MailChimp servers based on your account region (e.g., us1.api.mailchimp.com)
+* **Privacy Policy**: https://mailchimp.com/legal/privacy/
+* **Terms of Service**: https://mailchimp.com/legal/terms/
+
+**HubSpot CRM Integration (Optional)**
+
+* **Service**: HubSpot CRM platform (hubspot.com)  
+* **Purpose**: To create or update contact records in your HubSpot CRM from form submissions
+* **Data Sent**: Contact information from form fields including email, name, phone, company details, and custom fields
+* **When**: Only when a form is submitted AND HubSpot integration is configured in the Connect2Form Integrations addon
+* **Data Location**: Data is sent to HubSpot API servers (api.hubapi.com)
+* **Privacy Policy**: https://legal.hubspot.com/privacy-policy
+* **Terms of Service**: https://legal.hubspot.com/terms-of-service
+
+**Google reCAPTCHA Service (Optional)**
+
+* **Service**: Google reCAPTCHA spam protection (google.com)
+* **Purpose**: To protect forms from spam and automated bot submissions
+* **Data Sent**: User interaction data, IP address, and browser information for spam analysis
+* **When**: Only when reCAPTCHA is enabled for a specific form
+* **Data Location**: Data is processed by Google's servers worldwide
+* **Privacy Policy**: https://policies.google.com/privacy
+* **Terms of Service**: https://policies.google.com/terms
+
+**Important Notes:**
+
+- All external service integrations are completely optional and disabled by default
+- No data is sent to external services unless you explicitly configure and enable the specific integration
+- You maintain full control over what data is shared and with which services
+- Each integration can be independently enabled, disabled, or configured according to your privacy requirements
+- For legal compliance, ensure your website's privacy policy discloses any external service usage to your users
+
 == Developer Hooks & Filters ==
 
 Connect2Form provides extensive customization through WordPress hooks and filters:
