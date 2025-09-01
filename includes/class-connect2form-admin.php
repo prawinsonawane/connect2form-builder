@@ -2175,7 +2175,7 @@ do_action('connect2form_render_additional_integrations', $form_id, $form);
             <meta name="viewport" content="width=device-width, initial-scale=1">
             <title><?php echo esc_html($form->form_title); ?> - <?php bloginfo('name'); ?></title>
             <?php 
-            // Properly enqueue WordPress core assets
+            // Properly enqueue WordPress core assets for preview
             wp_enqueue_style('dashicons');
             wp_enqueue_style('buttons');
             wp_enqueue_script('jquery');
@@ -2188,7 +2188,22 @@ do_action('connect2form_render_additional_integrations', $form_id, $form);
                 CONNECT2FORM_VERSION
             );
             
-            wp_head(); 
+            // Enqueue admin scripts for preview functionality
+            wp_enqueue_script(
+                'connect2form-admin',
+                plugin_dir_url(dirname(__FILE__)) . 'assets/js/admin.js',
+                array('jquery'),
+                CONNECT2FORM_VERSION,
+                true
+            );
+            
+            // Manual head output to avoid deprecated function warnings
+            do_action('wp_enqueue_scripts');
+            wp_print_styles();
+            wp_print_scripts();
+            
+            // Add required meta tags for form functionality
+            echo '<meta name="robots" content="noindex,nofollow">' . "\n";
             ?>
         </head>
         <body>
@@ -2208,17 +2223,10 @@ do_action('connect2form_render_additional_integrations', $form_id, $form);
                 <a href="<?php echo esc_url(admin_url('admin.php?page=connect2form')); ?>" class="button">
                     <?php esc_html_e('Back to Forms', 'connect2form-builder'); ?>
                 </a>
-                <a href="<?php echo esc_url( add_query_arg( 'preview', '1', esc_url_raw( sanitize_text_field( wp_unslash( $_SERVER['REQUEST_URI'] ?? '' ) ) ) ) ); ?>" class="button">
-                    <?php esc_html_e('Preview', 'connect2form-builder'); ?>
-                </a>
                 <button type="button" class="button close-preview-btn">
                     <?php esc_html_e('Close Preview', 'connect2form-builder'); ?>
                 </button>
             </div>
-
-            <script>
-            // Form functionality is handled by properly enqueued scripts
-            // No inline JavaScript needed
         </body>
         </html>
         <?php
