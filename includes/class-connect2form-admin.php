@@ -2180,12 +2180,29 @@ do_action('connect2form_render_additional_integrations', $form_id, $form);
             wp_enqueue_style('buttons');
             wp_enqueue_script('jquery');
             
+            // Enqueue frontend styles and scripts for form display
+            wp_enqueue_style(
+                'connect2form-frontend',
+                plugin_dir_url(dirname(__FILE__)) . 'assets/css/frontend.css',
+                array(),
+                CONNECT2FORM_VERSION
+            );
+            
             // Enqueue preview styles
             wp_enqueue_style(
                 'connect2form-preview',
                 plugin_dir_url(dirname(__FILE__)) . 'assets/css/preview.css',
-                array(),
+                array('connect2form-frontend'),
                 CONNECT2FORM_VERSION
+            );
+            
+            // Enqueue frontend scripts for form functionality
+            wp_enqueue_script(
+                'connect2form-frontend',
+                plugin_dir_url(dirname(__FILE__)) . 'assets/js/frontend.js',
+                array('jquery'),
+                CONNECT2FORM_VERSION,
+                true
             );
             
             // Enqueue admin scripts for preview functionality
