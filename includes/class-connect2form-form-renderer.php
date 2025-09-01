@@ -501,10 +501,10 @@ class Connect2Form_Form_Renderer {
                         // passed in URLs for campaign tracking - they pose no security risk
                         $param_value = '';
                         if (isset($_GET[$param])) {
-                            $raw_value = wp_unslash($_GET[$param]);
+                            $raw_value = sanitize_text_field(wp_unslash($_GET[$param]));
                             // Additional validation for UTM parameters
                             if (is_string($raw_value) && strlen($raw_value) <= 255) {
-                                $param_value = sanitize_text_field($raw_value);
+                                $param_value = $raw_value;
                             }
                         }
                         ?>

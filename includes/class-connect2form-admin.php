@@ -1494,24 +1494,24 @@ do_action('connect2form_render_additional_integrations', $form_id, $form);
             // Sanitize and validate JSON fields
             $fields = '';
             if ( isset( $_POST['fields'] ) ) {
-                $fields_raw = wp_unslash( $_POST['fields'] );
+                $fields_raw = sanitize_textarea_field( wp_unslash( $_POST['fields'] ) );
                 if ( is_string( $fields_raw ) ) {
                     // Validate JSON structure
                     $decoded_fields = json_decode( $fields_raw, true );
                     if ( json_last_error() === JSON_ERROR_NONE && is_array( $decoded_fields ) ) {
-                        $fields = sanitize_textarea_field( $fields_raw );
+                        $fields = $fields_raw;
                     }
                 }
             }
             
             $settings = '';
             if ( isset( $_POST['settings'] ) ) {
-                $settings_raw = wp_unslash( $_POST['settings'] );
+                $settings_raw = sanitize_textarea_field( wp_unslash( $_POST['settings'] ) );
                 if ( is_string( $settings_raw ) ) {
                     // Validate JSON structure
                     $decoded_settings = json_decode( $settings_raw, true );
                     if ( json_last_error() === JSON_ERROR_NONE && is_array( $decoded_settings ) ) {
-                        $settings = sanitize_textarea_field( $settings_raw );
+                        $settings = $settings_raw;
                     }
                 }
             }
